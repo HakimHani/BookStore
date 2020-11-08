@@ -85,11 +85,20 @@ public class VisitorController {
 		}
 
 		List<JSONObject> entities = new ArrayList<JSONObject>();
-		JSONObject loginStatus = new JSONObject("aa", "bb");
-		JSONObject fisrtVisit = new JSONObject("aa", "bb");
-		JSONObject lastestVisit = new JSONObject("aa", "bb");
-		JSONObject cart = new JSONObject("aa", "bb");
-		entities.add(loginStatus);
+		
+		if(visitor.getUser() == null) {
+			JSONObject loginStatus = new JSONObject("isLoggedIn", "false");
+			entities.add(loginStatus);
+		}else {
+			JSONObject loginStatus = new JSONObject("isLoggedIn", "true");
+			entities.add(loginStatus);
+		}
+		
+		
+		JSONObject fisrtVisit = new JSONObject("aa", sdf.format(visitor.getFirstTS()));
+		JSONObject lastestVisit = new JSONObject("aa", sdf.format(visitor.getLatestTS()));
+		JSONObject cart = new JSONObject("cart", ""+visitor.getCart().getItems().size());
+		
 		entities.add(fisrtVisit);
 		entities.add(lastestVisit);
 		entities.add(cart);

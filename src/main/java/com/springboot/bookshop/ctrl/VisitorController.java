@@ -77,7 +77,7 @@ public class VisitorController {
 	}
 
 	@GetMapping(path = "/")
-	public JSONObject sayHello()
+	public String sayHello()
 	{
 
 		if(visitor == null) {
@@ -110,7 +110,7 @@ public class VisitorController {
 		}
 		//entity.put("aa", "bb");
 
-		return response;
+		return response.toString();
 	}
 
 

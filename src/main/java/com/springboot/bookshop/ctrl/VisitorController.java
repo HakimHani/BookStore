@@ -76,8 +76,8 @@ public class VisitorController {
 
 	}
 
-	@GetMapping(path = "/", produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> sayHello()
+	@GetMapping(path = "/")
+	public String sayHello()
 	{
 		
 		if(visitor == null) {
@@ -117,7 +117,7 @@ public class VisitorController {
 		}
 		//entity.put("aa", "bb");
 		
-		return new ResponseEntity<Object>(entities, HttpStatus.OK);
+		return entities.toString();
 	}
 
 

@@ -34,7 +34,7 @@ public class VisitorController {
 		}
 		
 		
-		String message = "";
+		String message = "version 123 \n";
 		
 		if(visitor.getUser() == null) {
 			message = message + "Not logged in \n";

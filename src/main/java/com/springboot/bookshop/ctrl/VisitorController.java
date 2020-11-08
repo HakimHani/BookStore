@@ -77,47 +77,40 @@ public class VisitorController {
 	}
 
 	@GetMapping(path = "/")
-	public String sayHello()
+	public JSONObject sayHello()
 	{
-		
+
 		if(visitor == null) {
 			visitor = new Visitor();
 		}
 
-		List<JSONObject> entities = new ArrayList<JSONObject>();
-		
+		JSONObject response = new JSONObject();
+
 		if(visitor.getUser() == null) {
-			JSONObject loginStatus = new JSONObject("isLoggedIn", "false");
-			entities.add(loginStatus);
+			response.put("isLoggedIn", "false");
 		}else {
-			JSONObject loginStatus = new JSONObject("isLoggedIn", "true");
-			entities.add(loginStatus);
+			response.put("isLoggedIn", "true");
 		}
-		
-		
-		JSONObject fisrtVisit = new JSONObject("aa", sdf.format(visitor.getFirstTS()));
-		JSONObject lastestVisit = new JSONObject("aa", sdf.format(visitor.getLatestTS()));
-		JSONObject cart = new JSONObject("cart", ""+visitor.getCart().getItems().size());
-		
-		entities.add(fisrtVisit);
-		entities.add(lastestVisit);
-		entities.add(cart);
+
+
+		response.put("aa", sdf.format(visitor.getFirstTS()));
+		response.put("aa", sdf.format(visitor.getLatestTS()));
+		response.put("cart", ""+visitor.getCart().getItems().size());
+
+
 		if(visitor.getCart().getItems().size() > 0) {
 			List<ShopItem> items = visitor.getCart().getItems();
 			for(int i=0; i < items.size(); i++) {
-				List<JSONObject> cartItem = new ArrayList<JSONObject>();
+				JSONObject cartItem = new JSONObject();
 				ShopItem item = items.get(i);
-				JSONObject itemName = new JSONObject("item", item.getItemName());
-				JSONObject itemSessionId = new JSONObject("itemSessionId", item.getItemSessionId());
-				cartItem.add(itemName);
-				cartItem.add(itemSessionId);
+				cartItem.put("item", item.getItemName());
+				cartItem.put("itemSessionId", item.getItemSessionId());
 			}
-			JSONObject cI = new JSONObject("items", items.toString());
-			entities.add(cI);
+			response.put("items", items);
 		}
 		//entity.put("aa", "bb");
-		
-		return entities.toString();
+
+		return response;
 	}
 
 

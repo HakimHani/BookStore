@@ -26,7 +26,7 @@ public class VisitorController {
 	 @Autowired
 	 private Visitor visitor;
 
-	@GetMapping("/visit")
+	@GetMapping("/")
 	public String visiting() {
 		
 		if(visitor == null) {

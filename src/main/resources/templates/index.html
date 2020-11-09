@@ -40,7 +40,7 @@
 		elem.addEventListener('click', async function () {
 			var skus = (this).getAttribute('sku')
 			console.log(skus);
-			await httpGetAsync("http://localhost:8090/api/cart/atc/" + skus);
+			await httpGetAsync("./api/cart/atc/" + skus);
 		}, false);
 	});
 

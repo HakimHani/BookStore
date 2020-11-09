@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 
 
@@ -22,6 +24,7 @@ public class ItemInfo implements Serializable {
 	@Id 
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id", insertable=true, updatable=true, unique=true, nullable=false)
+	@JsonIgnore
 	private long id;
 
 	@Column(name="product_id", nullable = false, unique = true)

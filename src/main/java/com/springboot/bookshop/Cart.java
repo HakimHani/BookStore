@@ -28,10 +28,10 @@ public class Cart {
 			}
 		}
 		if(duplicatCount >= itemInfo.getMaxCartNumber()) {
-			return "You can only have " + itemInfo.getMaxCartNumber() + " of this item in cart";
+			return "You can only have " + itemInfo.getMaxCartNumber() + " of " + itemInfo.getItemLabel() +" in cart";
 		}
 		this.items.add(item);
-		return "Successfully added item";
+		return "Successfully added " + itemInfo.getItemLabel();
 	}
 
 	public boolean removeItem(ShopItem item) {

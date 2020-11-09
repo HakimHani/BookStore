@@ -44,17 +44,29 @@ public class ItemInfoController {
 	}
 
 	// get user by id
-	@GetMapping("/{sku}")
-	public ItemInfo getItemInfoBySku(@PathVariable (value = "productId") String productId) {
+	@GetMapping("/all")
+	public List<ItemInfo> getItemInfoBySku() {
+		return this.itemInfoRepository.findAll();
+	}
+	
+	// get user by id
+	@GetMapping("/brand/{itemBrand}")
+	public List<ItemInfo> getItemInfoByBrand(@PathVariable (value = "itemBrand") String itemBrand) {
+		System.out.println("Checking with " + itemBrand);
+		return this.itemInfoRepository.findAllByBrand(itemBrand);		
+	}
 
-		return this.itemInfoRepository.findByProductId(productId)
-				.orElseThrow(() -> new ResourceNotFoundException("Item not found with pid :" + productId));
+	// get user by id
+	@GetMapping("/category/{itemCategory}")
+	public List<ItemInfo> getItemInfoByCategory(@PathVariable (value = "itemCategory") String itemCategory) {
+		System.out.println("Checking with " + itemCategory);
+		return this.itemInfoRepository.findAllByCategory(itemCategory);
 	}
 
 	// create user
 	@PostMapping("/create")
 	public String createItemInfo(@RequestBody ItemInfo itemInfo) {
-		
+
 		if(itemInfo.getSku() == null || itemInfo.getSizes() == null) {
 			return "wrong format";
 		}
@@ -65,7 +77,7 @@ public class ItemInfoController {
 		this.itemInfoRepository.save(itemInfo);
 		return "New ItemInfo created";
 	}
-	
+
 	@PostMapping("/masscreate")
 	public String massCreateItemInfo(@RequestBody ItemInfosParser itemInfosParser) {
 		System.out.println("POST mass create");
@@ -73,11 +85,11 @@ public class ItemInfoController {
 		if(itemInfos == null || itemInfos.size()  == 0) {
 			return "Failed mass creating items";
 		}
-		
+
 		for(ItemInfo itemInfo : itemInfos) {
 			this.itemInfoRepository.save(itemInfo);
 		}
-		
+
 		return "New ItemInfo sets created";
 	}
 
@@ -86,8 +98,8 @@ public class ItemInfoController {
 	public String deleteInfoInfo(@RequestBody ItemInfo itemInfo) {
 		ItemInfo found = this.itemInfoRepository.findByProductId(itemInfo.getProductId()).orElse(null);
 		if( found != null) {
-				this.itemInfoRepository.delete(itemInfo);
-				return "ItemInfo Removed";
+			this.itemInfoRepository.delete(itemInfo);
+			return "ItemInfo Removed";
 		}
 		return "ItemInfo not found";
 	}

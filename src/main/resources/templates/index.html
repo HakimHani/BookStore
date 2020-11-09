@@ -5,6 +5,7 @@
 	<meta charset="UTF-8" />
 	<title></title>
 	<link href="css/index.css" rel="stylesheet" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
 
@@ -28,13 +29,16 @@
 		<input type="submit" name="logout" value="logout" id="logout">
 	</form>
 	<div id="shoppe">
+		<!--
 		<div class="shopItem">BLACK LOGO HOODIE - SS2020 <button class="add" sku="abcde01"> Add </button></div>
 		<div class="shopItem">RED LOGO HOODIE - SS2020<button class="add" sku="bbcda01"> Add </button></div>
 		<div class="shopItem">RED LOGO HOODIE - SS2020<button class="add" sku="bbcda01"> Add </button></div>
+		-->
 	</div>
 	<p th:text="${data}" />
 </body>
 <script>
+	/*
 	let elementsArray = document.querySelectorAll(".add");
 	elementsArray.forEach(function (elem) {
 		elem.addEventListener('click', async function () {
@@ -43,23 +47,56 @@
 			await httpGetAsync("./api/cart/atc/" + skus);
 		}, false);
 	});
+	*/
+
+	$("#shoppe").on("click", ".add", function (event) {
+		//console.log($(this).text());
+		var skus = $(this).attr("sku");
+		console.log(skus);
+		httpGetAsync("./api/cart/atc/" + skus);
+	});
 
 	function httpGetAsync(theUrl, callback) {
 		var xmlHttp = new XMLHttpRequest();
-		xmlHttp.onreadystatechange = function () {
+		xmlHttp.onreadystatechange = async function () {
 			if (xmlHttp.readyState == 4) {
 				if (xmlHttp.status == 200) {
-					
+					if (theUrl == "./api/iteminfo/all") {
+						setupItems(xmlHttp.responseText);
+					} else {
+						document.getElementById("cartMessage").innerHTML = xmlHttp.responseText;
+					}
 				} else {
-					
+					document.getElementById("cartMessage").innerHTML = xmlHttp.responseText;
 				}
 				console.log(xmlHttp.responseText);
-				document.getElementById("cartMessage").innerHTML = xmlHttp.responseText;
+
 			}
 		}
 		xmlHttp.open("GET", theUrl, true); // true for asynchronous 
 		xmlHttp.send(null);
 	}
+
+	async function setupItems(response) {
+		var itemRoot = document.getElementById("shoppe");
+		var response = JSON.parse(response);
+		for (var i = 0; i < response.length; i++) {
+			var innerDiv = document.createElement('div');
+			innerDiv.className = 'shopItem';
+			innerDiv.innerHTML = response[i].itemLabel;
+
+			var button = document.createElement("button");
+			button.className = "add";
+			button.setAttribute("sku", response[i].productId);
+			button.innerHTML = "Add";
+
+			innerDiv.append(button);
+			itemRoot.appendChild(innerDiv);
+			console.log(response[i]);
+		}
+	}
+
+	httpGetAsync("./api/iteminfo/all");
 </script>
 
 </html>

@@ -31,15 +31,18 @@ public class IndexController {
 
 		if(visitor.getUser() == null) {
 			response.put("isLoggedIn", "false");
+			model.addAttribute("loginStatus", false);
 		}else {
 			response.put("isLoggedIn", "true");
+			model.addAttribute("loginStatus", true);
+			model.addAttribute("userName", visitor.getUser().getEmail());
 		}
 
 
 		response.put("aa", sdf.format(visitor.getFirstTS()));
 		response.put("aa", sdf.format(visitor.getLatestTS()));
 		response.put("cart", ""+visitor.getCart().getItems().size());
-
+		model.addAttribute("cartSize", visitor.getCart().getItems().size());
 
 		if(visitor.getCart().getItems().size() > 0) {
 			List<ShopItem> items = visitor.getCart().getItems();
@@ -52,6 +55,7 @@ public class IndexController {
 			response.put("items", items);
 		}
 		//entity.put("aa", "bb");
+		
 		model.addAttribute("data", response.toString());
 		return "index";
 	}

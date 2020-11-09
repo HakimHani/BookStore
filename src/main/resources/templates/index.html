@@ -1,12 +1,65 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8" />
-<title></title>
-<link href="css/index.css" rel="stylesheet" />
+	<meta charset="UTF-8" />
+	<title></title>
+	<link href="css/index.css" rel="stylesheet" />
 </head>
+
+
 <body>
-	<h1>Hello</h1>
+	<h1 th:text="${loginStatus} ? ${userName} : 'Not logged in'"></h1>
+	<h4 id="cartMessage"></h4>
+	<div id="cart"><span>In Cart: </span><span id="cartNumber" th:text="${cartSize}"></span></div>
+	<form action="/api/account/userlogin" method="POST" th:if="${!loginStatus}">
+		<div id="loginDiv">
+			<label for="account">Account </label>
+			<input type="text" name="email" value="EmilyClock@gmail.com"><br>
+			<label for="account">Password </label>
+			<input type="text" name="password" value="1166254"><br>
+			<input type="submit" name="login" value="login" id="login">
+		</div>
+		<div id="loginDiv" th:if="${loginStatus}">
+			<input type="submit" name="logout" value="logout" id="logout">
+		</div>
+	</form>
+	<form action="/api/account/logout" method="POST" th:if="${loginStatus}">
+		<input type="submit" name="logout" value="logout" id="logout">
+	</form>
+	<div id="shoppe">
+		<div class="shopItem">BLACK LOGO HOODIE - SS2020 <button class="add" sku="8856-88954-K"> Add </button></div>
+		<div class="shopItem">RED LOGO HOODIE - SS2020<button class="add" sku="1234-88954-K"> Add </button></div>
+		<div class="shopItem">RED LOGO HOODIE - SS2020<button class="add" sku="1234-88954-K"> Add </button></div>
+	</div>
 	<p th:text="${data}" />
 </body>
+<script>
+	let elementsArray = document.querySelectorAll(".add");
+	elementsArray.forEach(function (elem) {
+		elem.addEventListener('click', async function () {
+			var skus = (this).getAttribute('sku')
+			console.log(skus);
+			await httpGetAsync("http://localhost:8090/api/cart/atc/" + skus);
+		}, false);
+	});
+
+	function httpGetAsync(theUrl, callback) {
+		var xmlHttp = new XMLHttpRequest();
+		xmlHttp.onreadystatechange = function () {
+			if (xmlHttp.readyState == 4) {
+				if (xmlHttp.status == 200) {
+					
+				} else {
+					
+				}
+				console.log(xmlHttp.responseText);
+				document.getElementById("cartMessage").innerHTML = xmlHttp.responseText;
+			}
+		}
+		xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+		xmlHttp.send(null);
+	}
+</script>
+
 </html>

@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,7 +14,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.springboot.bookshop.Account;
 import com.springboot.bookshop.User;
@@ -24,7 +29,7 @@ import com.springboot.bookshop.repo.UserRepository;
 
 
 
-@RestController
+@Controller
 @RequestMapping("/api/account")
 @Scope("session")
 public class AccountController {
@@ -40,12 +45,14 @@ public class AccountController {
 
 	// get all users
 	@GetMapping
+	@ResponseBody
 	public List<Account> getAllUsers() {
 		return this.accountRepository.findAll();
 	}
 
 	// get user by id
 	@GetMapping("/{email}")
+	@ResponseBody
 	public Account getUserByEmail(@PathVariable (value = "email") String cutomerEmail) {
 
 		if(visitor == null) {
@@ -61,6 +68,7 @@ public class AccountController {
 
 	// create user
 	@PostMapping("/create")
+	@ResponseBody
 	public String createUser(@RequestBody Account customer) {
 
 		if(this.accountRepository.findByEmail(customer.getEmail()).orElse(null) != null) {
@@ -73,6 +81,7 @@ public class AccountController {
 
 	// login user
 	@PostMapping("/login")
+	@ResponseBody
 	public String loginUser(@RequestBody Account account) {
 		Account found = this.accountRepository.findByEmail(account.getEmail()).orElse(null);
 		if( found != null) {
@@ -94,8 +103,44 @@ public class AccountController {
 		return "Account not found";
 	}
 
+
+	@PostMapping("/userlogin")
+	public ModelAndView userLogin(@RequestParam String email, @RequestParam String password, Model model) {
+		Account found = this.accountRepository.findByEmail(email).orElse(null);
+		if( found != null) {
+			if(password.equals(found.getPassword())) {
+
+				if(visitor == null) {
+					visitor = new Visitor();
+				}
+				User user = this.userRepository.findByEmail(email).orElse(null);
+				visitor.logIn(user);
+
+
+				return new ModelAndView("redirect:/index?success");
+			}else {
+				return new ModelAndView("redirect:/index?wrongcredential");
+			}
+
+		}
+		return new ModelAndView("redirect:/index?invaliduser");
+	}
+
+	@PostMapping("/logout")
+	public ModelAndView userLogout(Model model) {
+
+
+		if(this.visitor.getUser() != null) {
+			this.visitor.logOut(visitor.getUser());
+		}
+
+
+		return new ModelAndView("redirect:/index?fresh");
+	}
+
 	// update user
 	@PutMapping("/{id}")
+	@ResponseBody
 	public Account updateUser(@RequestBody Account user, @PathVariable ("id") long userId) {
 		Account existingUser = this.accountRepository.findById(userId)
 				.orElseThrow(() -> new ResourceNotFoundException("User not found with id :" + userId));
@@ -106,6 +151,7 @@ public class AccountController {
 
 	// delete user by id
 	@DeleteMapping("/{id}")
+	@ResponseBody
 	public ResponseEntity<Account> deleteUser(@PathVariable ("id") long userId){
 		Account existingUser = this.accountRepository.findById(userId)
 				.orElseThrow(() -> new ResourceNotFoundException("User not found with id :" + userId));

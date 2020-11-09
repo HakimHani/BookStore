@@ -12,5 +12,5 @@ import com.springboot.bookshop.ItemInfo;
 
 @Repository
 public interface ItemInfoRepository extends JpaRepository<ItemInfo, Long>{
-	Optional<ItemInfo> findBySku(String sku);
+	Optional<ItemInfo> findByProductId(String productId);
 }

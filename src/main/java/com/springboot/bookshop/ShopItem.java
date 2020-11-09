@@ -5,29 +5,51 @@ import java.util.UUID;
 public class ShopItem {
 	
 	private String itemName;
+	private String itemLabel;
 	private double itemPrice;
 	private String itemSku;
 	private String itemSize;
+	private String sizeSku;
 	private String itemSessionId;
 	
 	public ShopItem(){
 		
 	}
 	
-	public ShopItem(String itemName, double itemPrice, String itemSku, String itemSize,String itemSessionId){
+	public ShopItem(String itemName, String itemLabel, double itemPrice, String itemSku, String itemSize, String sizeSku,String itemSessionId){
 		this.itemName = itemName;
+		this.itemLabel = itemLabel;
 		this.itemPrice = itemPrice;
 		this.itemSku = itemSku;
 		this.itemSize = itemSize;
+		this.sizeSku = sizeSku;
 		this.itemSessionId = itemSessionId;
 	}
 	
 	public ShopItem(ItemInfo itemInfo){
 		this.itemName = itemInfo.getItemName();
+		this.itemLabel = itemInfo.getItemLabel();
 		this.itemPrice = itemInfo.getPrice();
 		this.itemSku = itemInfo.getSku();
 		this.itemSize = itemInfo.getSizes();
+		this.sizeSku = itemInfo.getSizeSku();
 		this.itemSessionId = UUID.randomUUID().toString().replace("-", "");
+	}
+
+	public String getItemLabel() {
+		return itemLabel;
+	}
+
+	public void setItemLabel(String itemLabel) {
+		this.itemLabel = itemLabel;
+	}
+
+	public String getSizeSku() {
+		return sizeSku;
+	}
+
+	public void setSizeSku(String sizeSku) {
+		this.sizeSku = sizeSku;
 	}
 
 	public String getItemSessionId() {

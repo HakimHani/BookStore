@@ -49,17 +49,17 @@ public class CartController {
 	}
 
 	// get user by id
-	@GetMapping("/atc/{sku}")
-	public String getUserByEmail(@PathVariable (value = "sku") String sku) {
+	@GetMapping("/atc/{productId}")
+	public String getUserByEmail(@PathVariable (value = "productId") String productId) {
 
 		if(visitor == null) {
 			visitor = new Visitor();
 		}
 		//ShopItem itema = new ShopItem("Apple","9.99","1234","XL",UUID.randomUUID().toString().replace("-", ""));
-		ItemInfo itemInfo= this.itemInfoRepository.findBySku(sku)
-				.orElseThrow(() -> new ResourceNotFoundException("Item Info not found with sku :" + sku));
+		ItemInfo itemInfo= this.itemInfoRepository.findByProductId(productId)
+				.orElseThrow(() -> new ResourceNotFoundException("Item Info not found with pid :" + productId));
 		if(itemInfo.getInventory() < 1) {
-			throw new ResourceNotFoundException("ItemInfo out of stock :" + sku);
+			throw new ResourceNotFoundException("ItemInfo out of stock :" + productId);
 		}
 		ShopItem itema = new ShopItem(itemInfo);	
 		return visitor.addToCart(itema,itemInfo);
@@ -73,8 +73,8 @@ public class CartController {
 			visitor = new Visitor();
 		}
 		
-		ItemInfo itemInfo= this.itemInfoRepository.findBySku(item.getItemSku())
-				.orElseThrow(() -> new ResourceNotFoundException("Item Info not found with sku :" + item.getItemSku()));
+		ItemInfo itemInfo= this.itemInfoRepository.findByProductId(item.getItemSku() + item.getSizeSku())
+				.orElseThrow(() -> new ResourceNotFoundException("Item Info not found with productId :" + item.getItemSku() + item.getSizeSku()));
 		if(itemInfo.getInventory() < 1) {
 			return "Item is out of stock";
 		}

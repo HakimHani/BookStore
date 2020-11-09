@@ -23,40 +23,49 @@ public class ItemInfo implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id", insertable=true, updatable=true, unique=true, nullable=false)
 	private long id;
-	
-	@Column(name="item_name", nullable = false, unique = true)
+
+	@Column(name="product_id", nullable = false, unique = true)
+	private String productId;
+
+	@Column(name="item_name", nullable = false)
 	private String itemName;
+
+	@Column(name="item_label", nullable = false)
+	private String itemLabel;
 
 	@Column(name="brand", nullable = false)
 	private String brand;
 
 	@Column(name="price", nullable = false)
 	private double price;
-	
-	@Column(name="sizes", nullable = false)
-	private String sizes;
-	
+
+	@Column(name="size", nullable = false)
+	private String size;
+
+	@Column(name="size_sku", nullable = false)
+	private String sizeSku;
+
 	@Column(name="category", nullable = false)
 	private String category;
-	
+
 	@Column(name="max_cart_number", nullable = false)
 	private int maxCartNumber;
-	
+
 	@Column(name="release_date", nullable = false)
 	private String releaseDate;
-	
+
 	@Column(name="inventory", nullable = false)
 	private double inventory;
-	
+
 	@Column(name="avaliable", nullable = false)
 	private boolean isAvaliable;
 
 	@Column(name="in_stock", nullable = false)
 	private boolean isInstock;
-	
-	@Column(name="sku", nullable = false, unique = true)
+
+	@Column(name="sku", nullable = false)
 	private String sku;
-	
+
 	@Column(name="sales", nullable = false)
 	private int salesCount;
 
@@ -66,12 +75,15 @@ public class ItemInfo implements Serializable {
 
 	}
 
-	public ItemInfo(String itemName, String brand, double price, String sizes, String category, int maxCartNumber, String releaseDate, double inventory, boolean isAvaliable, boolean isInstock, String sku, int salesCount) {
+	public ItemInfo(String productId, String itemName,String itemLabel, String brand, double price, String size, String sizeSku, String category, int maxCartNumber, String releaseDate, double inventory, boolean isAvaliable, boolean isInstock, String sku, int salesCount) {
 		super();
+		this.productId = productId;
 		this.itemName = itemName;
+		this.itemLabel = itemLabel;
 		this.brand = brand;
 		this.price = price;
-		this.sizes = sizes;
+		this.size = size;
+		this.sizeSku = sizeSku;
 		this.category = category;
 		this.maxCartNumber = maxCartNumber;
 		this.releaseDate = releaseDate;
@@ -80,6 +92,31 @@ public class ItemInfo implements Serializable {
 		this.isInstock = isInstock;
 		this.sku = sku;
 		this.salesCount = salesCount;
+	}
+
+
+	public String getProductId() {
+		return productId;
+	}
+
+	public void setProductId(String productId) {
+		this.productId = productId;
+	}
+
+	public String getItemLabel() {
+		return itemLabel;
+	}
+
+	public void setItemLabel(String itemLabel) {
+		this.itemLabel = itemLabel;
+	}
+
+	public String getSizeSku() {
+		return sizeSku;
+	}
+
+	public void setSizeSku(String sizeSku) {
+		this.sizeSku = sizeSku;
 	}
 
 	public long getId() {
@@ -115,11 +152,11 @@ public class ItemInfo implements Serializable {
 	}
 
 	public String getSizes() {
-		return sizes;
+		return size;
 	}
 
 	public void setSizes(String sizes) {
-		this.sizes = sizes;
+		this.size = sizes;
 	}
 
 	public String getCategory() {

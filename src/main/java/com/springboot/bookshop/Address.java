@@ -1,6 +1,7 @@
 package com.springboot.bookshop;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,6 +21,9 @@ public class Address implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id", insertable=true, updatable=true, unique=true, nullable=false)
 	private long id;
+	
+	@Column(name="address_id", nullable = false, unique = true)
+	private String addressId;
 	
 	@Column(name="email", nullable = false, unique = false)
 	private String email;
@@ -69,7 +73,7 @@ public class Address implements Serializable {
 		this.state = state;
 		this.postal = postal;
 		this.phone = phone;
-		
+		this.addressId = UUID.randomUUID().toString();
 	}
 
 	public long getId() {
@@ -158,6 +162,14 @@ public class Address implements Serializable {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	public String getAddressId() {
+		return addressId;
+	}
+
+	public void setAddressId(String addressId) {
+		this.addressId = addressId;
 	}
 
 

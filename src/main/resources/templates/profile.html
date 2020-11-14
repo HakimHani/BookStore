@@ -11,9 +11,9 @@
 
 <body>
 	User dashboard
-	<div><a th:text="${userInfo}"></a></div>
+	<div><a th:text="${userInfo.email}"></a></div>
 	<div th:each="address : ${addressList}">
-		<div><a th:text="${address.addressOne}"></a><a th:text="${address.postal}"></a></div>
+		<div id="address" th:addressId="${address.addressId}"><a th:text="${address.addressOne}"></a><a th:text="${address.postal}"></a></div>
 	</div>
 </body>
 

@@ -1,6 +1,7 @@
 package com.springboot.bookshop.ctrl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -39,27 +40,41 @@ public class AddressController {
 	}
 
 	// create user
-	@PostMapping
+	@PostMapping("/create/{email}")
 	public String createAddress(@RequestBody Address address) {
 		this.addressRepo.save(address);
 		return "New address created";
 	}
 
 	// update user
-	@PutMapping("/{id}")
-	public Address updateAddress(@RequestBody Address address, @PathVariable ("id") long userId) {
-		Address existingAddress = this.addressRepo.findById(userId)
-				.orElseThrow(() -> new ResourceNotFoundException("Address not found with id :" + userId));
+	@PutMapping("/modify/{addressId}")
+	public Address updateAddress(@RequestBody Address address, @PathVariable ("addressId") String addressId) {
+	
+		Address existingAddress = this.addressRepo.findByAddressId(addressId).orElse(null);
+		if(existingAddress == null) {
+			System.out.println("Address not found with addressId :\" + addressId");
+			throw new ResourceNotFoundException("Address not found with addressId :" + addressId);
+		}
 		existingAddress.setFirstName(address.getFirstName());
 		existingAddress.setLastName(address.getLastName());
+		existingAddress.setAddressOne(address.getAddressOne());
+		existingAddress.setAddressTwo(address.getAddressTwo()); 
+		existingAddress.setCity(address.getCity());
+		existingAddress.setCountry(address.getCountry());
+		existingAddress.setState(address.getState());
+		existingAddress.setPostal(address.getPostal());
+		existingAddress.setPhone(address.getPhone()); 
 		return this.addressRepo.save(existingAddress);
 	}
 
 	// delete user by id
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Address> deleteAddress(@PathVariable ("id") long userId){
-		Address existingAddress = this.addressRepo.findById(userId)
-				.orElseThrow(() -> new ResourceNotFoundException("Address not found with id :" + userId));
+	@DeleteMapping("/delete/{addressId}")
+	public ResponseEntity<Address> deleteAddress(@PathVariable ("addressId") String addressId){
+		Address existingAddress = this.addressRepo.findByAddressId(addressId).orElse(null);
+		if(existingAddress == null) {
+			System.out.println("Address not found with addressId :\" + addressId");
+			throw new ResourceNotFoundException("Address not found with addressId :" + addressId);
+		}
 		this.addressRepo.delete(existingAddress);
 		return ResponseEntity.ok().build();
 	}

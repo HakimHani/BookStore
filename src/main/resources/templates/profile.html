@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8" />
+	<title>User profile</title>
+	<link href="css/index.css" rel="stylesheet" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+
+<body>
+	User dashboard
+	<div><a th:text="${userInfo}"></a></div>
+	<div th:each="address : ${addressList}">
+		<div><a th:text="${address.addressOne}"></a><a th:text="${address.postal}"></a></div>
+	</div>
+</body>
+
+
+</html>

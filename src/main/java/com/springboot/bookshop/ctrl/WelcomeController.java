@@ -30,9 +30,7 @@ public class WelcomeController {
 		//Customer customer = new Customer();
 		@SuppressWarnings("unchecked")
 		List<String> messages = (List<String>) session.getAttribute("VISITOR_TIMESTAMP");
-		if(visitor == null) {
-			visitor = new Visitor();
-		}
+
 		visitor.refresh();
 		
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());

@@ -23,9 +23,11 @@ public class IndexController {
 
 	@RequestMapping(value = "/index")
 	public String index(Model model) {
+		/*
 		if(visitor == null) {
+			System.out.println("Create new user in index");
 			visitor = new Visitor();
-		}
+		}*/
 
 		JSONObject response = new JSONObject();
 

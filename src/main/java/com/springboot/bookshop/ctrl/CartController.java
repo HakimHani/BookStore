@@ -52,9 +52,7 @@ public class CartController {
 	@GetMapping("/atc/{productId}")
 	public String getUserByEmail(@PathVariable (value = "productId") String productId) {
 
-		if(visitor == null) {
-			visitor = new Visitor();
-		}
+
 		//ShopItem itema = new ShopItem("Apple","9.99","1234","XL",UUID.randomUUID().toString().replace("-", ""));
 		ItemInfo itemInfo= this.itemInfoRepository.findByProductId(productId)
 				.orElseThrow(() -> new ResourceNotFoundException("Item Info not found with pid :" + productId));
@@ -69,9 +67,7 @@ public class CartController {
 	@PostMapping("/add")
 	public String addToCart(@RequestBody ShopItem item) {
 
-		if(visitor == null) {
-			visitor = new Visitor();
-		}
+
 		
 		ItemInfo itemInfo= this.itemInfoRepository.findByProductId(item.getItemSku() + item.getSizeSku())
 				.orElseThrow(() -> new ResourceNotFoundException("Item Info not found with productId :" + item.getItemSku() + item.getSizeSku()));
@@ -88,10 +84,7 @@ public class CartController {
 	@PostMapping("/remove")
 	public String removeFromCart(@RequestBody ShopItem item) {
 
-		if(visitor == null) {
-			visitor = new Visitor();
-		}
-		
+	
 		return visitor.removeFromCart(item);
 	}
 	

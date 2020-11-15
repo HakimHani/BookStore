@@ -28,10 +28,11 @@ public class CartPageController {
 	@GetMapping
 	//@ResponseBody
 	public String getCart(Model model) {
-		if(visitor == null) {
+		/*if(visitor == null) {
 			System.out.println("Cart page: new visitor");
 			visitor = new Visitor();
-		}else if(visitor.getUser() == null) {
+		}else */
+		if(visitor.getUser() == null) {
 			System.out.println("Cart page: no user");
 		}
 		model.addAttribute("cart",this.visitor.getCart().getItems());

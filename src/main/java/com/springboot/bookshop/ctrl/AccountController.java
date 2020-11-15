@@ -55,9 +55,7 @@ public class AccountController {
 	@ResponseBody
 	public Account getUserByEmail(@PathVariable (value = "email") String cutomerEmail) {
 
-		if(visitor == null) {
-			visitor = new Visitor();
-		}
+
 		User user = this.userRepository.findByEmail(cutomerEmail).orElse(null);
 		visitor.logIn(user);
 
@@ -87,9 +85,7 @@ public class AccountController {
 		if( found != null) {
 			if(account.getPassword().equals(found.getPassword())) {
 
-				if(visitor == null) {
-					visitor = new Visitor();
-				}
+
 				User user = this.userRepository.findByEmail(account.getEmail()).orElse(null);
 				visitor.logIn(user);
 
@@ -110,9 +106,7 @@ public class AccountController {
 		if( found != null) {
 			if(password.equals(found.getPassword())) {
 
-				if(visitor == null) {
-					visitor = new Visitor();
-				}
+
 				User user = this.userRepository.findByEmail(email).orElse(null);
 				visitor.logIn(user);
 

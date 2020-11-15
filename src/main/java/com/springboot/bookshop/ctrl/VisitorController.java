@@ -34,9 +34,7 @@ public class VisitorController {
 	@GetMapping("/visit")
 	public String visiting() {
 
-		if(visitor == null) {
-			visitor = new Visitor();
-		}
+
 
 
 		String message = "version 123 \n";
@@ -80,9 +78,7 @@ public class VisitorController {
 	public String sayHello()
 	{
 
-		if(visitor == null) {
-			visitor = new Visitor();
-		}
+
 
 		JSONObject response = new JSONObject();
 

@@ -1,6 +1,6 @@
 # Table of contents
 
-* [Welcome](README.md)
+* [Bookshop](README.md)
 
 ## Account API
 

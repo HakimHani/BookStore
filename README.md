@@ -1,6 +1,8 @@
 ---
-description: 'EECS 4413 Project: Bookshop'
+description: EECS 4413 Project
 ---
 
-# Welcome
+# Bookshop
+
+API can be found in [https://vanskhun.gitbook.io/4413-bookshop/](https://vanskhun.gitbook.io/4413-bookshop/)
 

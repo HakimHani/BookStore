@@ -2,7 +2,18 @@
 description: EECS 4413 Project
 ---
 
-# Bookshop
+# bookshop
+Fresh installation instruction
+--------------------------------
+1. Create **application.properties** under ***src/main/resources***
+2. Code for ***application.properties*** is posted in discord
+3. Change ***spring.datasource.url*** to the credentials posted in discord
 
-API can be found in [https://vanskhun.gitbook.io/4413-bookshop/](https://vanskhun.gitbook.io/4413-bookshop/)
+**API**
+
+API
+--------------------------------
+All api and usages are posted in gitbook:
+
+https://vanskhun.gitbook.io/4413-bookshop/
 

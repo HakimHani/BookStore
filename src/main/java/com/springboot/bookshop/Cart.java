@@ -1,4 +1,4 @@
-package com.springboot.bookshop;
+package main.java.com.springboot.bookshop;
 
 import java.util.ArrayList;
 import java.util.List;

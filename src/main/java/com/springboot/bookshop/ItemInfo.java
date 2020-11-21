@@ -1,4 +1,4 @@
-package com.springboot.bookshop;
+package main.java.com.springboot.bookshop;
 
 import java.io.Serializable;
 import java.util.List;
@@ -225,11 +225,4 @@ public class ItemInfo implements Serializable {
 	public void setSalesCount(int salesCount) {
 		this.salesCount = salesCount;
 	}
-
-
-
-
-
-
-
 }

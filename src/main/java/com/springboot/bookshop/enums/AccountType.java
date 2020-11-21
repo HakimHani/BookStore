@@ -1,4 +1,4 @@
-package com.springboot.bookshop.enums;
+package main.java.com.springboot.bookshop.enums;
 
 public enum AccountType {
 	VISITOR,CUSTOMER,PARTNER,ADMIN,OWNER;

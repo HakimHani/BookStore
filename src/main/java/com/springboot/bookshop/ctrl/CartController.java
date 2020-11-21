@@ -1,4 +1,4 @@
-package com.springboot.bookshop.ctrl;
+package main.java.com.springboot.bookshop.ctrl;
 
 import java.util.List;
 import java.util.UUID;
@@ -83,8 +83,6 @@ public class CartController {
 	// create user
 	@PostMapping("/remove")
 	public String removeFromCart(@RequestBody ShopItem item) {
-
-	
 		return visitor.removeFromCart(item);
 	}
 	

@@ -53,7 +53,6 @@ public class Billing implements Serializable {
 
 
 
-	//BILLING
 
 	public Billing() {
 

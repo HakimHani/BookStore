@@ -1,4 +1,4 @@
-package main.java.com.springboot.bookshop;
+package com.springboot.bookshop;
 
 import java.util.UUID;
 

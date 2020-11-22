@@ -52,7 +52,7 @@ public class Billing implements Serializable {
 	private String postal;
 
 
-
+	//BILLING
 
 
 	public Billing() {

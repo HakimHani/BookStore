@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.bookshop.Address;
 import com.springboot.bookshop.Billing;
+import com.springboot.bookshop.IdentificationGenerator;
 import com.springboot.bookshop.exception.ResourceNotFoundException;
 import com.springboot.bookshop.repo.BillingRepository;
 
@@ -22,6 +23,8 @@ public class BillingController {
 	@Autowired
 	private BillingRepository billingRepo;
 	
+	@Autowired
+	private IdentificationGenerator idGenerator;
 	
 	@GetMapping("/email/{email}")
 	public List<Billing> getBillingsByEmail(@PathVariable (value = "email") String cutomerEmail) {
@@ -31,6 +34,8 @@ public class BillingController {
 	
 	@PostMapping("/create")
 	public String createBilling(@RequestBody Billing billing) {
+		
+		billing.setBillingId(idGenerator.generateBillingId());
 		this.billingRepo.save(billing);
 		return "New billing created";
 	}

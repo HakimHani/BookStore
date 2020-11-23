@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.bookshop.Address;
+import com.springboot.bookshop.IdentificationGenerator;
 import com.springboot.bookshop.exception.ResourceNotFoundException;
 import com.springboot.bookshop.repo.AddressRepository;
 
@@ -26,6 +27,9 @@ public class AddressController {
 
 	@Autowired
 	private AddressRepository addressRepo;
+	
+	@Autowired
+	private IdentificationGenerator idGenerator;
 
 	// get all users
 	@GetMapping
@@ -42,6 +46,12 @@ public class AddressController {
 	// create user
 	@PostMapping("/create/{email}")
 	public String createAddress(@RequestBody Address address) {
+		/*
+		if(address.getFirstName() == null) {
+			System.out.println("No first name provided");
+			address.setFirstName("fixed");
+		}*/
+		address.setAddressId(idGenerator.generateAddressId());
 		this.addressRepo.save(address);
 		return "New address created";
 	}

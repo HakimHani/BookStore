@@ -50,6 +50,9 @@ public class Billing implements Serializable {
 
 	@Column(name="postal", nullable = false)
 	private String postal;
+	
+	@Column(name="billing_id", nullable = false, unique= true)
+	private String billingId;
 
 
 
@@ -149,6 +152,14 @@ public class Billing implements Serializable {
 
 	public void setPostal(String postal) {
 		this.postal = postal;
+	}
+
+	public String getBillingId() {
+		return billingId;
+	}
+
+	public void setBillingId(String billingId) {
+		this.billingId = billingId;
 	}
 
 

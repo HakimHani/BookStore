@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.springboot.bookshop.Address;
 import com.springboot.bookshop.Billing;
 import com.springboot.bookshop.Checkout;
+import com.springboot.bookshop.IdentificationGenerator;
 import com.springboot.bookshop.enums.CheckoutState;
 import com.springboot.bookshop.exception.ResourceNotFoundException;
 import com.springboot.bookshop.repo.AddressRepository;
@@ -28,6 +29,8 @@ public class CheckoutController {
 	@Autowired
 	private CheckoutRepository checkoutRepo;
 	
+	@Autowired
+	private IdentificationGenerator idGenerator;
 	
 	//Fetch all checkouts of the user by email
 	@GetMapping("/{email}")
@@ -52,6 +55,8 @@ public class CheckoutController {
 	@PostMapping("/create")
 	public String createCheckout(@RequestBody Checkout checkout) {
 		checkout.setCheckoutState(CheckoutState.DEFAULT);
+		checkout.setCheckoutId(idGenerator.generateCheckoutId());
+		checkout.setPaymentGatewayId(idGenerator.generatePaymentGatewayId());
 		this.checkoutRepo.save(checkout);
 		return "New checkout created";
 	}

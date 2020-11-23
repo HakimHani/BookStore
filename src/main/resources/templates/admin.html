@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<title>Admin page</title>
+</head>
+<body>
+
+	<form action="" method="POST" >
+		<fieldset>
+			<legend>Administrative tools</legend>
+			
+			<div id="select" style="width:15%;float:right;margin-left:5px;">Select Month for Sales
+			    <select id='monthselect'>
+				    <option value=''>--Select Month--</option>
+				    <option selected value='1'>Janaury</option>
+				    <option value='2'>February</option>
+				    <option value='3'>March</option>
+				    <option value='4'>April</option>
+				    <option value='5'>May</option>
+				    <option value='6'>June</option>
+				    <option value='7'>July</option>
+				    <option value='8'>August</option>
+				    <option value='9'>September</option>
+				    <option value='10'>October</option>
+				    <option value='11'>November</option>
+				    <option value='12'>December</option>
+			    </select> 
+		    </div>
+			<button name="monthlyReport" id="monthlyReport" value="true" onclick="doAjax();return false;">
+	 				Report monthly sales
+			</button>
+			
+			<button name="UCStats" id="UCStats" value="true" onclick="getBooksStats();return false;">
+	 				Books Statistics
+			</button>
+					
+		</fieldset>
+	</form>
+<div id="result"></div>
+
+</body>
+</html>

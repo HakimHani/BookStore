@@ -87,6 +87,6 @@ public class AddressController {
 		}
 		this.addressRepo.delete(existingAddress);
 		return ResponseEntity.ok().build();
-	}
+	}	
 }
 

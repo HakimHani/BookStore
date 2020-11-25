@@ -49,15 +49,11 @@ function buildTable(result){
 	table.setAttribute("id", "myTable");
     var row = document.createElement("TR");
     var data = document.createElement("TD");
-    data.innerHTML = "colmun1";
+    data.innerHTML = "Book Title";
     row.appendChild(data);
     
     data = document.createElement("TD");
-    data.innerHTML = "column2";
-    row.appendChild(data);
-    
-    data = document.createElement("TD");
-    data.innerHTML = "column3";
+    data.innerHTML = "Book Id";
     row.appendChild(data);
     
     table.appendChild(row);
@@ -65,21 +61,17 @@ function buildTable(result){
     var i=0;
     for (i=0; i<result.length; i++){
     	
-    row = document.createElement("TR");
-    
-    data = document.createElement("TD");
-    data.innerHTML =result[i].username;
-    row.appendChild(data);
-    
-    data = document.createElement("TD");
-    data.innerHTML = result[i].zip;
-    row.appendChild(data);
-    
-    data = document.createElement("TD");
-    data.innerHTML = result[i].spent;
-    row.appendChild(data);
-    
-    table.appendChild(row);
+	    row = document.createElement("TR");
+	    
+	    data = document.createElement("TD");
+	    data.innerHTML =result[i].username;
+	    row.appendChild(data);
+	    
+	    data = document.createElement("TD");
+	    data.innerHTML = result[i];
+	    row.appendChild(data);
+	    
+	    table.appendChild(row);
     }
     
     return table;

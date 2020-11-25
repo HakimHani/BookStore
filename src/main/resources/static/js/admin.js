@@ -44,4 +44,43 @@ function handlerBooksStats(request){
 	 }
 }
 
-// create table function to render most selling books
+function buildTable(result){
+	var table = document.createElement("TABLE");
+	table.setAttribute("id", "myTable");
+    var row = document.createElement("TR");
+    var data = document.createElement("TD");
+    data.innerHTML = "colmun1";
+    row.appendChild(data);
+    
+    data = document.createElement("TD");
+    data.innerHTML = "column2";
+    row.appendChild(data);
+    
+    data = document.createElement("TD");
+    data.innerHTML = "column3";
+    row.appendChild(data);
+    
+    table.appendChild(row);
+    
+    var i=0;
+    for (i=0; i<result.length; i++){
+    	
+    row = document.createElement("TR");
+    
+    data = document.createElement("TD");
+    data.innerHTML =result[i].username;
+    row.appendChild(data);
+    
+    data = document.createElement("TD");
+    data.innerHTML = result[i].zip;
+    row.appendChild(data);
+    
+    data = document.createElement("TD");
+    data.innerHTML = result[i].spent;
+    row.appendChild(data);
+    
+    table.appendChild(row);
+    }
+    
+    return table;
+}

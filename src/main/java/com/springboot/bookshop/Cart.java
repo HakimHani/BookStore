@@ -6,6 +6,7 @@ import java.util.List;
 public class Cart {
 
 	private List<ShopItem> items;
+	private String checkoutId;
 
 
 	Cart(){
@@ -48,5 +49,15 @@ public class Cart {
 		this.items.clear();
 		return true;
 	}
+
+	public String getCheckoutId() {
+		return checkoutId;
+	}
+
+	public void setCheckoutId(String checkoutId) {
+		this.checkoutId = checkoutId;
+	}
+	
+	
 
 }

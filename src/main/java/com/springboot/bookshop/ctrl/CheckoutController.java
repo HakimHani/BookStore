@@ -1,16 +1,23 @@
 package com.springboot.bookshop.ctrl;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.TreeMap;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.springboot.bookshop.Address;
 import com.springboot.bookshop.Billing;
@@ -97,7 +104,8 @@ public class CheckoutController {
 	
 	// processing billing
 	@PutMapping("/processing/{checkoutId}")
-	public Checkout updateFinal(@RequestBody Checkout checkout, @PathVariable ("checkoutId") String checkoutId) {
+	public ModelAndView updateFinal(@RequestBody Checkout checkout, @PathVariable ("checkoutId") String checkoutId,
+			@RequestParam(name = "transaction_amount") String transactionAmount) {
 	
 		Checkout existingCheckout = this.checkoutRepo.findByCheckoutId(checkoutId).orElse(null);
 		if(existingCheckout == null) {
@@ -106,9 +114,25 @@ public class CheckoutController {
 		}
 		existingCheckout.setCheckoutState(CheckoutState.PROCESSING_BILLING);
 		//existingCheckout.setPaymentGatewayId(checkout.getPaymentGatewayId());
-
-		return this.checkoutRepo.save(existingCheckout);
+		
+		ModelAndView modelAndView = new ModelAndView("redirect:" + "/api/checkout/payment_response");
+        TreeMap<String, String> parameters = new TreeMap<>();
+        parameters.put("purchase_Id", existingCheckout.getCheckoutId());
+        parameters.put("transaction_amount", transactionAmount);
+        parameters.put("customer_Id", existingCheckout.getEmail());
+        modelAndView.addAllObjects(parameters);
+        return modelAndView;
+		
 	}
 	
-	
+	// send the response back to the client to be displayed
+	@PostMapping(value = "/payment_response")
+    public String getResponseRedirect(HttpServletRequest request, Model model) {
+        Map<String, String[]> mapData = request.getParameterMap();
+        TreeMap<String, String> parameters = new TreeMap<String, String>();
+        mapData.forEach((key, val) -> parameters.put(key, val[0]));
+        System.out.println("RESULT : "+parameters.toString());
+        model.addAttribute("parameters",parameters);
+        return "report";
+    }	
 }

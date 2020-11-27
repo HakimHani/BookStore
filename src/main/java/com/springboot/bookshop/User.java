@@ -32,6 +32,13 @@ public class User implements Serializable {
 	
 	@Column(name="phone", nullable = false)
 	private String phone;
+	
+	@Column(name="default_shipping_address_id")
+	private String defaultShippingAddr;
+	
+
+	@Column(name="default_billing_address_id")
+	private String defaultBillingAddr;
 
 
 
@@ -91,7 +98,21 @@ public class User implements Serializable {
 	}
 
 
+	public String getDefaultShippingAddr() {
+		return defaultShippingAddr;
+	}
 
+	public void setDefaultShippingAddr(String defaultShippingAddr) {
+		this.defaultShippingAddr = defaultShippingAddr;
+	}
+
+	public String getDefaultBillingAddr() {
+		return defaultBillingAddr;
+	}
+
+	public void setDefaultBillingAddr(String defaultBillingAddr) {
+		this.defaultBillingAddr = defaultBillingAddr;
+	}
 
 
 

@@ -3,6 +3,7 @@ package com.springboot.bookshop.ctrl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,21 +12,31 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springboot.bookshop.Address;
 import com.springboot.bookshop.User;
+import com.springboot.bookshop.Visitor;
 import com.springboot.bookshop.exception.ResourceNotFoundException;
-
+import com.springboot.bookshop.repo.AddressRepository;
 import com.springboot.bookshop.repo.UserRepository;
 
 
 
 @RestController
 @RequestMapping("/api/users")
+@Scope("session")
 public class UserController {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private AddressRepository addressRepo;
+	
+	@Autowired
+	private Visitor visitor;
 
 	// get all users
 	@GetMapping
@@ -41,7 +52,7 @@ public class UserController {
 	}
 
 	// create user
-	@PostMapping
+	@PostMapping("/")
 	public String createUser(@RequestBody User customer) {
 		
 		if(this.userRepository.findByEmail(customer.getEmail()).orElse(null) != null) {
@@ -50,6 +61,54 @@ public class UserController {
 		}
 		this.userRepository.save(customer);
 		return "New customer created";
+	}
+	
+	@PostMapping("/updatebilling")
+	public String updateDefaultBillingAddress(@RequestParam String addressId) {
+		
+		
+		if(this.visitor.getUser() == null) {
+			return "No user logged in";
+		}
+		
+		User existingUser = this.userRepository.findByEmail(this.visitor.getUser().getEmail())
+				.orElseThrow(() -> new ResourceNotFoundException("User not found with email :" + this.visitor.getUser().getEmail()));
+		
+		Address existingAddress = this.addressRepo.findByAddressId(addressId).orElse(null);
+		if(existingAddress == null) {
+			System.out.println("Address not found with addressId :\" + addressId");
+			throw new ResourceNotFoundException("Address not found with addressId :" + addressId);
+		}
+		
+		
+		existingUser.setDefaultBillingAddr(addressId);
+		this.userRepository.save(existingUser);
+		
+		return "Successfully update billing address";
+	}
+	
+	@PostMapping("/updateshipping")
+	public String updateDefaultShippingAddress(@RequestParam String addressId) {
+		
+		
+		if(this.visitor.getUser() == null) {
+			return "No user logged in";
+		}
+		
+		User existingUser = this.userRepository.findByEmail(this.visitor.getUser().getEmail())
+				.orElseThrow(() -> new ResourceNotFoundException("User not found with email :" + this.visitor.getUser().getEmail()));
+		
+		Address existingAddress = this.addressRepo.findByAddressId(addressId).orElse(null);
+		if(existingAddress == null) {
+			System.out.println("Address not found with addressId :\" + addressId");
+			throw new ResourceNotFoundException("Address not found with addressId :" + addressId);
+		}
+		
+		
+		existingUser.setDefaultShippingAddr(addressId);
+		this.userRepository.save(existingUser);
+		
+		return "Successfully update shipping address";
 	}
 	
 	// update user

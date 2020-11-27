@@ -74,12 +74,23 @@ public class UserController {
 		User existingUser = this.userRepository.findByEmail(this.visitor.getUser().getEmail())
 				.orElseThrow(() -> new ResourceNotFoundException("User not found with email :" + this.visitor.getUser().getEmail()));
 		
+		
+		if(addressId.equals("reset")) {
+			existingUser.setDefaultBillingAddr(null);
+			this.userRepository.save(existingUser);
+			return "Successfully reset billing address";
+		}
+		
+		
 		Address existingAddress = this.addressRepo.findByAddressId(addressId).orElse(null);
 		if(existingAddress == null) {
 			System.out.println("Address not found with addressId :\" + addressId");
 			throw new ResourceNotFoundException("Address not found with addressId :" + addressId);
 		}
 		
+		if(!existingAddress.getEmail().equals(this.visitor.getUser().getEmail())) {
+			return "Address email does not match user";
+		}
 		
 		existingUser.setDefaultBillingAddr(addressId);
 		this.userRepository.save(existingUser);
@@ -98,12 +109,23 @@ public class UserController {
 		User existingUser = this.userRepository.findByEmail(this.visitor.getUser().getEmail())
 				.orElseThrow(() -> new ResourceNotFoundException("User not found with email :" + this.visitor.getUser().getEmail()));
 		
+		
+		if(addressId.equals("reset")) {
+			existingUser.setDefaultBillingAddr(null);
+			this.userRepository.save(existingUser);
+			return "Successfully reset billing address";
+		}
+		
+		
 		Address existingAddress = this.addressRepo.findByAddressId(addressId).orElse(null);
 		if(existingAddress == null) {
 			System.out.println("Address not found with addressId :\" + addressId");
 			throw new ResourceNotFoundException("Address not found with addressId :" + addressId);
 		}
 		
+		if(!existingAddress.getEmail().equals(this.visitor.getUser().getEmail())) {
+			return "Address email does not match user";
+		}
 		
 		existingUser.setDefaultShippingAddr(addressId);
 		this.userRepository.save(existingUser);

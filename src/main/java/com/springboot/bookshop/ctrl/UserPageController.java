@@ -49,12 +49,12 @@ public class UserPageController {
 	@GetMapping
 	public String getUserProfilePage(Model model) {
 		if(visitor == null) {
-			System.out.println("Cart page: new visitor");
+			System.out.println("user profile page: new visitor");
 			visitor = new Visitor();
-			return "login";
+			return "redirect:/index";
 		}else if(visitor.getUser() == null) {
-			System.out.println("Cart page: no user");
-			return "login";
+			System.out.println("user profile page: no user");
+			return "redirect:/index";
 		}
 		List<Address> address = addressRepo.findAllByEmail(this.visitor.getUser().getEmail());
 		model.addAttribute("userInfo",this.visitor.getUser());

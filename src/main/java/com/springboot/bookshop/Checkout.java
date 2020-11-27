@@ -1,6 +1,7 @@
 package com.springboot.bookshop;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -9,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.json.JSONArray;
 
 import com.springboot.bookshop.enums.CheckoutState;
 import com.springboot.bookshop.enums.CreditCardType;
@@ -51,6 +54,12 @@ public class Checkout implements Serializable {
 
 	@Column(name="payment_gateway_id", nullable = false, unique=true)
 	private String paymentGatewayId;
+	
+	@Column(name="items", nullable = false)
+	private String items;
+	
+	@Column(name="total", nullable = false)
+	private double total;
 
 
 
@@ -60,7 +69,7 @@ public class Checkout implements Serializable {
 
 	}
 
-	public Checkout(String creationDate, String checkoutId, String authToken,String updateLog,CheckoutState checkoutState,String email,String addressId,String billingId,String paymentGatewayId) {
+	public Checkout(String creationDate, String checkoutId, String authToken,String updateLog,CheckoutState checkoutState,String email,String addressId,String billingId,String paymentGatewayId,String items, double total) {
 		super();
 		this.creationDate = creationDate;
 		this.checkoutId = checkoutId;
@@ -71,6 +80,9 @@ public class Checkout implements Serializable {
 		this.addressId = addressId;
 		this.billingId = billingId;
 		this.paymentGatewayId = paymentGatewayId;
+		this.items = items;
+		this.total = total;
+
 	}
 
 	public long getId() {
@@ -151,6 +163,22 @@ public class Checkout implements Serializable {
 
 	public void setPaymentGatewayId(String paymentGatewayId) {
 		this.paymentGatewayId = paymentGatewayId;
+	}
+
+	public String getItems() {
+		return items;
+	}
+
+	public void setItems(String items) {
+		this.items = items;
+	}
+
+	public double getTotal() {
+		return total;
+	}
+
+	public void setTotal(double total) {
+		this.total = total;
 	}
 
 

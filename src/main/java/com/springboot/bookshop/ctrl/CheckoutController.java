@@ -11,11 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-<<<<<<< HEAD
 import org.springframework.context.annotation.Scope;
-=======
 import org.springframework.ui.Model;
->>>>>>> branch 'master' of https://github.com/deversion/bookshop.git
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;

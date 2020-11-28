@@ -105,6 +105,7 @@ async function uploadShipping(clientEmail,checkoutId,addressId) {
             var checkoutResult = JSON.parse(this.responseText);
             if(checkoutResult.checkoutState == "SHIPPING_INFO"){
                 console.log("Proceeding to billing");
+                window.location.href = location.protocol + "//" + domain + "/checkout/billing";
             }
         }
     };

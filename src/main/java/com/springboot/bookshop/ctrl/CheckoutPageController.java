@@ -51,11 +51,11 @@ public class CheckoutPageController {
 	public String initialPage(Model model) {
 
 
-		String validate = validateCheckout();
+		String validate = validateCheckout("initial");
 		if(validate != "/checkout") {
 			return "redirect:" + validate;
 		}
-		
+
 		String email = "";
 		if(this.visitor.getUser() != null) {
 			email = visitor.getUser().getEmail();
@@ -79,22 +79,22 @@ public class CheckoutPageController {
 	@GetMapping("/shipping")
 	//@ResponseBody
 	public String shippingPage(Model model) {
-		
+
 
 		if(visitor.getCart().getCheckoutId() == null) {
 			return "redirect:/checkout";
 		}
-		String validate = validateCheckout();
+		String validate = validateCheckout("shipping");
 		if(!validate.contains("shipping")) {
 			return "redirect:" + validate;
 		}
-		
+
 
 
 		//List<Address> address = addressRepo.findAllByEmail(this.visitor.getUser().getEmail());
 		model.addAttribute("userInfo",this.visitor.getUser());
 		//model.addAttribute("addressList",address);
-		model.addAttribute("cart",this.visitor.getCart().getItems());
+		model.addAttribute("cart",this.visitor.getCart());
 
 		model.addAttribute("checkoutId",visitor.getCart().getCheckoutId());
 		if(this.visitor.getUser() == null) {
@@ -109,6 +109,38 @@ public class CheckoutPageController {
 	}
 
 
+	@GetMapping("/billing")
+	//@ResponseBody
+	public String billing(Model model) {
+
+
+		if(visitor.getCart().getCheckoutId() == null) {
+			return "redirect:/checkout";
+		}
+		String validate = validateCheckout("billing");
+		if(!validate.contains("billing")) {
+			this.visitor.getCart().setCheckoutId(null);
+			return "redirect:" + validate;
+		}
+
+		//Checkout existingCheckout = this.checkoutRepo.findByCheckoutId(visitor.getCart().getCheckoutId()).orElse(null);
+
+
+		model.addAttribute("userInfo",this.visitor.getUser());
+		model.addAttribute("cart",this.visitor.getCart());
+		model.addAttribute("checkoutId",visitor.getCart().getCheckoutId());
+		if(this.visitor.getUser() == null) {
+			model.addAttribute("isGuestCheckout",true);
+			model.addAttribute("customerEmail","none");
+		}else {
+			model.addAttribute("isGuestCheckout",false);
+			model.addAttribute("customerEmail",this.visitor.getUser().getEmail());
+		}
+		//return "checkout_shipping_page";
+		return "billing";
+	}
+
+
 	private List<String> parseStringToList(String column) {
 		List<String> output = new ArrayList<>();
 		String listString = column.substring(1, column.length() - 1);
@@ -120,9 +152,9 @@ public class CheckoutPageController {
 	}
 
 
-	private String validateCheckout() {
+	private String validateCheckout(String origin) {
 
-		
+
 		if(visitor == null) {
 			System.out.println("checkout shipping page: new visitor");
 			visitor = new Visitor();
@@ -152,8 +184,20 @@ public class CheckoutPageController {
 			System.out.println("Detected previous checkout");
 			Checkout existingCheckout = this.checkoutRepo.findByCheckoutId(visitor.getCart().getCheckoutId()).orElse(null);
 			System.out.println(parseStringToList(existingCheckout.getItems()).toString() + " | " + ids.toString());
-			if(existingCheckout != null && parseStringToList(existingCheckout.getItems()).equals(ids)){	
-				return "/checkout/shipping?recover";
+			Boolean isq = existingCheckout.getItems().toString().equals(ids.toString());
+			//parseStringToList(existingCheckout.getItems()).equals(ids)
+			if(existingCheckout != null && isq){	
+				if(origin.equals("initial")) {
+					if(existingCheckout.getCheckoutState() == CheckoutState.DEFAULT) {
+						return "/checkout/shipping?recover";
+					}else if(existingCheckout.getCheckoutState() == CheckoutState.SHIPPING_INFO) {
+						return "/checkout/billing?recover";
+					}
+				}else {
+					return origin;
+				}
+
+
 			}else {
 				this.visitor.getCart().setCheckoutId(null);
 				return "/checkout";

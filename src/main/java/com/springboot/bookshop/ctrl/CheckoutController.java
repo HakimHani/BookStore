@@ -171,7 +171,7 @@ public class CheckoutController {
 		ModelAndView modelAndView = new ModelAndView("redirect:" + "/api/checkout/payment_response");
 		TreeMap<String, String> parameters = new TreeMap<>();
 		parameters.put("purchase_Id", existingCheckout.getCheckoutId());
-		parameters.put("transaction_amount", transactionAmount);
+		parameters.put("transaction_amount", existingCheckout.getTotal()+ "");
 		parameters.put("customer_Id", existingCheckout.getEmail());
 		modelAndView.addAllObjects(parameters);
 		return modelAndView;*/

@@ -59,7 +59,7 @@ async function uploadAddress(isGuest, clientEmail,checkoutId) {
         email = clientEmail;
     }
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "http://" + domain + "/api/address/create/" + email, true);
+    xhr.open("POST", location.protocol + domain + "/api/address/create/" + email, true);
     xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
     var data = {
         "email": email,
@@ -89,7 +89,7 @@ async function uploadShipping(clientEmail,checkoutId,addressId) {
     email = clientEmail;
  
     var xhr = new XMLHttpRequest();
-    xhr.open("PUT", "http://" + domain + "/api/checkout/shipping/" + checkoutId, true);
+    xhr.open("PUT", location.protocol + domain + "/api/checkout/shipping/" + checkoutId, true);
     xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
     var data = {
         "email": email,
@@ -117,7 +117,7 @@ async function checkSavedShipping() {
         displayNewAddress(false, false);
     } else {
         var email = document.getElementById("checkoutInfo").getAttribute("data-customerEmail");
-        var addrs = await getReq("http://" + domain + "/api/address/" + email);
+        var addrs = await getReq(location.protocol + domain + "/api/address/" + email);
     }
 }
 

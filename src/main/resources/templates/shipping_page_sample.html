@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Shipping</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link th:href="@{/css/checkout.css}" rel="stylesheet" />
+    <script type="text/javascript" th:src="@{/js/checkout.js}"></script>
+</head>
+
+
+<body>
+
+    <div class="topnav">
+        <a class="logo">E-BookShop</a>
+        <a class="active" href="#checkout">Checkout</a>
+        <a href="#cart">Cart</a>
+    </div>
+
+
+    <div class="row" id="inputForm">
+        <div class="col-75" id="savedAddressDiv">
+            <div class="container">
+
+
+                <div class="row">
+                    <div class="col-50">
+                        <h3>Saved Address</h3>
+                        <div id="savedAddressLoadingStatus">Getting saved address...</div>
+                        <ul id="savedAddressList">
+                        </ul>
+                    </div>
+
+
+                </div>
+                
+                <input value="New Address" id="newAddress" class="btn">
+
+            </div>
+        </div>
+        <div class="col-75" id="shippingDiv">
+            <input id="savedAddress" value="Saved Address" class="btn">
+            <div class="container">
+
+
+                <div class="row">
+                    <div class="col-50">
+                        <h3>Billing Address</h3>
+                        <label for="fname"><i class="fa fa-user"></i> Full Name</label>
+                        <input type="text" id="fname" name="firstname" placeholder="John M. Doe">
+                        <label for="email"><i class="fa fa-envelope"></i> Email</label>
+                        <input type="text" id="email" name="email" placeholder="john@example.com">
+                        <label for="adr"><i class="fa fa-address-card-o"></i> Address</label>
+                        <input type="text" id="adr" name="address" placeholder="542 W. 15th Street">
+                        <label for="city"><i class="fa fa-institution"></i> City</label>
+                        <input type="text" id="city" name="city" placeholder="New York">
+
+                        <div class="row">
+                            <div class="col-50">
+                                <label for="state">State</label>
+                                <input type="text" id="state" name="state" placeholder="NY">
+                            </div>
+                            <div class="col-50">
+                                <label for="zip">Zip</label>
+                                <input type="text" id="zip" name="zip" placeholder="10001">
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                </div>
+                <label>
+                    <input type="checkbox" checked="checked" name="sameadr"> Shipping address same as billing
+                </label>
+                <input id="submitShipping" value="Continue to checkout" addressId="new" class="btn">
+
+            </div>
+        </div>
+
+        <div class="col-25">
+            <div class="container">
+                <h4>Cart
+                    <span class="price" style="color:black">
+                        <i class="fa fa-shopping-cart"></i>
+                        <b>4</b>
+                    </span>
+                </h4>
+                <p><a href="#">Product 1</a> <span class="price">$15</span></p>
+                <p><a href="#">Product 2</a> <span class="price">$5</span></p>
+                <p><a href="#">Product 3</a> <span class="price">$8</span></p>
+                <p><a href="#">Product 4</a> <span class="price">$2</span></p>
+                <hr>
+                <p>Total <span class="price" style="color:black"><b>$30</b></span></p>
+            </div>
+        </div>
+    </div>
+    <div id="checkoutInfo" data-th-attr="data-guest=${isGuestCheckout},data-customerEmail=${customerEmail},data-checkoutId=${checkoutId}"></div>
+</body>
+
+</html>

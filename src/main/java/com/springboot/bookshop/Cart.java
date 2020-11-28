@@ -57,7 +57,24 @@ public class Cart {
 	public void setCheckoutId(String checkoutId) {
 		this.checkoutId = checkoutId;
 	}
-	
-	
+
+	public double getTotal() {
+		double total = 0;
+		for (ShopItem item : getItems()) {
+			double price = item.getItemPrice();
+			total += price;
+		}
+		return total;
+	}
+
+	public ArrayList<String> getIds() {
+		ArrayList<String> ids = new ArrayList<String>();
+		for (ShopItem item : getItems()) {
+			String itemId = item.getItemSku() + item.getSizeSku();
+			ids.add(itemId);
+		}
+		return ids;
+	}
+
 
 }

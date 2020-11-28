@@ -81,6 +81,8 @@ public class AccountController {
 	@PostMapping("/login")
 	@ResponseBody
 	public String loginUser(@RequestBody Account account) {
+		System.out.println("Logging in " + account.getEmail());
+		System.out.println(account.getPassword());
 		Account found = this.accountRepository.findByEmail(account.getEmail()).orElse(null);
 		if( found != null) {
 			if(account.getPassword().equals(found.getPassword())) {
@@ -102,6 +104,10 @@ public class AccountController {
 
 	@PostMapping("/userlogin")
 	public ModelAndView userLogin(@RequestParam String email, @RequestParam String password, Model model) {
+		
+		System.out.println("Logging in " + email);
+		System.out.println(password);
+		
 		Account found = this.accountRepository.findByEmail(email).orElse(null);
 		if( found != null) {
 			if(password.equals(found.getPassword())) {

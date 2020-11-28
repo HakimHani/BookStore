@@ -153,24 +153,29 @@ public class CheckoutController {
 
 	// processing billing
 	@PutMapping("/processing/{checkoutId}")
-	public ModelAndView updateFinal(@RequestBody Checkout checkout, @PathVariable ("checkoutId") String checkoutId,
-			@RequestParam(name = "transaction_amount") String transactionAmount) {
+	public Checkout updateFinal(@RequestBody Checkout checkout,@PathVariable ("checkoutId") String checkoutId) {
 
 		Checkout existingCheckout = this.checkoutRepo.findByCheckoutId(checkoutId).orElse(null);
 		if(existingCheckout == null) {
 			System.out.println("Checkout not found with checkoutId :" + checkoutId);
 			throw new ResourceNotFoundException("Checkout not found with checkoutId :" + checkoutId);
 		}
+		
+		
 		existingCheckout.setCheckoutState(CheckoutState.PROCESSING_BILLING);
+		this.checkoutRepo.save(existingCheckout);
+		return existingCheckout;
 		//existingCheckout.setPaymentGatewayId(checkout.getPaymentGatewayId());
 
+		/*
 		ModelAndView modelAndView = new ModelAndView("redirect:" + "/api/checkout/payment_response");
 		TreeMap<String, String> parameters = new TreeMap<>();
 		parameters.put("purchase_Id", existingCheckout.getCheckoutId());
 		parameters.put("transaction_amount", transactionAmount);
 		parameters.put("customer_Id", existingCheckout.getEmail());
 		modelAndView.addAllObjects(parameters);
-		return modelAndView;
+		return modelAndView;*/
+		
 
 	}
 

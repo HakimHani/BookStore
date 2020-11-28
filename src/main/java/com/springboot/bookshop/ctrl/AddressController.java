@@ -45,7 +45,7 @@ public class AddressController {
 
 	// create user
 	@PostMapping("/create/{email}")
-	public String createAddress(@RequestBody Address address) {
+	public Address createAddress(@RequestBody Address address) {
 		/*
 		if(address.getFirstName() == null) {
 			System.out.println("No first name provided");
@@ -53,7 +53,7 @@ public class AddressController {
 		}*/
 		address.setAddressId(idGenerator.generateAddressId());
 		this.addressRepo.save(address);
-		return "New address created";
+		return address;
 	}
 
 	// update user

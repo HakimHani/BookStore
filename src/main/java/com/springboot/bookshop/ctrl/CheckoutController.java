@@ -28,6 +28,7 @@ import com.springboot.bookshop.Address;
 import com.springboot.bookshop.Billing;
 import com.springboot.bookshop.Checkout;
 import com.springboot.bookshop.IdentificationGenerator;
+import com.springboot.bookshop.ItemInfo;
 import com.springboot.bookshop.ShopItem;
 import com.springboot.bookshop.Visitor;
 import com.springboot.bookshop.enums.CheckoutState;
@@ -154,13 +155,28 @@ public class CheckoutController {
 	// processing billing
 	@PutMapping("/processing/{checkoutId}")
 	public Checkout updateFinal(@RequestBody Checkout checkout,@PathVariable ("checkoutId") String checkoutId) {
-
+		System.out.println("PROCESSING CHECKOUT RESULT.........................................");
 		Checkout existingCheckout = this.checkoutRepo.findByCheckoutId(checkoutId).orElse(null);
 		if(existingCheckout == null) {
 			System.out.println("Checkout not found with checkoutId :" + checkoutId);
 			throw new ResourceNotFoundException("Checkout not found with checkoutId :" + checkoutId);
 		}
 		
+		System.out.println("ADDING SALES COUNT.........................................");
+		
+		for(ShopItem inCartItem : this.visitor.getCart().getItems()) {
+			String itemId = inCartItem.getItemSku() + inCartItem.getSizeSku();
+			System.out.println("Adding sales count for " + itemId);
+			
+			ItemInfo dbItem = this.itemInfoRepository.findByProductId(itemId)
+					.orElseThrow(() -> new ResourceNotFoundException("Item not found with sku :" + itemId));
+			dbItem.setSalesCount((dbItem.getSalesCount() + 1));
+			//ALSO need inventory deduction code
+			this.itemInfoRepository.save(dbItem);
+			System.out.println("ADDED COUNT.........................................");
+		}
+		
+		System.out.println("RETURN PROCESSING RESULT.........................................");
 		
 		existingCheckout.setCheckoutState(CheckoutState.PROCESSING_BILLING);
 		this.checkoutRepo.save(existingCheckout);

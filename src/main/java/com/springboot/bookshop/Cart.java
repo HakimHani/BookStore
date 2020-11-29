@@ -45,7 +45,7 @@ public class Cart {
 		return false;
 	}
 
-	public boolean clearCart(ShopItem item) {
+	public boolean clearCart() {
 		this.items.clear();
 		return true;
 	}

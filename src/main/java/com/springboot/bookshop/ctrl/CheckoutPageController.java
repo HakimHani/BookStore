@@ -190,6 +190,59 @@ public class CheckoutPageController {
 		//return "checkout_shipping_page";
 		return "order-review";
 	}
+	
+	
+	
+	@GetMapping("/success")
+	//@ResponseBody
+	public String orderResult(Model model) {
+
+
+		if(visitor.getCart().getCheckoutId() == null) {
+			return "redirect:/checkout";
+		}
+		String validate = validateCheckout("success");
+		if(!validate.contains("success")) {
+			this.visitor.getCart().setCheckoutId(null);
+			return "redirect:" + validate;
+		}
+
+		
+		System.out.println("Getting checkout from db...........................");
+		Checkout existingCheckout = this.checkoutRepo.findByCheckoutId(visitor.getCart().getCheckoutId()).orElse(null);
+		System.out.println("Getting checkout from db...........................");
+		Address existingAddress = this.addressRepo.findByAddressId(existingCheckout.getAddressId()).orElse(null);
+		System.out.println("Getting checkout from db...........................");
+		Billing existingBilling = this.billingRepo.findByBillingId(existingCheckout.getBillingId()).orElse(null);
+		if(existingCheckout == null || existingAddress == null || existingBilling == null) {
+			return "redirect:/index";
+		}
+		System.out.println("Retrive all info for review.............");
+		
+		model.addAttribute("checkoutAddress",existingAddress);
+		model.addAttribute("checkoutBilling",existingBilling);
+		model.addAttribute("checkoutDetail",existingCheckout);
+		
+		model.addAttribute("userInfo",this.visitor.getUser());
+		model.addAttribute("cart",this.visitor.getCart());
+		model.addAttribute("checkoutId",visitor.getCart().getCheckoutId());
+		if(this.visitor.getUser() == null) {
+			model.addAttribute("isGuestCheckout",true);
+			model.addAttribute("customerEmail","none");
+		}else {
+			model.addAttribute("isGuestCheckout",false);
+			model.addAttribute("customerEmail",this.visitor.getUser().getEmail());
+		}
+		
+		
+		this.visitor.getCart().clearCart();
+		this.visitor.getCart().setCheckoutId(null);
+		
+		
+		
+		//return "checkout_shipping_page";
+		return "order-result";
+	}
 
 
 	private List<String> parseStringToList(String column) {
@@ -245,6 +298,8 @@ public class CheckoutPageController {
 						return "/checkout/billing?recover";
 					}else if(existingCheckout.getCheckoutState() == CheckoutState.BILLING_INFO) {
 						return "/checkout/review?recover";
+					}else if(existingCheckout.getCheckoutState() == CheckoutState.PROCESSING_BILLING) {
+						return "/checkout/success?recover";
 					}
 				}else {
 					return origin;

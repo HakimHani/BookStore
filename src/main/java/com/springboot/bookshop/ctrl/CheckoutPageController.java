@@ -161,13 +161,17 @@ public class CheckoutPageController {
 			return "redirect:" + validate;
 		}
 
+		
+		System.out.println("Getting checkout from db...........................");
 		Checkout existingCheckout = this.checkoutRepo.findByCheckoutId(visitor.getCart().getCheckoutId()).orElse(null);
+		System.out.println("Getting checkout from db...........................");
 		Address existingAddress = this.addressRepo.findByAddressId(existingCheckout.getAddressId()).orElse(null);
+		System.out.println("Getting checkout from db...........................");
 		Billing existingBilling = this.billingRepo.findByBillingId(existingCheckout.getBillingId()).orElse(null);
 		if(existingCheckout == null || existingAddress == null || existingBilling == null) {
 			return "redirect:/checkout/billing";
 		}
-		
+		System.out.println("Retrive all info for review.............");
 		
 		model.addAttribute("checkoutAddress",existingAddress);
 		model.addAttribute("checkoutBilling",existingBilling);

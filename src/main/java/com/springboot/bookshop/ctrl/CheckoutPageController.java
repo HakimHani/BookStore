@@ -13,12 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.springboot.bookshop.Address;
+import com.springboot.bookshop.Billing;
 import com.springboot.bookshop.Checkout;
 import com.springboot.bookshop.IdentificationGenerator;
 import com.springboot.bookshop.ShopItem;
 import com.springboot.bookshop.Visitor;
 import com.springboot.bookshop.enums.CheckoutState;
 import com.springboot.bookshop.repo.AddressRepository;
+import com.springboot.bookshop.repo.BillingRepository;
 import com.springboot.bookshop.repo.CheckoutRepository;
 import com.springboot.bookshop.repo.ItemInfoRepository;
 
@@ -34,6 +36,10 @@ public class CheckoutPageController {
 
 	@Autowired
 	private AddressRepository addressRepo;
+	
+	@Autowired
+	private BillingRepository billingRepo;
+	
 
 	@Autowired
 	private IdentificationGenerator idGenerator;
@@ -139,6 +145,47 @@ public class CheckoutPageController {
 		//return "checkout_shipping_page";
 		return "billing";
 	}
+	
+	
+	@GetMapping("/review")
+	//@ResponseBody
+	public String review(Model model) {
+
+
+		if(visitor.getCart().getCheckoutId() == null) {
+			return "redirect:/checkout";
+		}
+		String validate = validateCheckout("review");
+		if(!validate.contains("review")) {
+			this.visitor.getCart().setCheckoutId(null);
+			return "redirect:" + validate;
+		}
+
+		Checkout existingCheckout = this.checkoutRepo.findByCheckoutId(visitor.getCart().getCheckoutId()).orElse(null);
+		Address existingAddress = this.addressRepo.findByAddressId(existingCheckout.getAddressId()).orElse(null);
+		Billing existingBilling = this.billingRepo.findByBillingId(existingCheckout.getBillingId()).orElse(null);
+		if(existingCheckout == null || existingAddress == null || existingBilling == null) {
+			return "redirect:/checkout/billing";
+		}
+		
+		
+		model.addAttribute("checkoutAddress",existingAddress);
+		model.addAttribute("checkoutBilling",existingBilling);
+		model.addAttribute("checkoutDetail",existingCheckout);
+		
+		model.addAttribute("userInfo",this.visitor.getUser());
+		model.addAttribute("cart",this.visitor.getCart());
+		model.addAttribute("checkoutId",visitor.getCart().getCheckoutId());
+		if(this.visitor.getUser() == null) {
+			model.addAttribute("isGuestCheckout",true);
+			model.addAttribute("customerEmail","none");
+		}else {
+			model.addAttribute("isGuestCheckout",false);
+			model.addAttribute("customerEmail",this.visitor.getUser().getEmail());
+		}
+		//return "checkout_shipping_page";
+		return "order-review";
+	}
 
 
 	private List<String> parseStringToList(String column) {
@@ -192,6 +239,8 @@ public class CheckoutPageController {
 						return "/checkout/shipping?recover";
 					}else if(existingCheckout.getCheckoutState() == CheckoutState.SHIPPING_INFO) {
 						return "/checkout/billing?recover";
+					}else if(existingCheckout.getCheckoutState() == CheckoutState.BILLING_INFO) {
+						return "/checkout/review?recover";
 					}
 				}else {
 					return origin;

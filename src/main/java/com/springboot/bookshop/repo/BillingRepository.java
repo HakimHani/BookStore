@@ -16,4 +16,5 @@ import com.springboot.bookshop.Billing;
 public interface BillingRepository  extends JpaRepository<Billing, Long> {
 	Optional<Billing> findById(Long id);
 	List<Billing> findAllByEmail(String email);
+	Optional<Billing> findByBillingId(String billingId);
 }

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Review Order</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link th:href="@{/css/checkout.css}" rel="stylesheet" />
+    <script type="text/javascript" th:src="@{/js/order-review.js}"></script>
+</head>
+
+
+<body>
+
+    <div class="topnav">
+        <a class="logo">E-BookShop</a>
+        <a class="active" href="#checkout">Checkout</a>
+        <a href="#cart">Cart</a>
+    </div>
+
+
+    <div class="row" id="inputForm">
+
+        <div class="col-75" id="billingDiv">
+            <input id="backToBilling" value="Modify Billing" class="btn">
+            <div class="container">
+
+
+                <div class="row">
+                    <div class="col-50">
+                        <h3>Order Details</h3>
+                        <label for="fname"><i class="fa fa-user"></i> First Name</label>
+                        <input type="text" id="fname" name="firstname" th:value="${checkoutAddress.firstName}">
+
+                        <label for="lname"><i class="fa fa-user"></i> Last Name</label>
+                        <input type="text" id="lname" name="lastName" th:value="${checkoutAddress.lastName}">
+
+                        <label for="email"><i class="fa fa-envelope"></i> Email</label>
+                        <input type="text" id="email" name="email" th:value="${checkoutAddress.email}">
+
+                        <label for="adr"><i class="fa fa-address-card-o"></i> Address</label>
+                        <input type="text" id="adr" name="address" th:value="${checkoutAddress.addressOne}">
+
+                        <label for="city"><i class="fa fa-institution"></i> City</label>
+                        <input type="text" id="city" name="city" th:value="${checkoutAddress.city}">
+
+                        <label for="state"><i class="fa fa-institution"></i> State</label>
+                        <input type="text" id="state" name="state" th:value="${checkoutAddress.state}">
+
+                        <label for="postal"><i class="fa fa-institution"></i> Postal</label>
+                        <input type="text" id="postal" name="postal" th:value="${checkoutAddress.postal}">
+
+
+                        <label for="ccnum">Credit card number</label>
+                        <input type="text" id="ccnum" name="cardnumber" th:value="${checkoutBilling.cardNumber}">
+
+                        <label for=" expmonth">Exp Month</label>
+                        <input type="text" id="expmonth" name="expmonth" th:value="${checkoutBilling.expMonth}">
+
+
+                        <label for=" expyear">Exp Year</label>
+                        <input type="text" id="expyear" name="expyear" th:value="${checkoutBilling.expDate}">
+
+                        <label for=" cvv">CVV</label>
+                        <input type="text" id="cvv" name="cvv" th:value="${checkoutBilling.ccv}">
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <input id="submitOrder" value="Place Order" addressId="new" class="btn">
+
+            </div>
+        </div>
+
+        <div class="col-25">
+            <div class="container">
+                <h4>Cart
+                    <span class="price" style="color:black">
+                        <i class="fa fa-shopping-cart"></i>
+                        <b th:text="${cart.getItems().size()}">4</b>
+                    </span>
+                </h4>
+                <div th:each="cartItem : ${cart.getItems()}">
+                    <p><a href="#" th:text="${cartItem.itemLabel}"> </a><span class="price"
+                            th:text="${cartItem.itemPrice}">$15</span></p>
+                </div>
+                <hr>
+                <p>Total <span class="price" style="color:black" th:text="${cart.getTotal()}"><b>$30</b></span>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div id="checkoutInfo"
+        data-th-attr="data-guest=${isGuestCheckout},data-customerEmail=${customerEmail},data-checkoutId=${checkoutId}">
+    </div>
+</body>
+
+</html>

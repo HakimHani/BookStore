@@ -1,5 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<link href="css/admins.css" rel="stylesheet" />
+</head>
+<body>
+
+	<center><h3>All Products</h3></center>
+	<button type="button" onclick="doAdminsAjax('/api/iteminfo/', 'populate_products_handler');">show products</button>
+    <div align = "center" id="products_table" class="products" style="border:'1'; cellpadding:'5';">
+    </div>
+
+</body>
+</html>
+
+<script>
+
 // generate a report with the books sold each month
-var domain = window.location.hostname + (location.port ? ':' + location.port : '');
+var domain = "http://localhost:8090";
 
 function doAjax(address){
 	 var request = new XMLHttpRequest();
@@ -78,14 +97,38 @@ function buildTable(result){
  return table;
 }
 
-function populate_products(){
+// admins ops
+function doAdminsAjax(path, handler){
 	 var request = new XMLHttpRequest();
 	 request.onreadystatechange = function() {
-		 populate_products_handler(request);
+		 if(handler == "populate_products_handler"){
+			populate_products_handler(request);
+		 } else if(handler == "Edit")
+			 Edit(request);
+		 
 	 };
-	 request.open("GET","http://localhost:8090" + "/api/iteminfo/", true);
+	 request.open("GET", domain + path, true);
 	 request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 	 request.send(); 
+} 
+
+function doAdminsAjaxPost(path, id, handler){
+	const data = JSON.stringify({
+		  productId: id
+		})
+	 var request = new XMLHttpRequest();
+	 request.onreadystatechange = function() {
+		 if(handler == "populate_products_handler"){
+			populate_products_handler(request);
+		 } else if(handler == "Edit")
+			 Edit(request);
+		 else if(handler == "deleted")
+			 deleted(request);
+		 
+	 };
+	 request.open("POST", domain + path);
+	 request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+	 request.send(data); 
 } 
 
 function populate_products_handler(request){
@@ -102,17 +145,42 @@ function populate_products_handler(request){
 		 table +="</tr>";
 		 
 		 for (var product of products) {
-			 console.log(product.id)
 			 table += "<tr>";
 			 table +="<td>" + product.productId + "</td>";
 			 table +="<td>" + product.itemName + "</td>";
 			 table +="<td>" + product.category + "</td>";
 			 table += "<td>" + product.price + "</td>";
-		     table += '<td><a type="button" onclick="showProduct(\'' + product.productId + '\' )">' + "Show" + "</a></td>"; 
-		     table += '<td><a href = "">' + "Edit" + "</a></td>";
-		     table += '<td><a href ="" >' + "Delete" + "</a></td>";
+			 table += '<td><button onclick="showProduct(\'' + product.productId + '\' );">' + "Show" + "</a></td>"; 
+			 table += '<td><button onclick="editProduct(\'' + product.productId + '\' );">' + "Edit" + "</a></td>"; 
+			 table += '<td><button onclick="deleteProduct(\'' + product.productId + '\' );">' + "Delete" + "</a></td>"; 
 			 table += "</tr>"
 		 }
 		 target.innerHTML = table;
 	 }
 }
+
+function showProduct(id){
+	console.log(id);
+}
+
+function editProduct(id){
+	doAdminsAjax('/api/iteminfo/' + id + "", "Edit")
+}
+
+function deleteProduct(id){
+	doAdminsAjaxPost('/api/iteminfo/delete', id, "deleted")
+}
+
+function Edit(request){
+	console.log(request.responseText);
+}
+
+function deleted(request){
+	if ((request.readyState == 4) && (request.status == 200)) {
+		doAdminsAjax("/api/itemInfo", "populate_products_handler");
+	}
+	
+}
+
+</script>
+

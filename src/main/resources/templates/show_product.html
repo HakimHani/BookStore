@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<div>
+        <fieldset><legend class="legend">Display product</legend>
+          <table>
+            <tbody>
+              <tr style = "background: white;}">
+                <td><label for = "id">Id:</label></td><td><input id = "id" name = "id"
+                                                                  style = "border:none;font-size:16px;"
+                                                                  value = "${param.id}"
+                                                                  type = "text" 
+                                                                  readonly/></td>
+              </tr>
+              <tr style="background: white;}">
+                <td><label for = "product">Product:</label></td><td><input id = "product" name = "product"
+                                                                           style = "border:none;font-size:16px;"
+                                                                           value = "${listStuff.rows[0].product}"
+                                                                           type = "text" 
+                                                                           readonly/></td>
+              </tr>
+              <tr style="background: white;}">
+                <td><label for = "category">Category:</label></td><td><input id = "category" name = "category"
+                                                                             style = "border:none;font-size:16px;"
+                                                                             value = "${listStuff.rows[0].category}"
+                                                                             type = "text" 
+                                                                             readonly/></td>
+              </tr>
+
+              <tr style="background: white;}">
+                <td><label for = "price">Price:</label></td><td><input id = "price" name = "price"
+                                                                       style = "border:none;font-size:16px;"
+                                                                       value = "${listStuff.rows[0].price}"
+                                                                       type = "number" 
+                                                                       readonly/></td>
+              </tr>
+            </tbody>
+          </table>
+        </fieldset>
+    </div>
+   <p><a href="">Back</a></p>
+</body>
+
+</body>
+</html>

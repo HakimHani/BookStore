@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.springboot.bookshop.ShopItem;
 import com.springboot.bookshop.Visitor;
 
-@RestController
+@Controller
 @Scope("session")
 
 public class VisitorController {
@@ -75,11 +76,11 @@ public class VisitorController {
 	}
 
 	@GetMapping(path = "/")
-	public String sayHello()
+	public String redirectToLogin()
 	{
 
 
-
+		/*
 		JSONObject response = new JSONObject();
 
 		if(visitor.getUser() == null) {
@@ -107,6 +108,11 @@ public class VisitorController {
 		//entity.put("aa", "bb");
 
 		return response.toString();
+		*/
+		
+		return "login";
+		
+		
 	}
 
 

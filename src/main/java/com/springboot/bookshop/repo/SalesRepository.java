@@ -17,5 +17,6 @@ public interface SalesRepository  extends JpaRepository<Sales, Long>{
 	Optional<Sales> findById(Long id);
 	Optional<Sales> findBySalesId(String salesId);
 	Optional<Sales> findByCheckoutId(String checkoutId);
-	List<Sales> findAllByitemId(String itemId);
+	List<Sales> findAllByCustomerEmail(String customerEmail);
+	List<Sales> findAllByItemId(String itemId);
 }

@@ -10,12 +10,88 @@
 
 
 <body>
-	User dashboard
+	<h1>User dashboard</h1>
 	<div><a th:text="${userInfo.email}"></a></div>
-	<div th:each="address : ${addressList}">
-		<div id="address" th:addressId="${address.addressId}"><a th:text="${address.addressOne}"></a><a th:text="${address.postal}"></a></div>
+	<div><h3>Current Used Addresses</h3> 
+		<table th:each="address : ${addressList}">
+			<tr>
+				<td><span th:addressId="${address.addressId}"></span>&nbsp;</span>&nbsp;<span th:text="${address.addressOne}"></span>&nbsp;
+					<span th:text="${address.postal}"></span>&nbsp;
+					<button type="button" th:attr="onclick='deleteAddress(\'' + ${address.addressId}+  '\');'">Delete</button>
+				</td> 
+			</tr>
+		</table>
 	</div>
+	
+	<div align = "center"><h3>Purchased Items</h3>
+		<table th:each="item : ${purchasedItems}">
+			<tr>
+				<td><span th:addressId="${item.email}"></span>&nbsp;
+					<span th:addressId="${item.checkoutId}"></span>&nbsp;<span th:text="${item.authToken}"></span>&nbsp;
+					<span th:text="${item.checkoutState}"></span>&nbsp;
+					<button type="button" onclick="writeReview('${item.id}');">Write a Review</button>
+				</td> 
+			</tr>
+		</table>
+	</div>
+	
 </body>
-
-
 </html>
+
+<script>
+var domain = "http://localhost:8090";
+
+function doAjax(path, handler){
+	var request = new XMLHttpRequest();
+	 request.onreadystatechange = function() {
+		 if(handler == "deleteAddressCallback")
+			 deleteAddressCallback(request);
+		 else if(handler == "Edit")
+			 Edit(request);
+		 else if(handler == "deleteItem")
+			 deletItem(request);
+		 else {
+			 
+		 }
+		 
+	 };
+	 request.open("GET", domain + path);
+	 request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+	 request.send(); 	
+}
+
+function doAjaxPost(path, handler){
+	var request = new XMLHttpRequest();
+	 request.onreadystatechange = function() {
+		 if(handler == "deleteAddressCallback")
+			 deleteAddressCallback(request);
+		 else if(handler == "Edit")
+			 Edit(request);
+	 };
+	 request.open("DELETE", domain + path);
+	 request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+	 request.send(); 	
+}
+
+function deleteAddress(addressId) {
+	console.log(addressId)
+	doAjaxPost("/api/address/delete/" + addressId, "deleteAddressCallback")
+}
+
+function deleteAddressCallback(request){
+	 if ((request.readyState == 4) && (request.status == 200)){
+		//doAjax("/profile", null);
+		 location.reload();
+	 }
+}
+
+function writeReview(id){
+	console.log("wirte a reivew")
+	//doAjax("/profile/add-review" + id + "", null);
+}
+
+
+
+
+
+</script>

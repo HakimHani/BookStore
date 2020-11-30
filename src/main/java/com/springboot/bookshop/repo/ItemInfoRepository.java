@@ -16,4 +16,5 @@ public interface ItemInfoRepository extends JpaRepository<ItemInfo, Long>{
 	Optional<ItemInfo> findByProductId(String productId);
 	List<ItemInfo> findAllByBrand(String brand);
 	List<ItemInfo> findAllByCategory(String category);
+	ItemInfo findById(String productId);
 }

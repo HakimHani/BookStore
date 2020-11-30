@@ -129,8 +129,9 @@ public class ItemInfoController {
 	}
 
 	// delete user by id
-	@DeleteMapping("/{sku}")
-	public ResponseEntity<ItemInfo> deleteUser(@PathVariable ("productId") String productId){
+	@DeleteMapping("/{productId}")
+	public ResponseEntity<ItemInfo> deleteUser(@PathVariable (value = "productId") String productId){ 
+		System.out.println("in the conroller to delete");
 		ItemInfo existingUser = this.itemInfoRepository.findByProductId(productId)
 				.orElseThrow(() -> new ResourceNotFoundException("Item not found with id :" + productId));
 		this.itemInfoRepository.delete(existingUser);

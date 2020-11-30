@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>reviews</title>
+</head>
+<body>
+
+	<div class="bookInfo" id="bookInfo" hidden="true">
+	<tr th:each="entry : ${parameters}">
+    	<td th:text="${entry.key} + '  : -  ' + ${entry.value}"></td>   
+    </tr>
+	
+			<div class="title" id="btitle"></div>
+			<div class="rating" id="brating"></div>
+			<div class="price" id="bprice"></div>
+			<div class="review" id="review">
+				<input id="bookReview" type="text" name="" placeholder="Leave a Review!" maxlength="80" autocomplete="off"/>
+				<br/><p id='bookResult' hidden="true"><br/></p>
+				<input type="button" name="" value="Submit Review" onclick="addReview('')"/>
+			</div>	
+	</div>
+
+</body>
+</html>
+
+<script>
+function addReview(address){
+	var request = new XMLHttpRequest();
+	var review = document.getElementById("bookReview").value;
+	document.getElementById("bookReview").value = "";
+	var bid = document.getElementById("bookTitles");
+	if (review != ""){
+		request.open("POST", (address + "?review=" + review + "&bid=" + bid.value), true);
+		request.onreadystatechange = function(){
+			reviewHandler(request);
+		}
+		request.send();
+	}else{
+		var obj = document.getElementById("bookReview");
+		var orig = obj.style.boxShadow;
+		obj.style.boxShadow = "0 0 5px white";
+		setTimeout(function(){
+			obj.style.boxShadow = orig;
+		}, 700);
+	}
+}
+
+function reviewHandler(request){
+	if ((request.readyState == 4) && (request.status == 200)){
+		document.getElementById("bookResult").hidden = false;
+		document.getElementById("bookResult").innerHTML = "Your review has been submitted!"; 
+	}
+}
+
+</script>

@@ -82,7 +82,7 @@ public class AddressController {
 	public ResponseEntity<Address> deleteAddress(@PathVariable ("addressId") String addressId){
 		Address existingAddress = this.addressRepo.findByAddressId(addressId).orElse(null);
 		if(existingAddress == null) {
-			System.out.println("Address not found with addressId :\" + addressId");
+			System.out.println("Address not found with addressId:" + addressId);
 			throw new ResourceNotFoundException("Address not found with addressId :" + addressId);
 		}
 		this.addressRepo.delete(existingAddress);

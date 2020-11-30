@@ -1,7 +1,9 @@
 package com.springboot.bookshop.ctrl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springboot.bookshop.IdentificationGenerator;
 import com.springboot.bookshop.ItemInfo;
 import com.springboot.bookshop.ItemInfosParser;
 import com.springboot.bookshop.exception.ResourceNotFoundException;
@@ -34,7 +37,8 @@ public class ItemInfoController {
 	@Autowired
 	private ItemInfoRepository itemInfoRepository;
 
-
+	@Autowired
+	private IdentificationGenerator idGenerator;
 
 
 
@@ -74,13 +78,17 @@ public class ItemInfoController {
 	@PostMapping("/create")
 	public String createItemInfo(@RequestBody ItemInfo itemInfo) {
 
-		if(itemInfo.getSku() == null || itemInfo.getSizes() == null) {
+		if(itemInfo.getSku() == null || itemInfo.getSizes() == null || itemInfo.getSizeSku() == null) {
 			return "wrong format";
 		}
+		
+		itemInfo.setProductId(itemInfo.getSku() + itemInfo.getSizeSku());
 
 		if(this.itemInfoRepository.findByProductId(itemInfo.getProductId()).orElse(null) != null) {
 			return "ItemInfo already exist";
 		}
+		
+		
 		this.itemInfoRepository.save(itemInfo);
 		return "New ItemInfo created";
 	}

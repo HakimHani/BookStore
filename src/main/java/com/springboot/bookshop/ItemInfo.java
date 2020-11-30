@@ -1,9 +1,12 @@
 package com.springboot.bookshop;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -74,6 +77,7 @@ public class ItemInfo implements Serializable {
 
 
 
+
 	public ItemInfo() {
 
 	}
@@ -97,6 +101,24 @@ public class ItemInfo implements Serializable {
 		this.salesCount = salesCount;
 	}
 
+
+	/*
+	public void initSalesdata() {
+		HashMap<String, Integer> sales = new HashMap<String,Integer>();
+		sales.put("01", 0);
+		sales.put("02", 0);
+		sales.put("03", 0);
+		sales.put("04", 0);
+		sales.put("05", 0);
+		sales.put("06", 0);
+		sales.put("07", 0);
+		sales.put("08", 0);
+		sales.put("09", 0);
+		sales.put("10", 0);
+		sales.put("11", 0);
+		sales.put("12", 0);
+		this.salesData = sales;
+	}*/
 
 	public String getProductId() {
 		return productId;

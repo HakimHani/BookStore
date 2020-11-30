@@ -1,11 +1,13 @@
 package com.springboot.bookshop.ctrl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
+import java.sql.Timestamp;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -29,6 +31,7 @@ import com.springboot.bookshop.Billing;
 import com.springboot.bookshop.Checkout;
 import com.springboot.bookshop.IdentificationGenerator;
 import com.springboot.bookshop.ItemInfo;
+import com.springboot.bookshop.Sales;
 import com.springboot.bookshop.ShopItem;
 import com.springboot.bookshop.Visitor;
 import com.springboot.bookshop.enums.CheckoutState;
@@ -36,6 +39,7 @@ import com.springboot.bookshop.exception.ResourceNotFoundException;
 import com.springboot.bookshop.repo.AddressRepository;
 import com.springboot.bookshop.repo.CheckoutRepository;
 import com.springboot.bookshop.repo.ItemInfoRepository;
+import com.springboot.bookshop.repo.SalesRepository;
 
 @RestController
 @Scope("session")
@@ -55,6 +59,9 @@ public class CheckoutController {
 
 	@Autowired
 	private ItemInfoRepository itemInfoRepository;
+	
+	@Autowired
+	private SalesRepository salesInfoRepository;
 
 	//Fetch all checkouts of the user by email
 	@GetMapping("/{email}")
@@ -174,6 +181,13 @@ public class CheckoutController {
 			//ALSO need inventory deduction code
 			this.itemInfoRepository.save(dbItem);
 			System.out.println("ADDED COUNT.........................................");
+			
+			Sales nSales = new Sales(idGenerator.generateCheckoutId(),itemId,checkoutId,existingCheckout.getEmail());
+			nSales.setDate(new Date());
+			salesInfoRepository.save(nSales);
+			System.out.println("ADDED SALES.........................................");
+			
+			
 		}
 		
 		System.out.println("RETURN PROCESSING RESULT.........................................");

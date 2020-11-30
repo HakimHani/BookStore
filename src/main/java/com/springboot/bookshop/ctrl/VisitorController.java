@@ -76,7 +76,7 @@ public class VisitorController {
 	}
 
 	@GetMapping(path = "/")
-	public String redirectToLogin()
+	public String redirectToLogin(Model model)
 	{
 
 
@@ -110,6 +110,12 @@ public class VisitorController {
 		return response.toString();
 		*/
 		
+		if(this.visitor.getUser() != null) {
+			return "redirect:/index";
+		}
+		
+		
+		model.addAttribute("visitor",this.visitor);
 		return "login";
 		
 		

@@ -45,10 +45,10 @@
               <span id="switchRegisterForm">Register</span>
               <hr id="Indicator">
             </div>
-            <form id="LoginForm">
-              <input type="text" placeholder="username">
-              <input type="password" placeholder="password">
-              <button type="submit" class="btn">Log in</button>
+            <form id="LoginForm" action="/api/account/userlogin" method="POST">
+              <input type="text" name="email" value="EmilyClock@gmail.com" placeholder="username">
+              <input type="password" name="password" value="1166254" placeholder="password">
+              <button type="submit" class="btn"  name="login" value="login" id="login">Log in</button>
               <a href="">Forgot password?</a>
             </form>
 

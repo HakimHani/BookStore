@@ -89,6 +89,7 @@ public class VisitorController {
 		
 		//List<ItemInfo> items = itemInfoRepository.findAll();
 		List<ItemInfo> items = getItemByGroups(1);
+		System.out.println(items.get(0).getImgurl());
 		model.addAttribute("items",items);
 		return "products-home";
 

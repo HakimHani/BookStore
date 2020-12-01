@@ -108,13 +108,16 @@ public class ItemInfoController {
 		/*if(itemInfo.getSku() == null || itemInfo.getSizes() == null || itemInfo.getSizeSku() == null) {
 			return "wrong format";
 		}*/
-		itemInfo.setSku(idGenerator.generateAddressId());
+		itemInfo.setSku(idGenerator.generateAddressId().substring(0,6));
 		itemInfo.setSizeSku("01");
 		itemInfo.setProductId(itemInfo.getSku() + itemInfo.getSizeSku());
 
 		if(this.itemInfoRepository.findByProductId(itemInfo.getProductId()).orElse(null) != null) {
 			return "ItemInfo already exist";
 		}
+		
+		itemInfo.setSize(" HARDCOVER");
+		itemInfo.setItemLabel(itemInfo.getItemName());
 		
 		
 		this.itemInfoRepository.save(itemInfo);

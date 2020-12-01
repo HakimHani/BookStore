@@ -202,12 +202,12 @@ public class VisitorController {
 		int allSize = allItems.size();
 		if(allSize <= (groupIndex-1) *20) {
 			System.out.println("Return first 20..");
-			return allItems.subList(0, 19);
+			return allItems.subList(0, allSize >= 20 ? 20 : allSize);
 		}
 		
 		if(allSize < groupIndex*20) {
 			System.out.println("Return partial");
-			return allItems.subList((groupIndex-1) *20, allSize-1);
+			return allItems.subList((groupIndex-1) *20, allSize);
 		}
 		
 		System.out.println("Return selected");

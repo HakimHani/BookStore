@@ -75,8 +75,8 @@
 
       <div class="col-4" th:each="item : ${items}">
         <div id="product" th:productId="${item.productId}">
-          <img th:src="@{/img/product-1.jpg}">
-          <h4>
+          <img th:src="${item.imgurl}">
+          <h4>  
             <a th:text="${item.itemName}">Book Name</a><a th:text="${item.size}">Book Version</a>
             </br>
             <a th:text="${item.category}">Category</a>

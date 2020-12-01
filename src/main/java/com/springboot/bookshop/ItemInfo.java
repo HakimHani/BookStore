@@ -74,6 +74,12 @@ public class ItemInfo implements Serializable {
 
 	@Column(name="sales", nullable = false)
 	private int salesCount;
+	
+	@Column(name="imgurl", nullable = false)
+	private String imgurl;
+	
+	@Column(name="item_description", columnDefinition = "TEXT", nullable = false)
+	private String description;
 
 
 
@@ -255,7 +261,23 @@ public class ItemInfo implements Serializable {
 		this.salesCount = salesCount;
 	}
 
+	public String getImgurl() {
+		return imgurl;
+	}
 
+	public void setImgurl(String imgurl) {
+		this.imgurl = imgurl;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	
 
 
 

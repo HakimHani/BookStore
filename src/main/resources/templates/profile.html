@@ -26,10 +26,9 @@
 	<div align = "center"><h3>Purchased Items</h3>
 		<table th:each="item : ${purchasedItems}">
 			<tr>
-				<td><span th:addressId="${item.email}"></span>&nbsp;
-					<span th:addressId="${item.checkoutId}"></span>&nbsp;<span th:text="${item.authToken}"></span>&nbsp;
+				<td><span th:addressId="${item.checkoutId}"></span>&nbsp;<span th:text="${item.authToken}"></span>&nbsp;
 					<span th:text="${item.checkoutState}"></span>&nbsp;
-					<button type="button" onclick="writeReview('${item.id}');">Write a Review</button>
+					<button type="button" th:attr="onclick='writeReview(\'' + ${item.checkoutId}+  '\');'">Add a Review</button>
 				</td> 
 			</tr>
 		</table>
@@ -48,8 +47,8 @@ function doAjax(path, handler){
 			 deleteAddressCallback(request);
 		 else if(handler == "Edit")
 			 Edit(request);
-		 else if(handler == "deleteItem")
-			 deletItem(request);
+		 else if(handler == "debug")
+			 debug(request);
 		 else {
 			 
 		 }
@@ -87,7 +86,14 @@ function deleteAddressCallback(request){
 
 function writeReview(id){
 	console.log("wirte a reivew")
-	//doAjax("/profile/add-review" + id + "", null);
+	document.location.href = "/profile/add-review/blued1";
+}
+
+function debug(request){
+	 if ((request.readyState == 4) && (request.status == 200)){
+		//doAjax("/profile", null);
+		console.log(request.responseText);
+	 }
 }
 
 

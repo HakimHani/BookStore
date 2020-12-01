@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -81,17 +82,25 @@ public class UserPageController {
 	
 	
 
-	@GetMapping("/add-review/{id}")
-	public ModelAndView redirectToReview(@RequestParam(name = "id")String id) {
-		ModelAndView model = new ModelAndView("redirect:add_review");
-		ItemInfo item = itemInfoRepository.findById(id);
-		TreeMap<String, String> parameters = new TreeMap<>();
-		parameters.put("id", item.getProductId());
-		parameters.put("name", item.getItemName());
-		parameters.put("Category", item.getCategory());
-		parameters.put("price", item.getPrice() + "");
-		model.addAllObjects(parameters);
-		return model;	
+	@GetMapping("/add-review/{productId}")
+	//@RequestMapping(value = "/add-review/{id}", method = RequestMethod.GET)
+	public String redirectToReview(@PathVariable(name = "productId")String productId, Model model) {
+		System.out.println("the id which will be added a review for is: " + productId);
+		ItemInfo item = itemInfoRepository.findByProductId(productId).orElse(null);
+
+		if(item == null) return "/index";
+		model.addAttribute("items", item);
+//		ModelAndView model = new ModelAndView("redirect:add_review");
+//		ItemInfo item = itemInfoRepository.findById(id);
+//		TreeMap<String, String> parameters = new TreeMap<>();
+//		parameters.put("id", item.getProductId());
+//		parameters.put("name", item.getItemName());
+//		parameters.put("Category", item.getCategory());
+//		parameters.put("price", item.getPrice() + "");
+//		model.addAllObjects(parameters);
+//		return model;
+		System.out.println("about to redirct back");
+		return "add_review";
 	}
 	
 	

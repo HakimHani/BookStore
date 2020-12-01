@@ -6,11 +6,14 @@
 </head>
 <body>
 
-	<div class="bookInfo" id="bookInfo" hidden="true">
-	<tr th:each="entry : ${parameters}">
-    	<td th:text="${entry.key} + '  : -  ' + ${entry.value}"></td>   
-    </tr>
-	
+	<div class="bookInfo" id="bookInfo" hidden="true"> <sapn>Add Review</sapn>
+	<table th:each="item : ${items}">
+			<tr>
+				<td><span th:text="${item.productId}"></span>&nbsp;</span>&nbsp;<span th:text="${item.itemName}"></span>&nbsp;
+					<span th:text="${item.price}"></span>&nbsp;
+				</td> 
+			</tr>
+	</table>
 			<div class="title" id="btitle"></div>
 			<div class="rating" id="brating"></div>
 			<div class="price" id="bprice"></div>
@@ -25,13 +28,13 @@
 </html>
 
 <script>
-function addReview(address){
+function doAjaxPost(path){
 	var request = new XMLHttpRequest();
 	var review = document.getElementById("bookReview").value;
 	document.getElementById("bookReview").value = "";
 	var bid = document.getElementById("bookTitles");
 	if (review != ""){
-		request.open("POST", (address + "?review=" + review + "&bid=" + bid.value), true);
+		request.open("POST", domain + path, true);
 		request.onreadystatechange = function(){
 			reviewHandler(request);
 		}
@@ -44,6 +47,11 @@ function addReview(address){
 			obj.style.boxShadow = orig;
 		}, 700);
 	}
+}
+
+function addReview(id){
+	console.log("add the review");
+	doAjaxPost("/review" + id + "");
 }
 
 function reviewHandler(request){

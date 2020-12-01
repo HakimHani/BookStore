@@ -48,6 +48,33 @@ public class ItemInfoController {
 		return this.itemInfoRepository.findAll();
 	}
 	
+	@GetMapping("/all/{groupIndex}")
+	public List<ItemInfo> getAllByGroup(@PathVariable (value = "groupIndex") int groupIndex) {
+		List<ItemInfo> allItems = this.itemInfoRepository.findAll();
+		int allSize = allItems.size();
+		if(allSize <= (groupIndex-1) *20) {
+			System.out.println("Return first 20..");
+			return allItems.subList(0, 19);
+		}
+		
+		if(allSize < groupIndex*20) {
+			System.out.println("Return partial");
+			return allItems.subList((groupIndex-1) *20, allSize-1);
+		}
+		
+		System.out.println("Return selected");
+		return allItems.subList((groupIndex-1) *20, groupIndex*20);
+
+		//return this.itemInfoRepository.findByOrderBySalesCountAsc();
+	}
+	
+	
+	@GetMapping("/best-seller")
+	public List<ItemInfo> getAllItemInfosBySales() {
+		return this.itemInfoRepository.findByOrderBySalesCountDesc();
+		//this.itemInfoRepository.findByOrderBySalesCountAsc();
+	}
+	
 	// get item by id
 	@GetMapping("/{itemId}")
 	public Optional<ItemInfo> getItemInfoById(@PathVariable (value = "itemId") String id) {
@@ -78,10 +105,11 @@ public class ItemInfoController {
 	@PostMapping("/create")
 	public String createItemInfo(@RequestBody ItemInfo itemInfo) {
 
-		if(itemInfo.getSku() == null || itemInfo.getSizes() == null || itemInfo.getSizeSku() == null) {
+		/*if(itemInfo.getSku() == null || itemInfo.getSizes() == null || itemInfo.getSizeSku() == null) {
 			return "wrong format";
-		}
-		
+		}*/
+		itemInfo.setSku(idGenerator.generateAddressId());
+		itemInfo.setSizeSku("01");
 		itemInfo.setProductId(itemInfo.getSku() + itemInfo.getSizeSku());
 
 		if(this.itemInfoRepository.findByProductId(itemInfo.getProductId()).orElse(null) != null) {

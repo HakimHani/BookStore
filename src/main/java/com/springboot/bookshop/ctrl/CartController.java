@@ -81,11 +81,18 @@ public class CartController {
 	
 	
 	// create user
-	@PostMapping("/remove")
+	@PostMapping("/rm")
 	public String removeFromCart(@RequestBody ShopItem item) {
 
 	
-		return visitor.removeFromCart(item);
+		return visitor.rmFromCart(item);
+	}
+	
+	@GetMapping("/remove/{itemSessionId}")
+	public String removeFromCart(@PathVariable String itemSessionId) {
+
+	
+		return visitor.removeFromCart(itemSessionId);
 	}
 	
 

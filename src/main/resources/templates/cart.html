@@ -2,23 +2,127 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<meta charset="UTF-8" />
-	<title>Cart</title>
-	<link href="css/index.css" rel="stylesheet" />
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <meta charset="UTF-8" />
+  <title>Cart</title>
+  <link th:href="@{/css/cart.css}" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nerko+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script type="text/javascript" th:src="@{/js/cart.js}"></script>
 </head>
 
-
 <body>
-	Cart
-	<div id="shoppe">
-		Items in cart
-		<div th:each="cartItem : ${cart}">
-			<div><a th:text="${cartItem.itemLabel}"></a><a th:text="${cartItem.itemPrice}"></a></div>
-		</div>
-	</div>
+  <div id="topper" class="header">
+    <div class="container">
+      <div class="navbar">
+        <div class="logo">
+          <img th:src="@{/img/bookstore.png}" width="125px">
+        </div>
+        <nav>
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/products">Books</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="/login">Sign in/ Register</a></li>
+          </ul>
+        </nav>
+        <img th:src="@{/img/cart.png}" width="25px" height="25px">
+      </div>
+    </div>
+  </div>
+  <!------Cart items details------->
+  <div id="carts" class="small-container cart-page">
+    <div id="statusText"></div>
+    <table>
+      <tr>
+        <th>Book</th>
+        <th>Quantity</th>
+        <th>Subtotal</th>
+      </tr>
 
+
+
+
+      <tr th:each="cartItem : ${cartData.getItems()}">
+        <td>
+          <div class="cart-info">
+            <img th:src="@{/img/product-1.jpg}">
+            <div>
+              <p th:text="${cartItem.itemLabel}">Eductated</p>
+              <small>Price: $ <small th:text="${cartItem.itemPrice}">14.99</small></small><br>
+              <a id="remove" th:productId="${cartItem.itemSessionId}">Remove</a>
+            </div>
+          </div>
+        </td>
+        <td><input type="number" value="1"></td>
+        <td>$<a th:text="${cartItem.itemPrice}">14.99</a></td>
+      </tr>
+
+      
+    </table>
+
+    <div class="total-price">
+      <table>
+        <tr>
+          <td>Subtotal</td>
+          <td>$ <a th:text="${cartData.getTotal()}">200.00</a></td>
+        </tr>
+        <tr>
+          <td>Tax</td>
+          <td>$13.00</td>
+        </tr>
+        <tr>
+          <td>Total</td>
+          <td>$<a th:text="${cartData.getTotal()}">213.00</a></td>
+        </tr>
+      </table>
+    </div>
+
+      <button href="/checkout" id="checkoutBtn"><div class="btnText">Proceed to checkout &#8594;</span></button>
+
+  </div>
+  <!------footer------->
+  <div class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="footer-col-1">
+          <h3>Search</h3>
+          <p>Need anybooks quickly? search and get the best books at bookstore & Accessories</p><br />
+          <input type="text" placeholder="Search.." name="search">
+          <button type="submit"><i class="fa fa-search"></i></button>
+        </div>
+        <div class="footer-col-2">
+          <img th:src="@{/img/bookstore.png}">
+          <p>Search more books and get exclusive offers.The best books and more.</p>
+        </div>
+        <div class="footer-col-3">
+          <h3>Contact us</h3>
+          <ul>
+            <li>Help</li>
+            <li>Contact us</li>
+            <li>Feedback</li>
+            <li>Privacy notice</li>
+          </ul>
+        </div>
+        <div class="footer-col-4">
+          <h3>Follow us</h3>
+          <ul>
+            <li>Facebook</li>
+            <li>Twitter</li>
+            <li>Instagram</li>
+            <li>Youtube</li>
+          </ul>
+        </div>
+      </div>
+      <hr>
+      <p class="copyright">
+        <i class="fa fa-copyright" aria-hidden="true"></i>
+        Copyright 2020 - EECS4413 Group member: Yuanfen Gu, Yikun Peng, Hakim
+      </p>
+    </div>
+  </div>
 </body>
-
 
 </html>

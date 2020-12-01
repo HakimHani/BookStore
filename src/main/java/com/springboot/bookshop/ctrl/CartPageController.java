@@ -15,7 +15,7 @@ import com.springboot.bookshop.Visitor;
 
 
 @Controller
-@RequestMapping("/cart")
+@RequestMapping("/cartpage")
 @Scope("session")
 public class CartPageController {
 
@@ -36,7 +36,7 @@ public class CartPageController {
 			System.out.println("Cart page: no user");
 		}
 		model.addAttribute("cart",this.visitor.getCart().getItems());
-		return "cart";
+		return "cart-text";
 	}
 
 

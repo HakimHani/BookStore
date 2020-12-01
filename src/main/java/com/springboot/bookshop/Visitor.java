@@ -78,8 +78,16 @@ public class Visitor {
 		return this.cart.addItem(item, itemInfo);
 	}
 	
-	public String removeFromCart(ShopItem item) {
-		if(this.cart.removeItem(item)) {
+	public String rmFromCart(ShopItem item) {
+		if(this.cart.rmItem(item)) {
+			return "Successfully removed item to cart";
+		}
+		return "Failed removing item to cart";
+	}
+	
+	
+	public String removeFromCart(String itemSessionId) {
+		if(this.cart.removeItem(itemSessionId)) {
 			return "Successfully removed item to cart";
 		}
 		return "Failed removing item to cart";

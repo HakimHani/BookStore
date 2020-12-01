@@ -19,9 +19,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import com.springboot.bookshop.ItemInfo;
 import com.springboot.bookshop.ShopItem;
 import com.springboot.bookshop.Visitor;
+import com.springboot.bookshop.repo.ItemInfoRepository;
 
 @Controller
 @Scope("session")
@@ -29,13 +30,18 @@ import com.springboot.bookshop.Visitor;
 public class VisitorController {
 
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
+	
+	
 	@Autowired
 	private Visitor visitor;
+	
+	@Autowired
+	private ItemInfoRepository itemInfoRepository;
 
 	@GetMapping("/visit")
 	public String visiting() {
 
-
+		
 
 
 		String message = "version 123 \n";
@@ -76,9 +82,14 @@ public class VisitorController {
 	}
 
 	@GetMapping(path = "/")
-	public String redirectToLogin(Model model)
+	public String homePage(Model model)
 	{
+		
+		
+		List<ItemInfo> items = itemInfoRepository.findAll();
 
+		model.addAttribute("items",items);
+		return "products-home";
 
 		/*
 		JSONObject response = new JSONObject();
@@ -110,6 +121,9 @@ public class VisitorController {
 		return response.toString();
 		*/
 		
+		
+		//toLogin
+		/*
 		if(this.visitor.getUser() != null) {
 			return "redirect:/index";
 		}
@@ -117,7 +131,30 @@ public class VisitorController {
 		
 		model.addAttribute("visitor",this.visitor);
 		return "login";
+		*/
 		
+		
+	}
+	
+	@GetMapping(path = "/login")
+	public String redirectToLogin(Model model)
+	{
+		
+		if(this.visitor.getUser() != null) {
+			return "redirect:/index";
+		}
+			
+		model.addAttribute("visitor",this.visitor);
+		return "login";
+		
+	}
+	
+	@GetMapping(path = "/cart")
+	public String cart(Model model)
+	{
+				
+		model.addAttribute("cartData",this.visitor.getCart());
+		return "cart";
 		
 	}
 

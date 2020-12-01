@@ -35,7 +35,7 @@ public class Cart {
 		return "Successfully added " + itemInfo.getItemLabel();
 	}
 
-	public boolean removeItem(ShopItem item) {
+	public boolean rmItem(ShopItem item) {
 		for(int i=0; i < this.items.size(); i++) {
 			if(this.items.get(i).getItemSessionId().equals(item.getItemSessionId())) {
 				this.items.remove(i);
@@ -44,6 +44,19 @@ public class Cart {
 		}
 		return false;
 	}
+	
+	public boolean removeItem(String itemSessionId) {
+		for(int i=0; i < this.items.size(); i++) {
+			if(this.items.get(i).getItemSessionId().equals(itemSessionId)) {
+				this.items.remove(i);
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
+	
 
 	public boolean clearCart() {
 		this.items.clear();

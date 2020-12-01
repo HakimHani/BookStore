@@ -152,6 +152,13 @@ public class ItemInfo implements Serializable {
 		this.id = id;
 	}
 
+	public String getSize() {
+		return size;
+	}
+
+	public void setSize(String size) {
+		this.size = size;
+	}
 	public String getItemName() {
 		return itemName;
 	}

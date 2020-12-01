@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8" />
+	<title>Cart</title>
+	<link href="css/index.css" rel="stylesheet" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+
+<body>
+	Cart
+	<div id="shoppe">
+		Items in cart
+		<div th:each="cartItem : ${cart}">
+			<div><a th:text="${cartItem.itemLabel}"></a><a th:text="${cartItem.itemPrice}"></a></div>
+		</div>
+	</div>
+
+</body>
+
+
+</html>

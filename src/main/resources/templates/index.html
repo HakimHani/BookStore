@@ -12,7 +12,9 @@
 <body>
 	<h1 th:text="${loginStatus} ? ${userName} : 'Not logged in'"></h1>
 	<h4 id="cartMessage"></h4>
-	<div id="cart"><span>In Cart: </span><span id="cartNumber" th:text="${cartSize}"></span><br><button onclick="location.href = '/checkout';">Checkout</button></div>
+	<div id="cart"><span>In Cart: </span><span id="cartNumber" th:text="${cartSize}"></span>
+		<br><button onclick="location.href = '/cart';">Cart Detail</button>
+		<br><button onclick="location.href = '/checkout';">Checkout</button></div>
 	<form action="/api/account/userlogin" method="POST" th:if="${!loginStatus}">
 		<div id="loginDiv">
 			<label for="account">Account </label>

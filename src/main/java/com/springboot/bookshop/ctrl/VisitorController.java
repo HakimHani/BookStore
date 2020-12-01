@@ -167,7 +167,7 @@ public class VisitorController {
 			
 		//List<ItemInfo> items = itemInfoRepository.findAll();
 		List<ItemInfo> best = this.itemInfoRepository.findByOrderBySalesCountDesc();
-		List<ItemInfo> items = best.subList(0,best.size() < 20 ? best.size()-1 : 19);
+		List<ItemInfo> items = best.subList(0,best.size() < 20 ? best.size() : 19);
 		//List<ItemInfo> items = best.subList(best.size()-21 >= 0?best.size()-21:0, best.size()-1);
 		model.addAttribute("items",items);
 		return "products";

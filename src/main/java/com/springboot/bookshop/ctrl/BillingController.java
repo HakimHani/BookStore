@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.springboot.bookshop.Address;
 import com.springboot.bookshop.Billing;
 import com.springboot.bookshop.Checkout;
+import com.springboot.bookshop.DataValidation;
 import com.springboot.bookshop.IdentificationGenerator;
 import com.springboot.bookshop.Visitor;
 import com.springboot.bookshop.exception.ResourceNotFoundException;
@@ -53,6 +54,10 @@ public class BillingController {
 		if(existingCheckout == null) {
 			throw new ResourceNotFoundException("Invalid checkout");
 		}
+		DataValidation validate = new DataValidation();
+		boolean validBilling = validate.validateBilling(billing);
+		if(!validBilling) 
+			return null;
 		String email = existingCheckout.getEmail();
 		billing.setEmail(email);
 		billing.setBillingId(idGenerator.generateBillingId());

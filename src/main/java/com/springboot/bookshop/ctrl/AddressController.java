@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.bookshop.Address;
+import com.springboot.bookshop.DataValidation;
 import com.springboot.bookshop.IdentificationGenerator;
 import com.springboot.bookshop.exception.ResourceNotFoundException;
 import com.springboot.bookshop.repo.AddressRepository;
@@ -51,6 +52,10 @@ public class AddressController {
 			System.out.println("No first name provided");
 			address.setFirstName("fixed");
 		}*/
+		DataValidation validate = new DataValidation();
+		boolean validAddress = validate.validateAddress(address);
+		if(!validAddress) 
+			return null;
 		address.setAddressId(idGenerator.generateAddressId());
 		this.addressRepo.save(address);
 		return address;

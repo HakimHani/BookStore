@@ -4,39 +4,114 @@
 <head>
 	<meta charset="UTF-8" />
 	<title>User profile</title>
+	<link th:href="@{/css/login.css}" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nerko+One&display=swap" rel="stylesheet">
 	<link href="css/index.css" rel="stylesheet" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
 
 <body>
-	<h1>User dashboard</h1>
-	<div><a th:text="${userInfo.email}"></a></div>
-	<div><h3>Current Used Addresses</h3> 
-		<table th:each="address : ${addressList}">
-			<tr>
-				<td><span th:addressId="${address.addressId}"></span>&nbsp;</span>&nbsp;<span th:text="${address.addressOne}"></span>&nbsp;
-					<span th:text="${address.postal}"></span>&nbsp;
-					<button type="button" th:attr="onclick='deleteAddress(\'' + ${address.addressId}+  '\');'">Delete</button>
-				</td> 
-			</tr>
-		</table>
+
+<div id="topper" class="container">
+    <div class="navbar">
+      <div class="logo">
+        <a href="/index"><img th:src="@{/img/bookstore.png}" width="125px"></a>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="/index">Home</a></li>
+          <li><a href="/products">Books</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="/login">Sign in/ Register</a></li>
+        </ul>
+      </nav>
+      <a href="/cart"><img th:src="@{/img/cart.png}" width="25px" height="25px"></a>
+    </div>
+</div>
+
+<section class="addrsslist">
+	<div align = "center" class="container"> 
+		<div class="row">
+			<h1 class="col-12">User Prfile</h1>
+			<div><a th:text="${userInfo.email}"></a></div>
+			<div class="col-12"><h3>Current Used Addresses</h3></div> 
+			<div class="text-centre">
+				<ul class="col-12  table table-striped" th:each="address : ${addressList}">
+					<li><span th:addressId="${address.addressId}"></span>&nbsp;</span>&nbsp;<span th:text="${address.addressOne}"></span>&nbsp;
+							<span th:text="${address.postal}"></span>&nbsp;
+							<button type="button" class="btn btn-danger" th:attr="onclick='deleteAddress(\'' + ${address.addressId}+  '\');'">Delete</button> 
+					</li>
+				</ul>
+			</div>
+			
+		</div>	
 	</div>
-	
-	<div align = "center"><h3>Purchased Items</h3>
-		<table th:each="item : ${purchasedItems}">
-			<tr>
-				<td><span th:addressId="${item.checkoutId}"></span>&nbsp;<span th:text="${item.authToken}"></span>&nbsp;
-					<span th:text="${item.checkoutState}"></span>&nbsp;
-					<button type="button" th:attr="onclick='writeReview(\'' + ${item.checkoutId}+  '\');'">Add a Review</button>
-				</td> 
-			</tr>
-		</table>
+</section>
+
+<section calss="purchased_items">
+	<div align = "center" class="conatiner">
+		<div class="row">
+			<div><h3>Purchased Items</h3>
+				<table th:each="item : ${purchasedItems}">
+					<tr>
+						<td><span th:addressId="${item.checkoutId}"></span>&nbsp;<span th:text="${item.authToken}"></span>&nbsp;
+							<span th:text="${item.checkoutState}"></span>&nbsp;
+							<button type="button" th:attr="onclick='writeReview(\'' + ${item.checkoutId}+  '\');'">Add a Review</button>
+						</td> 
+					</tr>
+				</table>
+			</div>
+		</div>
 	</div>
+</section>
+
+<div class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="footer-col-1">
+          <h3>Search</h3>
+          <p>Need anybooks quickly? search and get the best books at bookstore & Accessories</p><br />
+          <input type="text" placeholder="Search.." name="search">
+          <button type="submit"><i class="fa fa-search"></i></button>
+        </div>
+        <div class="footer-col-2">
+          <img th:src="@{/img/bookstore.png}">
+          <p>Search more books and get exclusive offers.The best books and more.</p>
+        </div>
+        <div class="footer-col-3">
+          <h3>Contact us</h3>
+          <ul>
+            <li>Help</li>
+            <li>Contact us</li>
+            <li>Feedback</li>
+            <li>Privacy notice</li>
+          </ul>
+        </div>
+        <div class="footer-col-4">
+          <h3>Follow us</h3>
+          <ul>
+            <li>Facebook</li>
+            <li>Twitter</li>
+            <li>Instagram</li>
+            <li>Youtube</li>
+          </ul>
+        </div>
+      </div>
+      <hr>
+      <p class="copyright">
+        <i class="fa fa-copyright" aria-hidden="true"></i>
+        Copyright 2020 - EECS4413 Group member: Yuanfen Gu, Yikun Peng, Abdulhkem klif
+      </p>
+    </div>
+  </div>
 	
 </body>
 </html>
-
+	
 <script>
 var domain = "http://localhost:8090";
 
@@ -79,7 +154,6 @@ function deleteAddress(addressId) {
 
 function deleteAddressCallback(request){
 	 if ((request.readyState == 4) && (request.status == 200)){
-		//doAjax("/profile", null);
 		 location.reload();
 	 }
 }

@@ -140,11 +140,12 @@ public class ItemInfoController {
 	}
 
 	// login user
-	@PostMapping("/delete")
-	public String deleteInfoInfo(@RequestBody ItemInfo itemInfo) {
-		ItemInfo found = this.itemInfoRepository.findByProductId(itemInfo.getProductId()).orElse(null);
+	@PostMapping("/delete/{productId}")
+	public String deleteItemInfo(@PathVariable (value = "productId") String productId) {
+		ItemInfo found = this.itemInfoRepository.findByProductId(productId).orElse(null);
 		if( found != null) {
-			this.itemInfoRepository.delete(itemInfo);
+			System.out.println("item found");
+			this.itemInfoRepository.delete(found);
 			return "ItemInfo Removed";
 		}
 		return "ItemInfo not found";

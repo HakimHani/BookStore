@@ -136,6 +136,16 @@ public class VisitorController {
 		
 	}
 	
+	@GetMapping(path = "/products")
+	public String products(Model model)
+	{
+			
+		List<ItemInfo> items = itemInfoRepository.findAll();
+		model.addAttribute("items",items);
+		return "products";
+
+	}
+	
 	@GetMapping(path = "/login")
 	public String redirectToLogin(Model model)
 	{

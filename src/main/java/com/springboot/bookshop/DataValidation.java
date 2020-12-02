@@ -2,6 +2,8 @@ package com.springboot.bookshop;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.MonthDay;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,7 +17,8 @@ public class DataValidation {
 		boolean flag = true;
 		String creditCard = billing.getCardNumber();
 		String ccv = billing.getCcv();
-		String expirationDate = billing.getExpDate();
+		int exp_year = Integer.parseInt(billing.getExpDate());
+		int exp_month = Integer.parseInt(billing.getExpMonth());
 		String regex = "^(?:(?<visa>4[0-9]{12}(?:[0-9]{3})?)|" +
 		        "(?<mastercard>5[1-5][0-9]{14})|" +
 		        "(?<discover>6(?:011|5[0-9]{2})[0-9]{12})|" +
@@ -28,16 +31,7 @@ public class DataValidation {
 	    flag = matcher.matches();
 	    
 	    flag = (ccv.length() == 3 && ccv.matches("3[0-9]")) ? true : false;
-	    
-	    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/yy");
-	    simpleDateFormat.setLenient(false);
-	    Date expiry;
-		try {
-			expiry = simpleDateFormat.parse(expirationDate);
-			flag = !(expiry.before(new Date()));
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+	    flag = isValidDate(exp_month, exp_year);
 	    return flag;   
 	}
 	
@@ -47,5 +41,28 @@ public class DataValidation {
 		
 		return flag;
 	}
+	
+	private  boolean sValidDate(int month, int year)
+    {
+        int currentMonth = Calendar.getInstance().get(Calendar.MONTH); 
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        if (year >= currentYear)
+        {
+            if (year > currentYear)
+            {
+                return true;
+            }
+
+            if (year == currentYear)
+            {
+                if (month >= currentMonth)
+                {
+                    return true;
+                }
+            }       
+        }            
+
+        return false;
+    }
 	
 }

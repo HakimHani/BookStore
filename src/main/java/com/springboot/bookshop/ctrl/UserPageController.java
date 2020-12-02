@@ -174,10 +174,10 @@ public class UserPageController {
 
 			checkout.setAddressDetail(savedAddress);
 			checkout.setBillingDetail(savedBilling);
-			List<String> ids = Arrays.asList(checkout.getItems().replace("[", "").replace("]", "").split(","));
+			List<String> ids = Arrays.asList(checkout.getItems().replace(" ", "").replace("[", "").replace("]", "").split(","));
 			List<ItemInfo> items = new ArrayList<ItemInfo>();
 			for(String id : ids) {
-				
+				System.out.println("Checking order item by item id " + id);
 				if(hashItems.containsKey(id)) {
 					items.add(hashItems.get(id));
 					System.out.println("Using items from hash");

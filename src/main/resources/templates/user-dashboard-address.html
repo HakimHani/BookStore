@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>User Dashboard Address</title>
+    <link th:href="@{/css/user-dashboard-address.css}" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+
+    <link href="https://fonts.googleapis.com/css2?family=Nerko+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/user-dashboard-address.js}"></script>
+</head>
+
+<body>
+
+    <div id="topper" class="container">
+        <div class="navbar">
+            <div class="logo">
+                <img th:src="@{/img/bookstore.png}" width="125px">
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/products">Books</a></li>
+                    <li><a href="/">About</a></li>
+                    <li><a href="/">Contact</a></li>
+                    <li><a href="/profile">Dashboard</a></li>
+                </ul>
+            </nav>
+            <img th:src="@{/img/cart.png}" width="25px" height="25px" onclick="document.location.href='/cart'">
+        </div>
+    </div>
+
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span id="closeEdit" class="close">&times;</span>
+
+            <div class="row">
+                <div class="column">
+                    <div>
+                        <label for="fName"><i class="fa fa-user"></i> First Name</label><br>
+                        <input type="text" name="fName" id="fName" placeholder="First Name"
+                            value="newFirstName"></input>
+                    </div>
+                </div>
+                <div class="column">
+                    <div>
+                        <label for="lName"><i class="fa fa-user"></i> Last Name</label><br>
+                        <input type="text" name="lName" id="lName" placeholder="Last Name" value="newLastName"></input>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div>
+                    <label for="addressOne"><i class="fa fa-user"></i> Address 1</label><br>
+                    <input type="text" name="addressOne" id="addressOne" placeholder="Address One"
+                        value="newAddressOne"></input>
+                </div>
+                <div>
+                    <label for="addressTwo"><i class="fa fa-user"></i> Address 2</label><br>
+                    <input type="text" name="addressTwo" id="addressTwo" placeholder="Address Two"
+                        value="newAddressTwo"></input>
+                </div>
+            </div>
+
+
+            <div class="row">
+
+                <div>
+                    <label for="postal"><i class="fa fa-user"></i> Postal Code</label><br>
+                    <input type="text" name="postal" id="postal" placeholder="Postal" value="newPostal"></input>
+                </div>
+
+                <div>
+                    <label for="city"><i class="fa fa-user"></i> City</label><br>
+                    <input type="text" name="city" id="city" placeholder="City" value="newCity"></input>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div>
+
+                    <label for="state"><i class="fa fa-user"></i> State</label>
+                    <input type="text" name="state" id="state" placeholder="State" value="Ontario"></input>
+                </div>
+                <div>
+                    <label for="country"><i class="fa fa-user"></i> Country</label>
+                    <input type="text" name="country" id="country" placeholder="Country" value="Canada"></input>
+                </div>
+                <div>
+
+                    <label for="phone"><i class="fa fa-user"></i> Phone Number</label>
+                    <input type="text" name="phone" id="phone" placeholder="Phone" value="1234567890"></input>
+                </div>
+            </div>
+
+            <div class="row">
+                <div><button class="sbt" id="saveAddress" addressId=""><span>Save Address</span></button></div>
+            </div>
+
+
+
+
+        </div>
+
+    </div>
+
+    <div id="productsRoots" class="small-container">
+
+        <div class="welcome">Welcome, <a id="userEmail" th:text="${user.getEmail()}">User!</a><br>Here is your saved
+            address</div>
+        <div class="small-container single-product">
+            <div class="row">
+
+                <div class="col-4" th:each="address : ${addresses}">
+                    <div class="addressSingleControlBtns" th:productId="${address.addressId}"><i id="editAddress"
+                            class="fa fa-edit"
+                            data-th-attr="data-firstName=${address.firstName},data-lastName=${address.lastName},data-addressOne=${address.addressOne},data-addressTwo=${address.addressTwo},data-city=${address.city},data-country=${address.country},data-state=${address.state},data-postal=${address.postal},data-phone=${address.phone}">
+
+                        </i><i id="deleteAddress" class="fa fa-trash"></i></div>
+                    <br>
+                    <div><i id="controlLogo" class="fa fa-home"></i></div>
+                    <div class=addressDetail>
+                        <div class=""><a th:text="${address.firstName}">Emily</a>,<a
+                                th:text="${address.lastName}">Clock</a></div>
+                        <div class="" th:text="${address.addressOne}">5512 Yonge ave.</div>
+                        <div class="" th:text="${address.postal}">M7J7A2</div>
+                        <div class=""><a th:text="${address.city}">Vaugh</a>,<a
+                                th:text="${address.state}">Ontario</a>,<a th:text="${address.country}">Canada</a></div>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <div id="addrInfo" th:text="${addresses}"></div>
+    <!------footer------->
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="footer-col-1">
+                    <h3>Search</h3>
+                    <p>Need anybooks quickly? search and get the best books at bookstore & Accessories</p><br />
+                    <input type="text" placeholder="Search.." name="search">
+                    <button type="submit"><i class="fa fa-search"></i></button>
+                </div>
+                <div class="footer-col-2">
+                    <img th:src="@{/img/bookstore.png}">
+                    <p>Search more books and get exclusive offers.The best books and more.</p>
+                </div>
+                <div class="footer-col-3">
+                    <h3>Contact us</h3>
+                    <ul>
+                        <li>Help</li>
+                        <li>Contact us</li>
+                        <li>Feedback</li>
+                        <li>Privacy notice</li>
+                    </ul>
+                </div>
+                <div class="footer-col-4">
+                    <h3>Follow us</h3>
+                    <ul>
+                        <li>Facebook</li>
+                        <li>Twitter</li>
+                        <li>Instagram</li>
+                        <li>Youtube</li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <p class="copyright">
+                <i class="fa fa-copyright" aria-hidden="true"></i>
+                Copyright 2020 - EECS4413 Group member: Yuanfen Gu, Yikun Peng, Hakim
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

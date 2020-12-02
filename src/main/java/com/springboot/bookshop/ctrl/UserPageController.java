@@ -84,6 +84,30 @@ public class UserPageController {
 	}
 	
 	
+	@GetMapping("/address")
+	public String addressEdit(Model model) {
+		if(visitor == null) {
+			System.out.println("user profile page: new visitor");
+			visitor = new Visitor();
+			return "redirect:/index";
+		}else if(visitor.getUser() == null) {
+			System.out.println("user profile page: no user");
+			return "redirect:/index";
+		}
+		model.addAttribute("user",this.visitor.getUser());
+		List<Address> savedAddr = addressRepo.findAllByEmail(this.visitor.getUser().getEmail());
+		model.addAttribute("addresses",savedAddr);
+		/*
+		List<Address> address = addressRepo.findAllByEmail(this.visitor.getUser().getEmail());
+		model.addAttribute("userInfo",this.visitor.getUser());
+		model.addAttribute("addressList",address);
+		List<Checkout> items = checkoutRepository.findAllByEmail(this.visitor.getUser().getEmail());
+		items.get(0).getItems();
+		model.addAttribute("purchasedItems",items);
+		*/
+		return "user-dashboard-address";
+	}
+	
 	
 	
 	/*

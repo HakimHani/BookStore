@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.springboot.bookshop.Address;
 import com.springboot.bookshop.Checkout;
+import com.springboot.bookshop.enums.CheckoutState;
 
 
 
@@ -18,4 +19,5 @@ public interface CheckoutRepository  extends JpaRepository<Checkout, Long>{
 	Optional<Checkout> findById(Long id);
 	Optional<Checkout> findByCheckoutId(String checkoutId);
 	List<Checkout> findAllByEmail(String email);
+	List<Checkout> findAllByEmailAndCheckoutState(String email,CheckoutState checkoutState);
 }

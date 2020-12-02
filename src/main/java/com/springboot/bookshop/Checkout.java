@@ -60,6 +60,16 @@ public class Checkout implements Serializable {
 	
 	@Column(name="total", nullable = false)
 	private double total;
+	
+	@javax.persistence.Transient
+	private List<ItemInfo> itemsDetail;
+	
+	@javax.persistence.Transient
+	private Address addressDetail;
+	
+	@javax.persistence.Transient
+	private Billing billingDetail;
+	
 
 
 
@@ -179,6 +189,33 @@ public class Checkout implements Serializable {
 
 	public void setTotal(double total) {
 		this.total = total;
+	}
+
+
+	
+
+	public List<ItemInfo> getItemsDetail() {
+		return itemsDetail;
+	}
+
+	public void setItemsDetail(List<ItemInfo> itemsDetail) {
+		this.itemsDetail = itemsDetail;
+	}
+
+	public Address getAddressDetail() {
+		return addressDetail;
+	}
+
+	public void setAddressDetail(Address addressDetail) {
+		this.addressDetail = addressDetail;
+	}
+
+	public Billing getBillingDetail() {
+		return billingDetail;
+	}
+
+	public void setBillingDetail(Billing billingDetail) {
+		this.billingDetail = billingDetail;
 	}
 
 

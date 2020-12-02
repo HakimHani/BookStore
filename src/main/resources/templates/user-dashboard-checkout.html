@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>User Dashboard Address</title>
+    <link th:href="@{/css/user-dashboard-checkout.css}" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+
+    <link href="https://fonts.googleapis.com/css2?family=Nerko+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/user-dashboard-checkout.js}"></script>
+</head>
+
+<body>
+
+    <div id="topper" class="container">
+        <div class="navbar">
+            <div class="logo">
+                <img th:src="@{/img/bookstore.png}" width="125px">
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/products">Books</a></li>
+                    <li><a href="/">About</a></li>
+                    <li><a href="/">Contact</a></li>
+                    <li th:if="${visitor.getUser() != null}">
+                        <a href="/profile">dashboard</a>
+                    </li>
+                    <li th:if="${visitor.getUser() == null}">
+                        <a href="/login">Sign in/ Register</a>
+                    </li>
+                </ul>
+            </nav>
+            <img th:src="@{/img/cart.png}" width="25px" height="25px" onclick="document.location.href='/cart'">
+        </div>
+    </div>
+
+
+
+    <div id="productsRoots" class="small-container">
+
+        <div class="welcome">Welcome, <a id="userEmail" th:text="${user.getEmail()}">User!</a><br>Here is your recent
+            orders</div>
+        <div class="small-container single-product">
+            <div class="row">
+
+
+                <div class="orderRoot" th:each="checkout : ${checkouts}">
+                    <div class="col-12" id="orderDiv"
+                        data-th-attr="data-checkoutId=${checkout.checkoutId},data-itemsArray=${checkout.items}">
+                        <div>
+                            <div id="controlLogo"><i class="fa fa-shopping-basket"></i>Order#<a
+                                    th:text="${checkout.checkoutId}">1111-2222-3333-44444</a>
+                            </div>
+                            <div class="orderDate" th:text="${checkout.creationDate}">2021-01-23 </div>
+                        </div><br>
+                        <div class=addressDetail>
+                            <div class="" th:text="${checkout.checkoutState}"></div>
+                            <div class="">$<a th:text="${checkout.total}">6650.00</a></div>
+
+                            <div th:if="${checkout.addressDetail != null}">
+                                <a class=""><a th:text="${checkout.addressDetail.addressOne}">5565 Yonge St.</a>, <a
+                                        th:text="${checkout.addressDetail.postal}">M9J8K1</a>, <a
+                                        th:text="${checkout.addressDetail.city}">TORONTO</a>, <a
+                                        th:text="${checkout.addressDetail.state}">Ontario</a></a>
+                            </div>
+                            <div th:if="${checkout.addressDetail == null}">
+                                <a>ADDRESS NOT AVALIABLE</a>
+                            </div>
+
+                            <div th:if="${checkout.billingDetail != null}">
+                                <a class="">VISA ending in <a
+                                        th:text="${checkout.billingDetail.cardNumber}">6654</a></a>
+                            </div>
+                            <div th:if="${checkout.billingDetail == null}">
+                                <a>BILLING NOT AVALIABLE</a>
+                            </div>
+
+
+                        </div>
+                        <i class="fa fa-sort-down"></i>
+                        <div class="orderDetail" id="orderDetail">
+                            <hr>
+                            ORDER DETAIL
+                            <ul class="orderUl" id="orderItemList">
+
+
+
+                                <li th:each="item : ${checkout.itemsDetail}">
+                                    <div class="row" th:if="${item.itemLabel != null}">
+                                        <div class="column" th:text="${item.itemLabel}">
+                                            BOOK NUMBER #1
+                                        </div>
+                                        <div class="column" th:text="${item.price}">
+                                            225.00
+                                        </div>
+                                    </div>
+                                    <div class="row" th:if="${item.itemLabel == null}">
+                                        <div class="column">
+                                            ITEM NOT AVALIABLE
+                                        </div>
+                                        <div class="column">
+                                            N/A
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <div id="addrInfo">{aaaaaaaaaaa}</div>
+    <!------footer------->
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="footer-col-1">
+                    <h3>Search</h3>
+                    <p>Need anybooks quickly? search and get the best books at bookstore & Accessories</p><br />
+                    <input type="text" placeholder="Search.." name="search">
+                    <button type="submit"><i class="fa fa-search"></i></button>
+                </div>
+                <div class="footer-col-2">
+                    <img th:src="@{/img/bookstore.png}">
+                    <p>Search more books and get exclusive offers.The best books and more.</p>
+                </div>
+                <div class="footer-col-3">
+                    <h3>Contact us</h3>
+                    <ul>
+                        <li>Help</li>
+                        <li>Contact us</li>
+                        <li>Feedback</li>
+                        <li>Privacy notice</li>
+                    </ul>
+                </div>
+                <div class="footer-col-4">
+                    <h3>Follow us</h3>
+                    <ul>
+                        <li>Facebook</li>
+                        <li>Twitter</li>
+                        <li>Instagram</li>
+                        <li>Youtube</li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <p class="copyright">
+                <i class="fa fa-copyright" aria-hidden="true"></i>
+                Copyright 2020 - EECS4413 Group member: Yuanfen Gu, Yikun Peng, Hakim
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

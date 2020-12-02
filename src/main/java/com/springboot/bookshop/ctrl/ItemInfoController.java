@@ -151,13 +151,13 @@ public class ItemInfoController {
 		return "ItemInfo not found";
 	}
 
-	// update user
+	// update item info
 	@PostMapping("/update_inventory")
 	public ItemInfo updateItemInfo(@RequestBody List<String> updateInfo) {
-		ItemInfo existingUser = this.itemInfoRepository.findByProductId(updateInfo.get(0))
+		ItemInfo item = this.itemInfoRepository.findByProductId(updateInfo.get(0))
 				.orElseThrow(() -> new ResourceNotFoundException("Item not found with sku :" + updateInfo.get(0)));
-		existingUser.setInventory(Integer.parseInt(updateInfo.get(1)));
-		return this.itemInfoRepository.save(existingUser);
+		item.setInventory(Integer.parseInt(updateInfo.get(1)));
+		return this.itemInfoRepository.save(item);
 	}
 
 	// delete user by id

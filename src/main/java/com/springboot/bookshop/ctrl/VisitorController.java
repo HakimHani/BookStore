@@ -91,6 +91,7 @@ public class VisitorController {
 		List<ItemInfo> items = getItemByGroups(1);
 		System.out.println(items.get(0).getImgurl());
 		model.addAttribute("items",items);
+		model.addAttribute("visitor",this.visitor);
 		return "products-home";
 
 		/*
@@ -145,6 +146,7 @@ public class VisitorController {
 		//List<ItemInfo> items = itemInfoRepository.findAll();
 		List<ItemInfo> items = getItemByGroups(1);
 		model.addAttribute("items",items);
+		model.addAttribute("visitor",this.visitor);
 		return "products";
 
 	}
@@ -156,6 +158,7 @@ public class VisitorController {
 		//List<ItemInfo> items = itemInfoRepository.findAll();
 		List<ItemInfo> items = getItemByGroups(groupIndex);
 		model.addAttribute("items",items);
+		model.addAttribute("visitor",this.visitor);
 		return "products";
 
 	}
@@ -170,6 +173,7 @@ public class VisitorController {
 		List<ItemInfo> items = best.subList(0,best.size() < 20 ? best.size() : 19);
 		//List<ItemInfo> items = best.subList(best.size()-21 >= 0?best.size()-21:0, best.size()-1);
 		model.addAttribute("items",items);
+		model.addAttribute("visitor",this.visitor);
 		return "products";
 
 	}
@@ -193,6 +197,7 @@ public class VisitorController {
 	{
 				
 		model.addAttribute("cartData",this.visitor.getCart());
+		model.addAttribute("visitor",this.visitor);
 		return "cart";
 		
 	}

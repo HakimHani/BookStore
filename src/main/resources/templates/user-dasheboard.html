@@ -23,7 +23,12 @@
                     <li><a href="/products">Books</a></li>
                     <li><a href="/">About</a></li>
                     <li><a href="/">Contact</a></li>
-                    <li><a href="/login">Sign in/ Register</a></li>
+                    <li th:if="${visitor.getUser() != null}">
+                        <a href="/profile">dashboard</a>
+                    </li>
+                    <li th:if="${visitor.getUser() == null}">
+                        <a href="/login">Sign in/ Register</a>
+                    </li>
                 </ul>
             </nav>
             <img th:src="@{/img/cart.png}" width="25px" height="25px" onclick="document.location.href='/cart'">
@@ -47,6 +52,10 @@
                 <div class="col-4" onclick="document.location.href='/profile/setting'">
                     <i id="controlLogo" class="fa fa-sliders"></i>
                     <div class="controlLabel">Account Settings</div>
+                </div>
+                <div class="col-4" onclick="document.location.href='/api/account/userlogout'">
+                    <i id="controlLogo" class="fa fa-power-off"></i>
+                    <div class="controlLabel">Log out</div>
                 </div>
             </div>
 

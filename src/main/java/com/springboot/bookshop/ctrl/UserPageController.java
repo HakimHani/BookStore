@@ -72,6 +72,7 @@ public class UserPageController {
 			return "redirect:/index";
 		}
 		model.addAttribute("user",this.visitor.getUser());
+		model.addAttribute("visitor",this.visitor);
 		/*
 		List<Address> address = addressRepo.findAllByEmail(this.visitor.getUser().getEmail());
 		model.addAttribute("userInfo",this.visitor.getUser());
@@ -97,6 +98,7 @@ public class UserPageController {
 		model.addAttribute("user",this.visitor.getUser());
 		List<Address> savedAddr = addressRepo.findAllByEmail(this.visitor.getUser().getEmail());
 		model.addAttribute("addresses",savedAddr);
+		model.addAttribute("visitor",this.visitor);
 		/*
 		List<Address> address = addressRepo.findAllByEmail(this.visitor.getUser().getEmail());
 		model.addAttribute("userInfo",this.visitor.getUser());

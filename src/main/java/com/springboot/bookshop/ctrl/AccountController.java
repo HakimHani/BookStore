@@ -19,13 +19,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+
 import com.springboot.bookshop.Account;
 import com.springboot.bookshop.User;
 import com.springboot.bookshop.Visitor;
+import com.springboot.bookshop.enums.AccountType;
 import com.springboot.bookshop.exception.ResourceNotFoundException;
 import com.springboot.bookshop.repo.AccountRepository;
 import com.springboot.bookshop.repo.UserRepository;
-
 
 
 
@@ -67,15 +68,51 @@ public class AccountController {
 	// create user
 	@PostMapping("/create")
 	@ResponseBody
-	public String createUser(@RequestBody Account customer) {
+	public String createUser(@RequestBody Account account) {
 
-		if(this.accountRepository.findByEmail(customer.getEmail()).orElse(null) != null) {
-			System.out.println(this.accountRepository.findByEmail(customer.getEmail()));
-			return "Account already exist";
+		if(this.accountRepository.findByEmail(account.getEmail()).orElse(null) != null) {
+			System.out.println(this.accountRepository.findByEmail(account.getEmail()));
+			return "Failed, Account already exist";
 		}
-		this.accountRepository.save(customer);
-		return "New Account created";
+		User user = this.userRepository.findByEmail(account.getEmail()).orElse(null);
+		if(user != null) {
+			return "Failed, user already exists";
+		}
+		account.setAccountType(AccountType.CUSTOMER);
+		account.setRegisterDate("2020/12");
+		this.accountRepository.save(account);
+		user = new User(account.getEmail(),"User","N/A","N/A");
+		this.userRepository.save(user);
+		visitor.logIn(user);
+		return "Success, New Account created";
 	}
+	
+	// create user
+	@PostMapping("/usercreate")
+	@ResponseBody
+	public ModelAndView userCreateUser(@RequestParam String email, @RequestParam String password, Model model) {
+
+		if(this.accountRepository.findByEmail(email).orElse(null) != null) {
+			System.out.println(this.accountRepository.findByEmail(email));
+			//return "Failed, Account already exist";
+			return new ModelAndView("redirect:/login?failed-dupacc");
+		}
+		User user = this.userRepository.findByEmail(email).orElse(null);
+		if(user != null) {
+			//return "Failed, user already exists";
+			return new ModelAndView("redirect:/login?failed-dupuser");
+		}
+		Account account = new Account(email,password,AccountType.CUSTOMER,"2020/12");
+		//account.setAccountType(AccountType.CUSTOMER);
+		//account.setRegisterDate("2020/12");
+		this.accountRepository.save(account);
+		user = new User(email,"User","N/A","N/A");
+		this.userRepository.save(user);
+		visitor.logIn(user);
+		return new ModelAndView("redirect:/profile");
+		//return "Success, New Account created";
+	}
+	
 
 	// login user
 	@PostMapping("/login")
@@ -117,25 +154,29 @@ public class AccountController {
 				visitor.logIn(user);
 
 
-				return new ModelAndView("redirect:/index?success");
+				return new ModelAndView("redirect:/?success");
 			}else {
-				return new ModelAndView("redirect:/index?wrongcredential");
+				return new ModelAndView("redirect:/login?wrongcredential");
 			}
 
 		}
-		return new ModelAndView("redirect:/index?invaliduser");
+		return new ModelAndView("redirect:/login?invaliduser");
 	}
 
 	@PostMapping("/logout")
-	public ModelAndView userLogout(Model model) {
-
-
+	public ModelAndView lLogout(Model model) {
 		if(this.visitor.getUser() != null) {
 			this.visitor.logOut(visitor.getUser());
 		}
-
-
 		return new ModelAndView("redirect:/index?fresh");
+	}
+	
+	@GetMapping("/userlogout")
+	public ModelAndView userLogout(Model model) {
+		if(this.visitor.getUser() != null) {
+			this.visitor.logOut(visitor.getUser());
+		}
+		return new ModelAndView("redirect:/");
 	}
 
 	// update user

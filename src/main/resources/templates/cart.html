@@ -25,10 +25,15 @@
             <li><a href="/products">Books</a></li>
             <li><a href="#">About</a></li>
             <li><a href="#">Contact</a></li>
-            <li><a href="/login">Sign in/ Register</a></li>
+            <li th:if="${visitor.getUser() != null}">
+              <a href="/profile">dashboard</a>
+            </li>
+            <li th:if="${visitor.getUser() == null}">
+              <a href="/login">Sign in/ Register</a>
+            </li>
           </ul>
         </nav>
-        <img th:src="@{/img/cart.png}" width="25px" height="25px">
+        <img th:src="@{/img/cart.png}" width="25px" height="25px" onclick="document.location.href='/cart'">
       </div>
     </div>
   </div>
@@ -60,7 +65,7 @@
         <td>$<a th:text="${cartItem.itemPrice}">14.99</a></td>
       </tr>
 
-      
+
     </table>
 
     <div class="total-price">
@@ -80,7 +85,9 @@
       </table>
     </div>
 
-      <button href="/checkout" id="checkoutBtn"><div class="btnText">Proceed to checkout &#8594;</span></button>
+    <button href="/checkout" id="checkoutBtn">
+      <div class="btnText">Proceed to checkout &#8594;</span>
+    </button>
 
   </div>
   <!------footer------->

@@ -42,7 +42,7 @@ public class DataValidation {
 		return flag;
 	}
 	
-	private  boolean sValidDate(int month, int year)
+	private  boolean isValidDate(int month, int year)
     {
         int currentMonth = Calendar.getInstance().get(Calendar.MONTH); 
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);

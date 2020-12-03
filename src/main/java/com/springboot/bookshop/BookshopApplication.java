@@ -35,7 +35,7 @@ public class BookshopApplication {
 		//Testing
 	}
 
-	/*
+	
 	@EventListener(ApplicationReadyEvent.class)
 	public void initRatings() {
 		ratingsMap = new HashMap<String,List<Double>>();
@@ -81,7 +81,7 @@ public class BookshopApplication {
 		System.out.println("Rating init completed");
 
 
-	}*/
+	}
 
 
 

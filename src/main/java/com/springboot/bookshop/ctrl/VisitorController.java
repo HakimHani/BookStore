@@ -92,6 +92,11 @@ public class VisitorController {
 		System.out.println(items.get(0).getImgurl());
 		model.addAttribute("items",items);
 		model.addAttribute("visitor",this.visitor);
+		
+		List<ItemInfo> best = this.itemInfoRepository.findByOrderBySalesCountDesc();
+		best = best.subList(0,best.size() >= 4 ? 4 : best.size());
+		model.addAttribute("best",best);
+		
 		return "products-home";
 
 		/*

@@ -18,6 +18,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     })
 
+    $(document).on('click', '#bestProduct', function () {
+
+        var pid= $(this).attr('productId')
+        console.log(pid);
+        window.location.href = "/product/" + pid;
+
+    })
 
 
 

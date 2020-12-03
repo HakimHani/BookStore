@@ -55,17 +55,8 @@
     <div class="small-container">
       <h2 class="title">Shop Bestsellers</h2>
       <div class="row">
-        <div class="col-3">
-          <img th:src="@{/img/category-1.jpg}">
-        </div>
-        <div class="col-3">
-          <img th:src="@{/img/category-2.jpg}">
-        </div>
-        <div class="col-3">
-          <img th:src="@{/img/category-3.jpg}">
-        </div>
-        <div class="col-3">
-          <img th:src="@{/img/category-4.jpg}">
+        <div class="col-3" th:each="bestItem : ${best}"> 
+          <img id="bestProduct" data-th-attr="src=${bestItem.imgurl},productId=${bestItem.productId}">
         </div>
       </div>
     </div>

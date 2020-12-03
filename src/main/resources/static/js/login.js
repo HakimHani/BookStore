@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
     document.getElementById("switchLoginForm").onclick = function() {login()};
     document.getElementById("switchRegisterForm").onclick = function() {register()};
-
+    login();
 
 
 

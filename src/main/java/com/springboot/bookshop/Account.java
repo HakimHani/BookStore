@@ -34,6 +34,9 @@ public class Account implements Serializable {
 	
 	@Column(name="register_date", nullable = false)
 	private String registerDate;
+	
+	@javax.persistence.Transient
+	private String oldPassword;
 
 
 
@@ -90,7 +93,15 @@ public class Account implements Serializable {
 		this.registerDate = registerDate;
 	}
 
+	public String getOldPassword() {
+		return oldPassword;
+	}
 
+	public void setOldPassword(String oldPassword) {
+		this.oldPassword = oldPassword;
+	}
+
+	
 
 
 

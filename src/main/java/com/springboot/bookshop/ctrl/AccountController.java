@@ -178,6 +178,28 @@ public class AccountController {
 		}
 		return new ModelAndView("redirect:/");
 	}
+	
+	
+	// update user
+	@PutMapping("/update")
+	@ResponseBody
+	public String updateAccount(@RequestBody Account user) {
+		Account existingUser = this.accountRepository.findByEmail(this.visitor.getUser().getEmail())
+				.orElse(null);
+		
+		if(existingUser == null) {
+			return "Failed";
+		}
+		
+		if(!user.getOldPassword().equals(existingUser.getPassword())) {
+			return "Failed, auth failed";
+		}
+		existingUser.setPassword(user.getPassword());
+		this.accountRepository.save(existingUser);
+		//existingUser.setRegisterDate(user.getRegisterDate());
+		//return this.accountRepository.save(existingUser);
+		return "Success";
+	}
 
 	// update user
 	@PutMapping("/{id}")

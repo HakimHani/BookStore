@@ -1,6 +1,7 @@
 package com.springboot.bookshop.ctrl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -131,6 +132,23 @@ public class UserController {
 		this.userRepository.save(existingUser);
 		
 		return "Successfully update shipping address";
+	}
+	
+	// update user
+	@PutMapping("/update")
+	public String updateUser(@RequestBody User user) {
+		User existingUser = this.userRepository.findByEmail(this.visitor.getUser().getEmail()).orElse(null);
+		//	.orElseThrow(() -> new ResourceNotFoundException("User not found with id :" + userId));
+		if(existingUser == null) {
+			return "Failed";
+		}
+			System.out.println(user.getFirstName());
+		 existingUser.setFirstName(user.getFirstName());
+		 existingUser.setLastName(user.getLastName());
+		 existingUser.setPhone(user.getPhone());
+		 this.userRepository.save(existingUser);
+		 this.visitor.setUser(existingUser);
+		 return "Success";
 	}
 	
 	// update user

@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+
 import com.springboot.bookshop.Account;
 import com.springboot.bookshop.Address;
 import com.springboot.bookshop.Billing;
@@ -42,7 +43,6 @@ import com.springboot.bookshop.repo.BillingRepository;
 import com.springboot.bookshop.repo.CheckoutRepository;
 import com.springboot.bookshop.repo.ItemInfoRepository;
 import com.springboot.bookshop.repo.UserRepository;
-
 
 
 
@@ -65,6 +65,9 @@ public class UserPageController {
 
 	@Autowired
 	private CheckoutRepository checkoutRepository;
+	
+	@Autowired
+	private AccountRepository accountRepository;
 
 	@Autowired
 	private Visitor visitor;
@@ -91,6 +94,31 @@ public class UserPageController {
 		model.addAttribute("purchasedItems",items);
 		 */
 		return "user-dasheboard";
+	}
+	
+	@GetMapping("/account")
+	public String accountEdit(Model model) {
+		if(visitor == null) {
+			System.out.println("user profile page: new visitor");
+			visitor = new Visitor();
+			return "redirect:/index";
+		}else if(visitor.getUser() == null) {
+			System.out.println("user profile page: no user");
+			return "redirect:/index";
+		}
+		Account customerAccount = accountRepository.findByEmail(this.visitor.getUser().getEmail()).orElse(null);
+		model.addAttribute("user",this.visitor.getUser());
+		model.addAttribute("visitor",this.visitor);
+		model.addAttribute("account",customerAccount);
+		/*
+		List<Address> address = addressRepo.findAllByEmail(this.visitor.getUser().getEmail());
+		model.addAttribute("userInfo",this.visitor.getUser());
+		model.addAttribute("addressList",address);
+		List<Checkout> items = checkoutRepository.findAllByEmail(this.visitor.getUser().getEmail());
+		items.get(0).getItems();
+		model.addAttribute("purchasedItems",items);
+		 */
+		return "user-dashboard-account";
 	}
 
 

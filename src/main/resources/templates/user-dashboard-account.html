@@ -3,11 +3,14 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title>User Dashboard</title>
-    <link th:href="@{/css/user-dashboard.css}" rel="stylesheet" />
+    <title>User Dashboard Account</title>
+    <link th:href="@{/css/user-dashboard-account.css}" rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.gstatic.com">
+
     <link href="https://fonts.googleapis.com/css2?family=Nerko+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/user-dashboard-account.js}"></script>
 </head>
 
 <body>
@@ -36,31 +39,52 @@
     </div>
 
 
+
     <div id="productsRoots" class="small-container">
 
-        <div class="welcome">Welcome, <a th:text="${user.lastName}">User!</a></div>
+        <div class="welcome">Welcome, <a th:text="${user.getEmail()}">User!</a><br>Here is your account detail</div>
         <div class="small-container single-product">
             <div class="row">
-                <div class="col-4" onclick="document.location.href='/profile/address'">
-                    <i id="controlLogo" class="fa fa-address-card"></i>
-                    <div class="controlLabel">Saved Addresses</div>
+                <div class="col-12" id="orderDiv">
+                    <div>
+                        <div id="controlLogo"><i class="fa fa-shopping-basket"></i>Account Type <a th:text="${account.accountType}">CUSTOMER</a>
+                        </div>
+                        <div class="orderDate">Creation date </div>
+                    </div><br>
+                    <div class=addressDetail>
+                        <div id="personalInfo">
+                            <div class=""><input type="text" name="firstName" id="firstName" placeholder="first name" th:value="${user.firstName}">
+                            </div>
+                            <div class=""><input type="text" name="lastName" id="lastName" placeholder="last name" th:value="${user.lastName}">
+                            </div>
+                            <div class=""><input type="text" name="phone" id="phone" placeholder="phone number" th:value="${user.phone}"></div>
+                        </div>
+
+                        <div id="securityInfo">
+                            <br>
+                            <hr>
+                            <br>
+                            <div class=""><input type="text" name="oldPassword" id="oldPassword"
+                                    placeholder="current password"></div>
+                            <div class=""><input type="text" name="password" id="password" placeholder="new password">
+                            </div>
+                        </div>
+                    </div>
+                    <button id="showSecurity">
+                        <div>Show Security Option</div>
+                    </button><button id="modifyInfo" userId="asdasd-asdasd-asdsada">
+                        <div>Update Information</div>
+                    </button>
                 </div>
-                <div class="col-4" onclick="document.location.href='/profile/order'">
-                    <i id="controlLogo" class="fa fa-archive"></i>
-                    <div class="controlLabel">Saved Orders</div>
-                </div>
-                <div class="col-4" onclick="document.location.href='/profile/account'">
-                    <i id="controlLogo" class="fa fa-sliders"></i>
-                    <div class="controlLabel">Account Settings</div>
-                </div>
-                <div class="col-4" onclick="document.location.href='/api/account/userlogout'">
-                    <i id="controlLogo" class="fa fa-power-off"></i>
-                    <div class="controlLabel">Log out</div>
-                </div>
+
+
+
+
             </div>
 
         </div>
     </div>
+
 
     <!------footer------->
     <div class="footer">

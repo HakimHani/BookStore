@@ -81,6 +81,8 @@ public class ItemInfo implements Serializable {
 	@Column(name="item_description", columnDefinition = "TEXT", nullable = false)
 	private String description;
 
+	@Column(name="rate", columnDefinition="Decimal(10,2) default '0.00'")
+	private double rate;
 
 
 
@@ -277,8 +279,16 @@ public class ItemInfo implements Serializable {
 		this.description = description;
 	}
 
-	
+	public double getRate() {
+		return rate;
+	}
 
+	public void setRate(double rate) {
+		this.rate = rate;
+	}
+
+	
+	
 
 
 

@@ -53,7 +53,7 @@
       <tr th:each="cartItem : ${cartData.getItems()}">
         <td>
           <div class="cart-info">
-            <img th:src="@{/img/product-1.jpg}">
+            <img th:src="${cartItem.itemImg}">
             <div>
               <p th:text="${cartItem.itemLabel}">Eductated</p>
               <small>Price: $ <small th:text="${cartItem.itemPrice}">14.99</small></small><br>

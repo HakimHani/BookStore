@@ -156,7 +156,7 @@ public class AccountController {
 
 				return new ModelAndView("redirect:/?success");
 			}else {
-				return new ModelAndView("redirect:/login?wrongcredential");
+				return new ModelAndView("redirect:/login?wrongcredential=true");
 			}
 
 		}

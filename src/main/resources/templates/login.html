@@ -45,6 +45,11 @@
               <span id="switchRegisterForm">Register</span>
               <hr id="Indicator">
             </div>
+            
+            <div id="errors" th:if="${(param.wrongcredential != null) and (param.wrongcredential[0] == 'true')}">
+    			<span style="color:red;"> incorrect credentials!</span>
+  			</div>
+            
             <form id="LoginForm" action="/api/account/userlogin" method="POST">
               <input type="text" name="email" value="EmilyClock@gmail.com" placeholder="username">
               <input type="password" name="password" value="1166254" placeholder="password">
@@ -63,6 +68,7 @@
       </div>
     </div>
   </div>
+  
 
 
   <!------freatured product------->

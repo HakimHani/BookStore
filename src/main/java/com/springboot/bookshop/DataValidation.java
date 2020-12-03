@@ -37,8 +37,16 @@ public class DataValidation {
 	
 	public boolean validateAddress(Address address) {
 		boolean flag = true;
-		// Todo
-		
+		String city = address.getCity();
+		String state = address.getState();
+		String postalCode = address.getPostal();
+		String country = address.getCountry();
+				
+		flag = city.matches( "([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z]+)" ); 
+		flag = state.matches( "([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z]+)" );
+		flag = Pattern.compile("^(?!.*[DFIOQU])[A-VXY][0-9][A-Z] ?[0-9][A-Z][0-9]$").matcher(postalCode).matches();
+		flag = country.matches("^([A-Z][a-z]*)+(?:[\\\\s-][A-Z][a-z]*)*$ ");	
+		   		
 		return flag;
 	}
 	

@@ -87,11 +87,13 @@ public class VisitorController {
 	{
 		
 		
-		//List<ItemInfo> items = itemInfoRepository.findAll();
-		List<ItemInfo> items = getItemByGroups(1);
+		List<ItemInfo> allItems = itemInfoRepository.findAll();
+		List<ItemInfo> items = getItemByGroups(allItems,1);
 		System.out.println(items.get(0).getImgurl());
 		model.addAttribute("items",items);
 		model.addAttribute("visitor",this.visitor);
+		
+		
 		
 		List<ItemInfo> best = this.itemInfoRepository.findByOrderBySalesCountDesc();
 		best = best.subList(0,best.size() >= 4 ? 4 : best.size());
@@ -147,11 +149,12 @@ public class VisitorController {
 	@GetMapping(path = "/products")
 	public String products(Model model)
 	{
-			
+		List<ItemInfo> allItems = itemInfoRepository.findAll();
 		//List<ItemInfo> items = itemInfoRepository.findAll();
-		List<ItemInfo> items = getItemByGroups(1);
+		List<ItemInfo> items = getItemByGroups(allItems,1);
 		model.addAttribute("items",items);
 		model.addAttribute("visitor",this.visitor);
+		model.addAttribute("pageCount",allItems.size()/20);
 		return "products";
 
 	}
@@ -161,9 +164,11 @@ public class VisitorController {
 	{
 			
 		//List<ItemInfo> items = itemInfoRepository.findAll();
-		List<ItemInfo> items = getItemByGroups(groupIndex);
+		List<ItemInfo> allItems = itemInfoRepository.findAll();
+		List<ItemInfo> items = getItemByGroups(allItems,groupIndex);
 		model.addAttribute("items",items);
 		model.addAttribute("visitor",this.visitor);
+		model.addAttribute("pageCount",allItems.size()/20);
 		return "products";
 
 	}
@@ -230,8 +235,8 @@ public class VisitorController {
 	}
 	
 	
-	List<ItemInfo> getItemByGroups(int groupIndex){
-		List<ItemInfo> allItems = this.itemInfoRepository.findAll();
+	List<ItemInfo> getItemByGroups(List<ItemInfo> allItems,int groupIndex){
+		//List<ItemInfo> allItems = this.itemInfoRepository.findAll();
 		int allSize = allItems.size();
 		if(allSize <= (groupIndex-1) *20) {
 			System.out.println("Return first 20..");

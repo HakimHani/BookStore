@@ -77,9 +77,10 @@
 
       </div>
       <div class="page-btn">
-        <span>1</span>
-        <span>2</span>
-        <span>3</span>
+
+        <th:block th:each="i: ${#numbers.sequence(1, pageCount+1)}">
+          <span th:text="${i}" id="navigate" th:pageIndex="${i}">1</span>
+        </th:block>
         <span>&#8594;</span>
       </div>
     </div>

@@ -18,6 +18,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     })
 
+    
+    $(document).on('click', '#navigate', function () {
+
+        var pageId= $(this).attr('pageIndex')
+        console.log(pageId);
+        window.location.href = "/products/" + pageId;
+
+    })
+
 
 
 

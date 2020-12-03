@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,12 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.springboot.bookshop.Address;
 import com.springboot.bookshop.DataValidation;
 import com.springboot.bookshop.IdentificationGenerator;
+import com.springboot.bookshop.Visitor;
 import com.springboot.bookshop.exception.ResourceNotFoundException;
 import com.springboot.bookshop.repo.AddressRepository;
 
 
 
 @RestController
+@Scope("session")
 @RequestMapping("/api/address")
 public class AddressController {
 
@@ -31,6 +34,9 @@ public class AddressController {
 	
 	@Autowired
 	private IdentificationGenerator idGenerator;
+	
+	@Autowired
+	private Visitor visitor;
 
 	// get all users
 	@GetMapping
@@ -56,6 +62,10 @@ public class AddressController {
 		boolean validAddress = validate.validateAddress(address);
 		if(!validAddress) 
 			return null;
+		
+		if(this.visitor.getUser() != null) {
+			address.setEmail(this.visitor.getUser().getEmail());
+		}
 		address.setAddressId(idGenerator.generateAddressId());
 		this.addressRepo.save(address);
 		return address;

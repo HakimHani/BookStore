@@ -112,6 +112,9 @@ public class CheckoutController {
 			}
 		}
 
+		if(this.visitor.getUser() != null) {
+			checkout.setEmail(this.visitor.getUser().getEmail());
+		}
 
 		checkout.setCheckoutState(CheckoutState.DEFAULT);
 		String checkoutId = idGenerator.generateCheckoutId();
@@ -136,7 +139,8 @@ public class CheckoutController {
 			throw new ResourceNotFoundException("Checkout not found with checkoutId :" + checkoutId);
 		}
 		existingCheckout.setCheckoutState(CheckoutState.SHIPPING_INFO);
-		existingCheckout.setEmail(checkout.getEmail());
+		//existingCheckout.setEmail(checkout.getEmail());
+		existingCheckout.setEmail(this.visitor.getUser().getEmail());
 		existingCheckout.setAddressId(checkout.getAddressId());
 
 		return this.checkoutRepo.save(existingCheckout);

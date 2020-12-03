@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Product details</title>
+    <link th:href="@{/css/product-detail.css}" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nerko+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/product-detail.js}"></script>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="navbar">
+            <div class="logo">
+                <img th:src="@{/img/bookstore.png}" width="125px">
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/products">Books</a></li>
+                    <li><a href="/">About</a></li>
+                    <li><a href="/">Contact</a></li>
+                    <li th:if="${visitor.getUser() != null}">
+                        <a href="/profile">dashboard</a>
+                    </li>
+                    <li th:if="${visitor.getUser() == null}">
+                        <a href="/login">Sign in/ Register</a>
+                    </li>
+                </ul>
+            </nav>
+            <a href="/cart"><img th:src="@{/img/cart.png}" width="25px" height="25px"></a>
+        </div>
+
+
+        <!--------------single-product--------------->
+        <div class="small-container single-product">
+            <div class="row">
+                <div class="col-2">
+                    <img th:src="${item.imgurl}" width="70%" id="ProductImg">
+                </div>
+                <div class="col-2">
+                    <p>Home / <a th:text="${item.category}">Books</a></p>
+                    <h1 th:text="${item.itemName}">THE VANISHING HALF: A NOVEL</h1>
+                    <p th:text="${item.brand}">by Brit Bennett</p>
+                    <div class="rating">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star-half-o"></i>
+                    </div>
+                    <h4>$<a th:text="${item.price}">22.46</a></h4>
+
+                    <input type="number" value="1">
+                    <a class="btn" id="atc" th:pid="${item.productId}">Add To Cart</a>
+
+                    <h3>PRODUCT DETAILS <i class="fa fa-indent"></i></h3>
+                    <br>
+                    <div class="read more" th:text="${item.description}">
+                        #1 NEW YORK TIMES BESTSELLER</br>
+
+                        LONGLISTED FOR THE NATIONAL BOOK AWARD</br>
+
+                        LONGLISTED FOR THE ASPEN WORDS LITERARY PRIZE</br>
+                        A GOOD MORNING AMERICA Book Club Pick
+                        “Bennett’s tone and style recalls James Baldwin and Jacqueline Woodson, but it’s especially
+                        reminiscent of Toni Morrison’s 1970 debut novel, The Bluest Eye.” —Kiley Reid, Wall Street
+                        Journal
+                        As with her New York Times-bestselling debut The Mothers, Brit Bennett offers an engrossing
+                        page-turner about family and relationships that is immersive and provocative, compassionate and
+                        wise.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!----------------- title -------------->
+    <div class="small-container">
+        <div class="row row-2">
+            <h2>Other Items From This Collection</h2>
+            <p>View More</p>
+        </div>
+
+    </div>
+
+
+
+    <!-------------- Related books -------------->
+    <div class="small-container">
+        <div class="row">
+
+
+            <div class="col-4" th:each="recom : ${recommands}">
+                <div  id="product" th:productId="${recom.productId}">
+                    <img th:src="${recom.imgurl}">
+                    <h4><a th:text="${recom.itemName}">MY DARK VANESSA:</a></br><a th:text="${recom.category}">A
+                            NOVEL</a>
+                    </h4>
+                    <h5 th:text="${recom.brand}">by Kate Elizabeth Russell</h5>
+                    <div class="rating">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star-half-o"></i>
+                    </div>
+                    <p>$<a th:src="${recom.price}">14.39</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!------footer------->
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="footer-col-1">
+                    <h3>Search</h3>
+                    <p>Need anybooks quickly? search and get the best books at bookstore & Accessories</p><br />
+                    <input type="text" placeholder="Search.." name="search">
+                    <button type="submit"><i class="fa fa-search"></i></button>
+                </div>
+                <div class="footer-col-2">
+                    <img th:src="@{/img/bookstore.png}">
+                    <p>Search more books and get exclusive offers.The best books and more.</p>
+                </div>
+                <div class="footer-col-3">
+                    <h3>Contact us</h3>
+                    <ul>
+                        <li>Help</li>
+                        <li>Contact us</li>
+                        <li>Feedback</li>
+                        <li>Privacy notice</li>
+                    </ul>
+                </div>
+                <div class="footer-col-4">
+                    <h3>Follow us</h3>
+                    <ul>
+                        <li>Facebook</li>
+                        <li>Twitter</li>
+                        <li>Instagram</li>
+                        <li>Youtube</li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <p class="copyright">
+                <i class="fa fa-copyright" aria-hidden="true"></i>
+                Copyright 2020 - EECS4413 Group member: Yuanfen Gu, Yikun Peng, Hakim
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

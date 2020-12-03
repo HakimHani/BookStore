@@ -54,13 +54,21 @@ public class CartController {
 
 
 		//ShopItem itema = new ShopItem("Apple","9.99","1234","XL",UUID.randomUUID().toString().replace("-", ""));
-		ItemInfo itemInfo= this.itemInfoRepository.findByProductId(productId)
-				.orElseThrow(() -> new ResourceNotFoundException("Item Info not found with pid :" + productId));
-		if(itemInfo.getInventory() < 1) {
-			throw new ResourceNotFoundException("ItemInfo out of stock :" + productId);
+		ItemInfo itemInfo= this.itemInfoRepository.findByProductId(productId).orElse(null);
+				//.orElseThrow(() -> new ResourceNotFoundException("Item Info not found with pid :" + productId));
+		if(itemInfo == null) {
+			return "Failed, Item not found";
 		}
-		ShopItem itema = new ShopItem(itemInfo);	
-		return visitor.addToCart(itema,itemInfo);
+		if(itemInfo.getInventory() < 1) {
+			//throw new ResourceNotFoundException("ItemInfo out of stock :" + productId);
+			return "Failed, Item out of stock";
+		}
+		ShopItem itema = new ShopItem(itemInfo);
+		String atcResult = visitor.addToCart(itema,itemInfo);
+		if(!atcResult.equals("Successfully added " + itemInfo.getItemLabel())) {
+			return atcResult;
+		};
+		return "Success, item added to cart";
 	}
 
 	// create user

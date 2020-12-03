@@ -163,6 +163,28 @@ public class VisitorController {
 
 	}
 	
+	@GetMapping(path = "/product/{productId}")
+	public String productDetail(@PathVariable (value = "productId") String productId,Model model)
+	{
+			
+		//List<ItemInfo> items = itemInfoRepository.findAll();
+		ItemInfo item = itemInfoRepository.findByProductId(productId).orElse(null);
+		if(item == null) {
+			return "redirect:/";
+		}
+		model.addAttribute("item",item);
+		model.addAttribute("visitor",this.visitor);
+		
+		List<ItemInfo> recommands = itemInfoRepository.findAllByCategory(item.getCategory());
+		if(recommands.size() > 2) {
+			recommands = recommands.subList(0, 3);
+		}
+		model.addAttribute("recommands",recommands);
+		
+		return "product-detail";
+
+	}
+	
 	
 	@GetMapping(path = "/best-sellers")
 	public String productsBestSellers(Model model)

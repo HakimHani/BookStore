@@ -43,10 +43,9 @@ public class DataValidation {
 		String country = address.getCountry();
 				
 		flag = city.matches( "([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z]+)" ); 
-		flag = state.matches( "([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z]+)" );
+		flag = state.matches("Québec|Ontario|British Columbia|Manitoba|Saskatchewan|Newfoundland|Nova Scotia|Alberta|Prince Edward Island|New Brunswick");
 		flag = Pattern.compile("^(?!.*[DFIOQU])[A-VXY][0-9][A-Z] ?[0-9][A-Z][0-9]$").matcher(postalCode).matches();
-		flag = country.matches("^([A-Z][a-z]*)+(?:[\\\\s-][A-Z][a-z]*)*$ ");	
-		   		
+		flag = country.matches("Canada") || country.matches("CA");	  		
 		return flag;
 	}
 	

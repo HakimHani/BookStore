@@ -20,4 +20,13 @@ public class ResponseBuilder {
 		return json;
 	}
 	
+	
+	public Map<String, Object> AddressResponse(String status, Object data) {
+		Map<String, Object> json = new HashMap<String, Object>();
+		json.put("status", status);
+		json.put("item", data);
+		return json;
+	}
+	
+	
 }

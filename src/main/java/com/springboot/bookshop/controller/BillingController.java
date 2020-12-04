@@ -37,6 +37,9 @@ public class BillingController {
 	@Autowired
 	private CheckoutService checkoutService;
 	
+	@Autowired
+	private DataValidation dataValidation;
+	
 	@GetMapping("/email/{email}")
 	public List<Billing> getBillingsByEmail(@PathVariable (value = "email") String cutomerEmail) {
 		return  this.billingService.findAllByEmail(cutomerEmail);
@@ -53,9 +56,9 @@ public class BillingController {
 		if(existingCheckout == null) {
 			throw new ResourceNotFoundException("Invalid checkout");
 		}
-		DataValidation validate = new DataValidation();
-		boolean validBilling = validate.validateBilling(billing);
-		if(!validBilling) 
+
+		
+		if(!dataValidation.validateBilling(billing)) 
 			return null;
 		String email = existingCheckout.getEmail();
 		billing.setEmail(email);

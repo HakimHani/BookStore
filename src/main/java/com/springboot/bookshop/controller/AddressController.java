@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,7 @@ import com.springboot.bookshop.model.Visitor;
 import com.springboot.bookshop.service.AddressService;
 import com.springboot.bookshop.utils.DataValidation;
 import com.springboot.bookshop.utils.IdentificationGenerator;
+import com.springboot.bookshop.utils.ResponseBuilder;
 
 
 
@@ -37,6 +39,12 @@ public class AddressController {
 	
 	@Autowired
 	private Visitor visitor;
+	
+	@Autowired
+	private DataValidation dataValidation;
+	
+	@Autowired
+	private ResponseBuilder responseBuilder;
 
 	// get all users
 	@GetMapping
@@ -52,23 +60,19 @@ public class AddressController {
 
 	// create user
 	@PostMapping("/create/{email}")
-	public Address createAddress(@RequestBody Address address) {
-		/*
-		if(address.getFirstName() == null) {
-			System.out.println("No first name provided");
-			address.setFirstName("fixed");
-		}*/
-		DataValidation validate = new DataValidation();
-		boolean validAddress = validate.validateAddress(address);
-		if(!validAddress) 
-			return null;
-		
+	public ResponseEntity<Object> createAddress(@RequestBody Address address) {
+
 		if(this.visitor.getUser() != null) {
 			address.setEmail(this.visitor.getUser().getEmail());
 		}
+		
+		if(!dataValidation.validateAddress(address)) {
+			return new ResponseEntity<Object>(responseBuilder.AddressResponse("ADDRESS_VALIDATION_FAILED", address), HttpStatus.OK);
+		}
 		address.setAddressId(idGenerator.generateAddressId());
 		this.addressService.save(address);
-		return address;
+		
+		return new ResponseEntity<Object>(responseBuilder.AddressResponse("success", address), HttpStatus.OK);
 	}
 
 	// update user

@@ -1,13 +1,14 @@
 console.log("Shipping page js..");
 var domain = "";
+
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    console.log(window.location.hostname + (location.port ? ':'+location.port: ''));
+    console.log(window.location.hostname + (location.port ? ':' + location.port : ''));
     console.log(location.protocol);
-    domain = window.location.hostname + (location.port ? ':'+location.port: '');
+    domain = window.location.hostname + (location.port ? ':' + location.port : '');
     checkSavedShipping();
 
     $(document).on('click', '#pickAddrBtn', function () {
@@ -42,9 +43,9 @@ document.addEventListener("DOMContentLoaded", function () {
         var isGuest = document.getElementById("checkoutInfo").getAttribute("data-guest");
         var checkoutId = document.getElementById("checkoutInfo").getAttribute("data-checkoutId");
         if (addressId == "new") {
-            await uploadAddress(isGuest,email,checkoutId);
+            await uploadAddress(isGuest, email, checkoutId);
         } else {
-            uploadShipping(email,checkoutId,addressId);
+            uploadShipping(email, checkoutId, addressId);
             console.log("use saved address");
         }
     })
@@ -54,13 +55,13 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-async function uploadAddress(isGuest, clientEmail,checkoutId) {
+async function uploadAddress(isGuest, clientEmail, checkoutId) {
     var email = document.getElementById("email").value;
     if (!isGuest) {
         email = clientEmail;
     }
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", location.protocol  + "//" + domain + "/api/address/create/" + email, true);
+    xhr.open("POST", location.protocol + "//" + domain + "/api/address/create/" + email, true);
     xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
     var data = {
         "email": email,
@@ -77,25 +78,35 @@ async function uploadAddress(isGuest, clientEmail,checkoutId) {
     console.log(data);
     xhr.send(JSON.stringify(data));
     xhr.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log(this.responseText);
-            cAddr = JSON.parse(this.responseText)
-            uploadShipping(email,checkoutId,cAddr.addressId);
+        if (this.readyState == 4) {
+            if (this.status == 200) {
+                var response = JSON.parse(this.responseText);
+                if (response.status == "success") {
+                    cAddr = response.item;
+                    console.log(cAddr);
+                    //uploadShipping(email, checkoutId, cAddr.addressId);
+                } else {
+                    console.log(response.status);
+                }
+            } else {
+                console.log("FAILED");
+            }
+
         }
     };
 }
 
-async function uploadShipping(clientEmail,checkoutId,addressId) {
+async function uploadShipping(clientEmail, checkoutId, addressId) {
     console.log("sending shipping");
     email = clientEmail;
- 
+
     var xhr = new XMLHttpRequest();
     xhr.open("PUT", location.protocol + "//" + domain + "/api/checkout/shipping/" + checkoutId, true);
     xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
     var data = {
         "email": email,
         "addressId": addressId,
- 
+
     }
     console.log(data);
     xhr.send(JSON.stringify(data));
@@ -103,7 +114,7 @@ async function uploadShipping(clientEmail,checkoutId,addressId) {
         if (this.readyState == 4 && this.status == 200) {
             console.log(this.responseText);
             var checkoutResult = JSON.parse(this.responseText);
-            if(checkoutResult.checkoutState == "SHIPPING_INFO"){
+            if (checkoutResult.checkoutState == "SHIPPING_INFO") {
                 console.log("Proceeding to billing");
                 window.location.href = location.protocol + "//" + domain + "/checkout/billing";
             }

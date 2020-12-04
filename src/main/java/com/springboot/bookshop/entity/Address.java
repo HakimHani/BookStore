@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 @Table(name="address")
@@ -20,6 +22,7 @@ public class Address implements Serializable {
 	@Id 
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id", insertable=true, updatable=true, unique=true, nullable=false)
+	@JsonIgnore
 	private long id;
 	
 	@Column(name="address_id", nullable = false, unique = true)

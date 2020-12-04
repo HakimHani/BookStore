@@ -27,8 +27,21 @@ document.addEventListener("DOMContentLoaded", function () {
     })
 
 
+    $(document).on('click', '#slideDown', function () {
+
+        goToJys();
+
+    })
+
+
 
 });
+
+
+
+function goToJys() {
+    document.querySelector("#middle").scrollIntoView();
+}
 
 
 

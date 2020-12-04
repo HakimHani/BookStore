@@ -31,10 +31,10 @@ public class DataValidation {
 		creditCard = creditCard.replaceAll("-", "");
 		Pattern pattern = Pattern.compile(regex);
 	    Matcher matcher = pattern.matcher(creditCard);
-	    flag = matcher.matches();
+	    flag = flag && matcher.matches();
 	    
-	    flag = (ccv.length() == 3 && ccv.matches("3[0-9]")) ? true : false;
-	    flag = isValidDate(exp_month, exp_year);
+	    flag = flag && (ccv.length() == 3 && ccv.matches("3[0-9]")) ? true : false;
+	    flag = flag && isValidDate(exp_month, exp_year);
 	    return flag;   
 	}
 	
@@ -45,10 +45,10 @@ public class DataValidation {
 		String postalCode = address.getPostal();
 		String country = address.getCountry();
 				
-		flag = city.matches( "([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z]+)" ); 
-		flag = state.matches("Québec|Ontario|British Columbia|Manitoba|Saskatchewan|Newfoundland|Nova Scotia|Alberta|Prince Edward Island|New Brunswick");
-		flag = Pattern.compile("^(?!.*[DFIOQU])[A-VXY][0-9][A-Z] ?[0-9][A-Z][0-9]$").matcher(postalCode).matches();
-		flag = country.matches("Canada") || country.matches("CA");	  		
+		flag = flag && city.matches( "([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z]+)" ); 
+		flag = flag &&  state.matches("Québec|Ontario|British Columbia|Manitoba|Saskatchewan|Newfoundland|Nova Scotia|Alberta|Prince Edward Island|New Brunswick");
+		flag = flag && Pattern.compile("^(?!.*[DFIOQU])[A-VXY][0-9][A-Z] ?[0-9][A-Z][0-9]$").matcher(postalCode).matches();
+		flag = flag && country.matches("Canada") || country.matches("CA");	  		
 		return flag;
 	}
 	

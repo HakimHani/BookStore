@@ -354,7 +354,7 @@ input:focus{
 	width: 400;
 	background: #ffffff;
 	padding: 20px 30px;
-	border: 1px solid #555;
+	border: 1px solid transparent;
 	border-radius: 5px;
 	display: flex;
 	align-items: center;
@@ -492,4 +492,16 @@ input:checked~.fform {
 .fform .post-btn button:hover {
 	background: #005c99;
 
+}
+
+
+.col-review{
+	margin-left: 10%;
+	min-width: 25%;
+	max-width: 25%;
+}
+
+
+.row .oReview{
+	margin-top: 20px;
 }

@@ -149,7 +149,23 @@
         </div>
     </div>
 
+    <hr>
 
+    <div class="row row-2">
+        <h2>Reviews from others</h2>
+    </div>
+    <div class="row oReview" th:each="review : ${reviews}">
+        <div class="col-review">
+            <h3 th:text="${review.email}">ajsdhsdh@gmail.com</h3>
+            <div class="rating">
+                <th:block th:each="i: ${#numbers.sequence(0, review.rate)}">
+                    <i class="fa fa-star"></i>
+                    </th:block>
+            </div>
+            <div th:text="${review.reviewDate}">2020-12-3 10:05:1232:0000</div>
+        </div>
+        <div class="col-review" th:text="${review.comment}">Decd aaaaaaaaaaaaaaaaaaaaaaaaaa!</div>
+    </div>
 
 
     <!------footer------->

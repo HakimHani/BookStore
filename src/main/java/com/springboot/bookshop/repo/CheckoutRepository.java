@@ -6,9 +6,9 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.springboot.bookshop.Address;
-import com.springboot.bookshop.Checkout;
-import com.springboot.bookshop.enums.CheckoutState;
+import com.springboot.bookshop.constant.enums.CheckoutState;
+import com.springboot.bookshop.entity.Address;
+import com.springboot.bookshop.entity.Checkout;
 
 
 

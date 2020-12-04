@@ -11,12 +11,13 @@ public class ShopItem {
 	private String itemSize;
 	private String sizeSku;
 	private String itemSessionId;
+	private String itemImg;
 	
 	public ShopItem(){
 		
 	}
 	
-	public ShopItem(String itemName, String itemLabel, double itemPrice, String itemSku, String itemSize, String sizeSku,String itemSessionId){
+	public ShopItem(String itemName, String itemLabel, double itemPrice, String itemSku, String itemSize, String sizeSku,String itemSessionId,String itemImg){
 		this.itemName = itemName;
 		this.itemLabel = itemLabel;
 		this.itemPrice = itemPrice;
@@ -24,6 +25,7 @@ public class ShopItem {
 		this.itemSize = itemSize;
 		this.sizeSku = sizeSku;
 		this.itemSessionId = itemSessionId;
+		this.itemImg =itemImg;
 	}
 	
 	public ShopItem(ItemInfo itemInfo){
@@ -34,6 +36,7 @@ public class ShopItem {
 		this.itemSize = itemInfo.getSizes();
 		this.sizeSku = itemInfo.getSizeSku();
 		this.itemSessionId = UUID.randomUUID().toString().replace("-", "");
+		this.itemImg = itemInfo.getImgurl();
 	}
 
 	public String getItemLabel() {
@@ -91,5 +94,15 @@ public class ShopItem {
 	public void setItemSize(String itemSize) {
 		this.itemSize = itemSize;
 	}
+
+	public String getItemImg() {
+		return itemImg;
+	}
+
+	public void setItemImg(String itemImg) {
+		this.itemImg = itemImg;
+	}
+	
+	
 
 }

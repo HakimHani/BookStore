@@ -111,6 +111,7 @@ public class ItemInfoController {
 		itemInfo.setSku(idGenerator.generateAddressId().substring(0,6));
 		itemInfo.setSizeSku("01");
 		itemInfo.setProductId(itemInfo.getSku() + itemInfo.getSizeSku());
+		itemInfo.setRate(0.00);
 
 		if(this.itemInfoRepository.findByProductId(itemInfo.getProductId()).orElse(null) != null) {
 			return "ItemInfo already exist";

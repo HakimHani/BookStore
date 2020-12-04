@@ -48,11 +48,9 @@
                     <h1 th:text="${item.itemName}">THE VANISHING HALF: A NOVEL</h1>
                     <p th:text="${item.brand}">by Brit Bennett</p>
                     <div class="rating">
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star-half-o"></i>
+                        <th:block th:each="i: ${#numbers.sequence(0, item.rate)}">
+                            <i class="fa fa-star"></i>
+                            </th:block>
                     </div>
                     <h4>$<a th:text="${item.price}">22.46</a></h4>
 
@@ -104,11 +102,9 @@
                     </h4>
                     <h5 th:text="${recom.brand}">by Kate Elizabeth Russell</h5>
                     <div class="rating">
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star-half-o"></i>
+                        <th:block th:each="i: ${#numbers.sequence(0, recom.rate)}">
+                            <i class="fa fa-star"></i>
+                            </th:block>
                     </div>
                     <p>$<a th:src="${recom.price}">14.39</a></p>
                 </div>

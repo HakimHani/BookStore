@@ -69,6 +69,24 @@ public class ReviewController {
 		}
 		return  existingReview;
 	}
+	
+	
+	@GetMapping("/rating/{productId}")
+	public double getRatingByProductId(@PathVariable (value = "productId") String productId) {
+		double rate = 0;
+		List<Review> reviews = this.reviewRepository.findAllByProductId(productId);
+		
+		if(reviews.size() == 0) {
+			return 0.00;
+		}
+		
+		for(Review review : reviews) {
+			rate += review.getRate();
+		}
+		
+		
+		return rate/(double) reviews.size();
+	}
 
 
 

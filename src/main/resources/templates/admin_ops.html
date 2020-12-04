@@ -7,6 +7,7 @@
   	<link rel="preconnect" href="https://fonts.gstatic.com">
   	<link href="https://fonts.googleapis.com/css2?family=Nerko+One&display=swap" rel="stylesheet">
   	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
   	<script type="text/javascript" th:src="@{/js/login.js}"></script>
 	<link href="css/admin.css" rel="stylesheet" />
 </head>
@@ -31,8 +32,13 @@
 	    </div>
  	</div>
 
-	<center><h3>All Products</h3></center>
-	<button type="button" onclick="doAdminsAjax('/api/iteminfo/', 'populate_products_handler');">show products</button>
+	<h3 style="text-align: center;">Admin Dashboard</h3>
+	<hr>
+	<br><br><br><br>
+	<div class="text-center">
+	<button class="btn btn-primary" onclick="doAdminsAjax('/api/iteminfo/', 'populate_products_handler');">Show Products</button>
+	<button class="btn btn-info" onclick="">Show Registered Users</button>
+	</div>
     <div align = "center" id="products_table" class="products" style="border:'1'; cellpadding:'5';"></div>
     <br/><br/><br/>
     <div id="EditProduct" style="display:none">
@@ -116,8 +122,6 @@
     </div>
   </div>
 
-</body>
-</html>
 
 <script>
 
@@ -239,21 +243,22 @@ function populate_products_handler(request){
 		 var table = "";
 		 table += '<table class = "products" border = "1">';
 		 table += "<tr>";
-		 table += "<td>Id</td>";
-		 table += "<td>Product</td>";
-		 table += "<td>Category</td>";
-		 table += "<td>Price</td>";
+		 table += "<td style='width: 100px;' class='p-3'><h5 class='text-center'>Id</h5></td>";
+		 table += "<td style='width: 340px;' class='p-3'><h5 class='text-center text-info'>Product</h5></td>";
+		 table += "<td class='p-3'><h5 class='text-center text-primary'>Category</h5></td>";
+		 table += "<td  class='p-3' style='width: 100px;'><h5 class='text-center text-success'>Price</h5></td>";
+		 table += "<td class='p-3 text-center'><h5 class='text-warning'>Operations</h5></td>";
 		 table +="</tr>";
 		 
 		 for (var product of products) {
 			 table += "<tr>";
-			 table +="<td class = 'rght'>" + product.productId + "</td>";
-			 table +="<td class='cent'>" + product.itemName + "</td>";
-			 table +="<td class='cent'>" + product.category + "</td>";
-			 table += "<td class='rght'>" + product.price + "</td>";
-			 table += '<td><button onclick="showProductDetails(\'' + product.productId + '\' );">' + "Show" + "</a></td>"; 
-			 table += '<td><button onclick="editProduct(\'' + product.productId + '\' );">' + "Edit" + "</a></td>"; 
-			 table += '<td><button onclick="deleteProduct(\'' + product.productId + '\' );">' + "Delete" + "</a></td>"; 
+			 table +="<td class='text-center'><p>" + product.productId + "</p></td>";
+			 table +="<td class='text-left pl-2'><p>" + product.itemName + "</p></td>";
+			 table +="<td class='text-center'><p>" + product.category + "</p></td>";
+			 table += "<td class='text-center'><p>$" + product.price + "</p></td>";
+			 table += '<td class="text-center"><button class="btn btn-info mr-1" onclick="showProductDetails(\'' + product.productId + '\' );">' + "Show" + "</a>"; 
+			 table += '<button class="btn btn-primary mr-1" onclick="editProduct(\'' + product.productId + '\' );">' + "Edit" + "</a>"; 
+			 table += '<button class="btn btn-danger" onclick="deleteProduct(\'' + product.productId + '\' );">' + "Delete" + "</a></td>"; 
 			 table += "</tr>"
 		 }
 		 target.innerHTML = table;
@@ -322,49 +327,8 @@ function saveEdits(){
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+</body>
+</html>
 

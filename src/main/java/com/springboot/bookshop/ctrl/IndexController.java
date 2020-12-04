@@ -59,6 +59,6 @@ public class IndexController {
 		//entity.put("aa", "bb");
 		
 		model.addAttribute("data", response.toString());
-		return "index";
+		return "admin_ops";
 	}
 }

@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.springboot.bookshop.Address;
-import com.springboot.bookshop.Billing;
+import com.springboot.bookshop.entity.Address;
+import com.springboot.bookshop.entity.Billing;
 
 
 

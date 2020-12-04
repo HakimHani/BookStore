@@ -2,6 +2,9 @@ package com.springboot.bookshop;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
+import com.springboot.bookshop.enums.AccountType;
+
 import java.sql.Timestamp;
 
 @Component
@@ -13,12 +16,14 @@ public class Visitor {
 	Timestamp latestTS;
 	User user;
 	Cart cart;
+	AccountType permission;
 	
 	public Visitor() {
 		this.firstTS = new Timestamp(System.currentTimeMillis());
 		this.latestTS = this.firstTS;
 		this.user = null;
 		this.cart = new Cart();
+		permission = AccountType.VISITOR;
 	}
 	
 	public Visitor(Timestamp firstTS) {
@@ -26,6 +31,7 @@ public class Visitor {
 		this.latestTS = this.firstTS;
 		this.user = null;
 		this.cart = new Cart();
+		permission = AccountType.VISITOR;
 	}
 
 	public Cart getCart() {
@@ -71,6 +77,7 @@ public class Visitor {
 	
 	public void logOut(User user) {
 		this.user = null;
+		permission = AccountType.VISITOR;
 	}
 	
 	public String addToCart(ShopItem item,ItemInfo itemInfo) {
@@ -92,5 +99,15 @@ public class Visitor {
 		}
 		return "Failed removing item to cart";
 	}
+
+	public AccountType getPermission() {
+		return permission;
+	}
+
+	public void setPermission(AccountType permission) {
+		this.permission = permission;
+	}
+	
+	
 
 }

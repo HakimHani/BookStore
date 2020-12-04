@@ -1,5 +1,6 @@
 package com.springboot.bookshop.ctrl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,6 +45,7 @@ public class ReviewController {
 	public Review createAddress(@RequestBody Review review) {
 
 		review.setReviewId(idGenerator.generateAddressId());
+		review.setReviewDate(new Date());
 		this.reviewRepository.save(review);
 		return review;
 	}

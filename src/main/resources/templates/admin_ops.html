@@ -139,7 +139,8 @@
 
 
 // generate a report with the books sold each month
-var domain = "http://localhost:8090";
+//var domain = "http://localhost:8090";
+var domain = window.location.hostname + (location.port ? ':' + location.port : '');
 
 function doAjax(address){
 	 var request = new XMLHttpRequest();
@@ -148,7 +149,7 @@ function doAjax(address){
 	 request.onreadystatechange = function() {
 			handler(request);
 	 };
-	 request.open("GET", url, true);
+	 request.open("GET", location.protocol + "//" + domain + url, true);
 	 request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	 request.send(); 
 } 
@@ -168,7 +169,7 @@ function getBooksStats(){
 	request.onreadystatechange = function(){
 		handlerBooksStats(request);
 	 };
-	 request.open("GEt", ulr, true);
+	 request.open("GET", location.protocol + "//" + domain + + ulr, true);
 	 request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	 request.send(data); 	
 }
@@ -228,7 +229,7 @@ function doAdminsAjax(path, handler){
 			 Edit(request);
 		 
 	 };
-	 request.open("GET", domain + path, true);
+	 request.open("GET", location.protocol + "//" + domain + path, true);
 	 request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 	 request.send(); 
 } 
@@ -244,7 +245,7 @@ function doAdminsAjaxPost(path, handler){
 			 deleted(request);
 		 
 	 };
-	 request.open("POST", domain + path);
+	 request.open("POST", location.protocol + "//" + domain + path);
 	 //request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 	 request.send(); 
 } 
@@ -330,7 +331,7 @@ function saveEdits(){
 	var inv = document.getElementById("inventory").value;
 	var price = document.getElementById("price").value;
 	var xhr = new XMLHttpRequest();
-    xhr.open("POST", domain + "/api/iteminfo/update_inventory/", true);
+    xhr.open("POST", location.protocol + "//" + domain + "/api/iteminfo/update_inventory/", true); 
     xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
     var data = {
         "productId": productId,

@@ -7,18 +7,15 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.springboot.bookshop.entity.Address;
+
 import com.springboot.bookshop.entity.Billing;
 import com.springboot.bookshop.entity.Checkout;
 import com.springboot.bookshop.exception.ResourceNotFoundException;
 import com.springboot.bookshop.model.Visitor;
-import com.springboot.bookshop.repo.BillingRepository;
-import com.springboot.bookshop.repo.CheckoutRepository;
 import com.springboot.bookshop.service.BillingService;
 import com.springboot.bookshop.service.CheckoutService;
 import com.springboot.bookshop.utils.DataValidation;
@@ -40,6 +37,9 @@ public class BillingController {
 	@Autowired
 	private CheckoutService checkoutService;
 	
+	@Autowired
+	private DataValidation dataValidation;
+	
 	@GetMapping("/email/{email}")
 	public List<Billing> getBillingsByEmail(@PathVariable (value = "email") String cutomerEmail) {
 		return  this.billingService.findAllByEmail(cutomerEmail);
@@ -56,9 +56,9 @@ public class BillingController {
 		if(existingCheckout == null) {
 			throw new ResourceNotFoundException("Invalid checkout");
 		}
-		DataValidation validate = new DataValidation();
-		boolean validBilling = validate.validateBilling(billing);
-		if(!validBilling) 
+
+		
+		if(!dataValidation.validateBilling(billing)) 
 			return null;
 		String email = existingCheckout.getEmail();
 		billing.setEmail(email);

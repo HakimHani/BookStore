@@ -2,7 +2,7 @@ package com.springboot.bookshop.controller;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -13,21 +13,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.springboot.bookshop.entity.Address;
+
 import com.springboot.bookshop.entity.ItemInfo;
 import com.springboot.bookshop.entity.Review;
 import com.springboot.bookshop.entity.Sales;
 import com.springboot.bookshop.exception.ResourceNotFoundException;
 import com.springboot.bookshop.model.Visitor;
-import com.springboot.bookshop.repo.AddressRepository;
-import com.springboot.bookshop.repo.ItemInfoRepository;
-import com.springboot.bookshop.repo.ReviewRepository;
-import com.springboot.bookshop.repo.SalesRepository;
-import com.springboot.bookshop.repo.UserRepository;
 import com.springboot.bookshop.service.ItemInfoService;
 import com.springboot.bookshop.service.ReviewService;
 import com.springboot.bookshop.service.SalesService;
-import com.springboot.bookshop.service.UserService;
 import com.springboot.bookshop.utils.IdentificationGenerator;
 
 @RestController
@@ -35,9 +29,6 @@ import com.springboot.bookshop.utils.IdentificationGenerator;
 @Scope("session")
 public class ReviewController {
 
-
-	@Autowired
-	private UserService userService;
 
 	@Autowired
 	private ReviewService reviewService;

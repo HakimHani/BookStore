@@ -1,7 +1,6 @@
 package com.springboot.bookshop.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -20,8 +19,6 @@ import com.springboot.bookshop.entity.Address;
 import com.springboot.bookshop.entity.User;
 import com.springboot.bookshop.exception.ResourceNotFoundException;
 import com.springboot.bookshop.model.Visitor;
-import com.springboot.bookshop.repo.AddressRepository;
-import com.springboot.bookshop.repo.UserRepository;
 import com.springboot.bookshop.service.AddressService;
 import com.springboot.bookshop.service.UserService;
 

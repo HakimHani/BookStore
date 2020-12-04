@@ -58,6 +58,23 @@ public class ItemInfoService {
 	public void delete(ItemInfo item){
 		this.itemInfoRepository.delete(item);
 	}
+	
+	public List<ItemInfo> getItemByGroups(List<ItemInfo> allItems,int groupIndex){
+		//List<ItemInfo> allItems = this.itemInfoRepository.findAll();
+		int allSize = allItems.size();
+		if(allSize <= (groupIndex-1) *20) {
+			System.out.println("Return first 20..");
+			return allItems.subList(0, allSize >= 20 ? 20 : allSize);
+		}
+		
+		if(allSize < groupIndex*20) {
+			System.out.println("Return partial");
+			return allItems.subList((groupIndex-1) *20, allSize);
+		}
+		
+		System.out.println("Return selected");
+		return allItems.subList((groupIndex-1) *20, groupIndex*20);
+	}
 
 
 }

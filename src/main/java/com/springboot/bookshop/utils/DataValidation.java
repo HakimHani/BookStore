@@ -8,12 +8,18 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.springframework.stereotype.Component;
+
 import com.springboot.bookshop.entity.Address;
 import com.springboot.bookshop.entity.Billing;
 
-
+@Component
 public class DataValidation {
 	
+	
+	DataValidation(){
+		
+	}
 	
 	public boolean validateBilling(Billing billing) {
 		

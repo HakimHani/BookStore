@@ -1,29 +1,28 @@
 package com.springboot.bookshop.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.bookshop.entity.ItemInfo;
 import com.springboot.bookshop.exception.ResourceNotFoundException;
-import com.springboot.bookshop.repo.ItemInfoRepository;
 import com.springboot.bookshop.service.ItemInfoService;
 import com.springboot.bookshop.utils.IdentificationGenerator;
 import com.springboot.bookshop.utils.ItemInfosParser;
+import com.springboot.bookshop.utils.ResponseBuilder;
 
 
 
@@ -39,6 +38,9 @@ public class ItemInfoController {
 
 	@Autowired
 	private IdentificationGenerator idGenerator;
+	
+	@Autowired
+	private ResponseBuilder responseBuilder;
 
 
 
@@ -153,12 +155,19 @@ public class ItemInfoController {
 	}
 
 	// update item info
-	@PostMapping("/update_inventory")
-	public ItemInfo updateItemInfo(@RequestBody List<String> updateInfo) {
-		ItemInfo item = this.itemInfoService.findByProductId(updateInfo.get(0))
-				.orElseThrow(() -> new ResourceNotFoundException("Item not found with sku :" + updateInfo.get(0)));
+	@PostMapping(path = "/update_inventory", produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Object> updateItemInfo(@RequestBody List<String> updateInfo) {
+		ItemInfo item = this.itemInfoService.findByProductId(updateInfo.get(0)).orElse(null);
+				//.orElseThrow(() -> new ResourceNotFoundException("Item not found with sku :" + updateInfo.get(0)));
+			
+		if(item == null) {
+            return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("not_found", null), HttpStatus.OK);
+		}
+        
 		item.setInventory(Integer.parseInt(updateInfo.get(1)));
-		return this.itemInfoService.save(item);
+		this.itemInfoService.save(item);
+
+        return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("success", item), HttpStatus.OK);
 	}
 
 	// delete user by id

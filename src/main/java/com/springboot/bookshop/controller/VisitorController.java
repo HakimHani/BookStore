@@ -149,7 +149,13 @@ public class VisitorController {
 	}
 	
 	
-
+	@GetMapping(path = "/admin")
+	public String adminDashboard(Model model)
+	{
+		
+		return "admin_ops";
+		
+	}
 
 
 }

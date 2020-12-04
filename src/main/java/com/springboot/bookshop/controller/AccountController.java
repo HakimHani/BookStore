@@ -151,6 +151,10 @@ public class AccountController {
 				User user = this.userService.findByEmail(email).orElse(null);
 				visitor.logIn(user);
 				visitor.setPermission(found.getAccountType());
+				
+				if(visitor.getPermission() == AccountType.ADMIN) {
+					return new ModelAndView("redirect:/admin");
+				}
 
 				return new ModelAndView("redirect:/?success");
 			}else {

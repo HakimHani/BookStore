@@ -30,9 +30,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-async function createBilling(checkoutId){
+async function createBilling(checkoutId) {
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", location.protocol  + "//" + domain + "/api/billing/create", true);
+    xhr.open("POST", location.protocol + "//" + domain + "/api/billing/create", true);
     xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
     var data = {
         "cardType": "2",
@@ -47,12 +47,21 @@ async function createBilling(checkoutId){
     console.log(data);
     xhr.send(JSON.stringify(data));
     xhr.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log(this.responseText);
-            billingResponse = JSON.parse(this.responseText)
-            //uploadShipping(email,checkoutId,cAddr.addressId);
-            if(billingResponse.billingId != null){
-                uploadBilling(checkoutId,billingResponse.billingId);
+        if (this.readyState == 4) {
+            var response = this.responseText;
+            console.log(response);
+            if (this.status == 200) {
+                response = JSON.parse(this.responseText);
+                if (response.status == "Success") {
+                    responseBilling = response.item;
+                    console.log(responseBilling);
+                    uploadBilling(checkoutId, responseBilling.billingId);
+                } else {
+                    console.log(response.status + " " + response.message);
+                }
+
+            }else{
+                console.log("FAILED");
             }
         }
     };
@@ -64,7 +73,7 @@ async function createBilling(checkoutId){
 
 
 
-async function uploadBilling(checkoutId,billingId) {
+async function uploadBilling(checkoutId, billingId) {
     console.log("sending shipping");
 
     var xhr = new XMLHttpRequest();
@@ -79,7 +88,7 @@ async function uploadBilling(checkoutId,billingId) {
         if (this.readyState == 4 && this.status == 200) {
             console.log(this.responseText);
             var checkoutResult = JSON.parse(this.responseText);
-            if(checkoutResult.checkoutState == "BILLING_INFO"){
+            if (checkoutResult.checkoutState == "BILLING_INFO") {
                 console.log("Proceeding to review order");
                 window.location.href = location.protocol + "//" + domain + "/checkout/review";
             }

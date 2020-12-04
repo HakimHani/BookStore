@@ -58,6 +58,8 @@ public class AddressController {
 		return  this.addressService.findAllByEmail(cutomerEmail);
 	}
 
+	
+	
 	// create user
 	@PostMapping("/create/{email}")
 	public ResponseEntity<Object> createAddress(@RequestBody Address address) {
@@ -67,45 +69,53 @@ public class AddressController {
 		}
 		
 		if(!dataValidation.validateAddress(address)) {
-			return new ResponseEntity<Object>(responseBuilder.AddressResponse("ADDRESS_VALIDATION_FAILED", address), HttpStatus.OK);
+			return new ResponseEntity<Object>(responseBuilder.AddressResponse("Failed", "ADDRESS_VALIDATION_FAILED", address), HttpStatus.OK);
 		}
 		address.setAddressId(idGenerator.generateAddressId());
 		this.addressService.save(address);
 		
-		return new ResponseEntity<Object>(responseBuilder.AddressResponse("success", address), HttpStatus.OK);
+		return new ResponseEntity<Object>(responseBuilder.AddressResponse("Success", "Address created", address), HttpStatus.OK);
 	}
+	
+	
 
 	// update user
-	@PutMapping("/modify/{addressId}")
-	public Address updateAddress(@RequestBody Address address, @PathVariable ("addressId") String addressId) {
+	@PutMapping("/modify")
+	public ResponseEntity<Object> updateAddress(@RequestBody Address address) {
 	
-		Address existingAddress = this.addressService.findByAddressId(addressId).orElse(null);
-		if(existingAddress == null) {
-			System.out.println("Address not found with addressId :\" + addressId");
-			throw new ResourceNotFoundException("Address not found with addressId :" + addressId);
+		
+		if(!dataValidation.validateAddress(address)) {
+			return new ResponseEntity<Object>(responseBuilder.AddressResponse("Failed", "ADDRESS_VALIDATION_FAILED", address), HttpStatus.OK);
 		}
-		existingAddress.setFirstName(address.getFirstName());
-		existingAddress.setLastName(address.getLastName());
-		existingAddress.setAddressOne(address.getAddressOne());
-		existingAddress.setAddressTwo(address.getAddressTwo()); 
-		existingAddress.setCity(address.getCity());
-		existingAddress.setCountry(address.getCountry());
-		existingAddress.setState(address.getState());
-		existingAddress.setPostal(address.getPostal());
-		existingAddress.setPhone(address.getPhone()); 
-		return this.addressService.save(existingAddress);
+		
+		
+		Boolean modify = this.addressService.modify(address);
+		if(!modify) {
+			return new ResponseEntity<Object>(responseBuilder.AddressResponse("Failed", "Error modify address", address), HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<Object>(responseBuilder.AddressResponse("Success", "Address modified", address), HttpStatus.OK);
 	}
+	
+	
+	
 
 	// delete user by id
-	@DeleteMapping("/delete/{addressId}")
-	public ResponseEntity<Address> deleteAddress(@PathVariable ("addressId") String addressId){
+	@DeleteMapping("/delete/")
+	public ResponseEntity<Object> deleteAddress(@PathVariable ("addressId") String addressId){
+		
 		Address existingAddress = this.addressService.findByAddressId(addressId).orElse(null);
 		if(existingAddress == null) {
 			System.out.println("Address not found with addressId:" + addressId);
-			throw new ResourceNotFoundException("Address not found with addressId :" + addressId);
+			return new ResponseEntity<Object>(responseBuilder.AddressResponse("Success", "Address is not found", null), HttpStatus.OK);
+			//throw new ResourceNotFoundException("Address not found with addressId :" + addressId);
 		}
+		
 		this.addressService.delete(existingAddress);
-		return ResponseEntity.ok().build();
+		return new ResponseEntity<Object>(responseBuilder.AddressResponse("Success", "Address deleted", null), HttpStatus.OK);
 	}	
+	
+	
+	
 }
 

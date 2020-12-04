@@ -21,9 +21,18 @@ public class ResponseBuilder {
 	}
 	
 	
-	public Map<String, Object> AddressResponse(String status, Object data) {
+	public Map<String, Object> AddressResponse(String status, String message, Object data) {
 		Map<String, Object> json = new HashMap<String, Object>();
 		json.put("status", status);
+		json.put("message", message);
+		json.put("item", data);
+		return json;
+	}
+	
+	public Map<String, Object> BillingResponse(String status, String message, Object data) {
+		Map<String, Object> json = new HashMap<String, Object>();
+		json.put("status", status);
+		json.put("message", message);
 		json.put("item", data);
 		return json;
 	}

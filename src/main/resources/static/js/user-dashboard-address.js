@@ -42,6 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         var addressId = $(this).attr('addressId');
         var nAddress = {
+            "addressId": addressId,
             "email": document.getElementById("userEmail").innerHTML,
             "firstName": document.getElementById("fName").value,
             "lastName": document.getElementById("lName").value,
@@ -57,22 +58,8 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("Updating address " + addressId);
 
 
-        uploadAddress(addressId, nAddress);
+        uploadAddress(nAddress);
 
-        /*
-        {
-            "email": email,
-            "firstName": document.getElementById("fname").value.split(' ')[0],
-            "lastName": document.getElementById("fname").value.split(' ')[1],
-            "addressOne": document.getElementById("adr").value,
-            "addressTwo": "none",
-            "city": document.getElementById("city").value,
-            "country": "Canada",
-            "state": document.getElementById("state").value,
-            "postal": document.getElementById("zip").value,
-            "phone": "none"
-        }
-        */
 
     })
 
@@ -106,33 +93,40 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-async function uploadAddress(addressId, newAddress) {
+async function uploadAddress(newAddress) {
 
     var xhr = new XMLHttpRequest();
-    xhr.open("PUT", location.protocol + "//" + domain + "/api/address/modify/" + addressId, true);
+    xhr.open("PUT", location.protocol + "//" + domain + "/api/address/modify", true);
     xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
     var data = newAddress;
 
     console.log(data);
     xhr.send(JSON.stringify(data));
     xhr.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log(this.responseText);
-            try {
-                cAddr = JSON.parse(this.responseText)
-                document.getElementById("fName").value = "";
-                document.getElementById("lName").value = "";
-                document.getElementById("addressOne").value = "";
-                document.getElementById("addressTwo").value = "";
-                document.getElementById("city").value = "";
-                document.getElementById("country").value = "";
-                document.getElementById("state").value = "";
-                document.getElementById("postal").value = "";
-                document.getElementById("phone").valu = "";
-                location.reload();
-            } catch (err) {
-                console.log("error updating address");
+        if (this.readyState == 4) {
+            var response = this.responseText;
+            console.log(response);
+            if (this.status == 200) {
+                response = JSON.parse(response);
+                if (response.status == "Success") {
+                    console.log("Address modified");
+                    document.getElementById("fName").value = "";
+                    document.getElementById("lName").value = "";
+                    document.getElementById("addressOne").value = "";
+                    document.getElementById("addressTwo").value = "";
+                    document.getElementById("city").value = "";
+                    document.getElementById("country").value = "";
+                    document.getElementById("state").value = "";
+                    document.getElementById("postal").value = "";
+                    document.getElementById("phone").valu = "";
+                    location.reload();
+                } else {
+                    console.log(response.status + " " + response.message);
+                }
+            } else {
+
             }
+
 
 
         }

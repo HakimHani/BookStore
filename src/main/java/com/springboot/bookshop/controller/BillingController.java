@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +22,7 @@ import com.springboot.bookshop.service.BillingService;
 import com.springboot.bookshop.service.CheckoutService;
 import com.springboot.bookshop.utils.DataValidation;
 import com.springboot.bookshop.utils.IdentificationGenerator;
+import com.springboot.bookshop.utils.ResponseBuilder;
 
 @RestController
 @Scope("session")
@@ -40,6 +43,9 @@ public class BillingController {
 	@Autowired
 	private DataValidation dataValidation;
 	
+	@Autowired
+	private ResponseBuilder responseBuilder;
+	
 	@GetMapping("/email/{email}")
 	public List<Billing> getBillingsByEmail(@PathVariable (value = "email") String cutomerEmail) {
 		return  this.billingService.findAllByEmail(cutomerEmail);
@@ -47,25 +53,29 @@ public class BillingController {
 	
 	
 	@PostMapping("/create")
-	public Billing createBilling(@RequestBody Billing billing) {
+	public ResponseEntity<Object> createBilling(@RequestBody Billing billing) {
+		
 		
 		if(this.visitor.getCart().getCheckoutId() == null) {
-			throw new ResourceNotFoundException("Invalid checkout");
+			//throw new ResourceNotFoundException("Invalid checkout");
+			return new ResponseEntity<Object>(responseBuilder.BillingResponse("Failed", "CHECKOUT EXPIRED", billing), HttpStatus.OK);
 		}
 		Checkout existingCheckout = this.checkoutService.findByCheckoutId(visitor.getCart().getCheckoutId()).orElse(null);
 		if(existingCheckout == null) {
-			throw new ResourceNotFoundException("Invalid checkout");
+			return new ResponseEntity<Object>(responseBuilder.BillingResponse("Failed", "INVALID CHECKOUT", billing), HttpStatus.OK);
+			//throw new ResourceNotFoundException("Invalid checkout");
 		}
 
+		if(!dataValidation.validateBilling(billing)) {
+			return new ResponseEntity<Object>(responseBuilder.BillingResponse("Failed", "BILLING INFORMATION FORMATING ERROR", billing), HttpStatus.OK);
+		}
 		
-		if(!dataValidation.validateBilling(billing)) 
-			return null;
 		String email = existingCheckout.getEmail();
 		billing.setEmail(email);
 		billing.setBillingId(idGenerator.generateBillingId());
 		this.billingService.save(billing);
 		//return "New billing created";
-		return billing;
+		return new ResponseEntity<Object>(responseBuilder.BillingResponse("Success", "Successfully created billing", billing), HttpStatus.OK);
 	}
 	
 	

@@ -81,12 +81,12 @@ async function uploadAddress(isGuest, clientEmail, checkoutId) {
         if (this.readyState == 4) {
             if (this.status == 200) {
                 var response = JSON.parse(this.responseText);
-                if (response.status == "success") {
+                if (response.status == "Success") {
                     cAddr = response.item;
                     console.log(cAddr);
-                    //uploadShipping(email, checkoutId, cAddr.addressId);
+                    uploadShipping(email, checkoutId, cAddr.addressId);
                 } else {
-                    console.log(response.status);
+                    console.log(response.status + " " + response.message);
                 }
             } else {
                 console.log("FAILED");

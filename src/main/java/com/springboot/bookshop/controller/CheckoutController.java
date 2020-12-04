@@ -35,6 +35,7 @@ import com.springboot.bookshop.service.CheckoutService;
 import com.springboot.bookshop.service.ItemInfoService;
 import com.springboot.bookshop.service.SalesService;
 import com.springboot.bookshop.utils.IdentificationGenerator;
+import com.springboot.bookshop.utils.ResponseBuilder;
 
 @RestController
 @Scope("session")
@@ -57,6 +58,9 @@ public class CheckoutController {
 	
 	@Autowired
 	private SalesService salesService;
+	
+	@Autowired
+	private ResponseBuilder responseBuilder;
 
 	//Fetch all checkouts of the user by email
 	@GetMapping("/{email}")

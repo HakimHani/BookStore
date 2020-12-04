@@ -112,6 +112,62 @@
         </div>
     </div>
 
+
+
+
+
+     <!------User review------->
+     <div class="row row-2">
+        <h2 id="reviewStatus">Wanna leave a review?</h2>
+    </div>
+
+    <div class="review-container">
+        <div class="post">
+            <div class="text">We appreciate your ratings!</div>
+            <div class="edit">EDIT</div>
+        </div>
+        <div class="star-widget">
+            <input type="radio" class="stars" name="rate" id="rate-5">
+            <label for="rate-5" class="fa fa-star"></label>
+            <input type="radio" class="stars" name="rate" id="rate-4">
+            <label for="rate-4" class="fa fa-star"></label>
+            <input type="radio" class="stars" name="rate" id="rate-3">
+            <label for="rate-3" class="fa fa-star"></label>
+            <input type="radio" class="stars" name="rate" id="rate-2">
+            <label for="rate-2" class="fa fa-star"></label>
+            <input type="radio" class="stars" name="rate" id="rate-1">
+            <label for="rate-1" class="fa fa-star"></label>
+            <div class="fform">
+                <header></header>
+                <div class="textarea">
+                    <textarea id="comments" cols="35" placeholder="What do you think of the book?"></textarea>
+                </div>
+                <div class="post-btn" >
+                    <button id="submitReview" th:pid="${item.productId}">Post</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row row-2">
+        <h2>Reviews from others</h2>
+    </div>
+    <div class="row oReview" th:each="review : ${reviews}">
+        <div class="col-review">
+            <h3 th:text="${review.email}">ajsdhsdh@gmail.com</h3>
+            <div class="rating">
+                <th:block th:each="i: ${#numbers.sequence(0, review.rate)}">
+                    <i class="fa fa-star"></i>
+                    </th:block>
+            </div>
+            <div th:text="${review.reviewDate}">2020-12-3 10:05:1232:0000</div>
+        </div>
+        <div class="col-review" th:text="${review.comment}">Decd aaaaaaaaaaaaaaaaaaaaaaaaaa!</div>
+    </div>
+
+
     <!------footer------->
     <div class="footer">
         <div class="container">

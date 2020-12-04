@@ -21,9 +21,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.bookshop.ItemInfo;
+import com.springboot.bookshop.Review;
 import com.springboot.bookshop.ShopItem;
 import com.springboot.bookshop.Visitor;
 import com.springboot.bookshop.repo.ItemInfoRepository;
+import com.springboot.bookshop.repo.ReviewRepository;
 
 @Controller
 @Scope("session")
@@ -38,6 +40,9 @@ public class VisitorController {
 	
 	@Autowired
 	private ItemInfoRepository itemInfoRepository;
+	
+	@Autowired
+	private ReviewRepository reviewRepository;
 
 	@GetMapping("/visit")
 	public String visiting() {
@@ -190,6 +195,9 @@ public class VisitorController {
 			recommands = recommands.subList(0, 3);
 		}
 		model.addAttribute("recommands",recommands);
+		
+		List<Review> reviews = reviewRepository.findAllByProductId(productId);
+		model.addAttribute("reviews",reviews);
 		
 		return "product-detail";
 

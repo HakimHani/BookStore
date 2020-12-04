@@ -1,6 +1,7 @@
 package com.springboot.bookshop;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -41,7 +42,9 @@ public class Review implements Serializable {
 	
 	@Column(name="product_id", nullable = false)
 	private String productId;
-
+	
+	@Column(name="reviewDate", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private Date reviewDate;
 
 
 
@@ -126,7 +129,16 @@ public class Review implements Serializable {
 	}
 
 
+	public Date getReviewDate() {
+		return reviewDate;
+	}
 
+	public void setReviewDate(Date reviewDate) {
+		this.reviewDate = reviewDate;
+	}
+
+
+	
 
 
 

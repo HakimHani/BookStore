@@ -341,3 +341,167 @@ input:focus{
 	justify-content: space-between;
 	margin:100px auto 50px;
 }
+
+
+
+
+
+
+
+/*------rating and review-------*/
+.review-container {
+	position: relative;
+	width: 400;
+	background: #ffffff;
+	padding: 20px 30px;
+	border: 1px solid transparent;
+	border-radius: 5px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.review-container .star-widget input {
+	display: none;
+}
+
+.review-container .post {
+	display: none;
+}
+
+.review-container .text {
+	font-size: 20px;
+	color: #555;
+	font-weight: 500;
+}
+
+.review-container .edit {
+	font-size: 18px;
+	color: #555;
+	font-weight: 500;
+	position: relative;
+	right: 10px;
+	top: 5px;
+	cursor: pointer;
+}
+
+.review-container .edit:hover {
+	color: #4db8ff;
+}
+
+
+.star-widget label {
+	font-size: 35px;
+	float: right;
+	color: #444;
+	padding: 10px;
+	transition: all 0.2s ease;
+}
+
+input:not(:checked)~label:hover,
+input:not(:checked)~label:hover~label {
+	color: #ff523b;
+}
+
+input:checked~label {
+	color: #ff523b;
+}
+
+input#rate-5:checked~label {
+	color: #ff523b;
+	text-shadow: 0 0 20px #fd4;
+}
+
+#rate-1:checked~form header:before {
+	content: "emmmm.....It's somehow under my expectations 🧐";
+}
+
+#rate-2:checked~form header:before {
+	content: "emmmm.....It was ok 😕";
+}
+
+#rate-3:checked~form header:before {
+	content: "Yesss...It was awsome 🤗";
+}
+
+#rate-4:checked~form header:before {
+	content: "Awwww...I just like this! ";
+}
+
+#rate-5:checked~form header:before {
+	content: "OMG!!!!Totally love it! 🥰";
+}
+
+.review-container .fform {
+	display: none;
+}
+
+input:checked~.fform {
+	display: block;
+}
+
+.fform header {
+	width: 100;
+	color: #444;
+	font-weight: 500;
+	margin: 5px 0 20px 0;
+	text-align: center;
+	transition: all 0.2s ease;
+}
+
+.fform .textarea {
+	height: 100px;
+	width: 100%;
+	overflow: hidden;
+
+}
+
+.fform .textarea textarea {
+	height: 100%;
+	width: 100%;
+	color: #000000;
+	outline: none;
+	border: 1px solid #4db8ff;
+	border-radius: 5%;
+	font-size: 13px;
+	padding: 10px;
+	resize: none;
+}
+
+.fform .post-btn {
+	height: 45px;
+	width: 100%;
+	margin: 15px 0;
+}
+
+.fform .post-btn button {
+	height: 100%;
+	width: 100%;
+	outline: none;
+	display: inline-block;
+	font-size: 17px;
+	background: #4db8ff;
+	color: #fff;
+	border-radius: 30px;
+	font-weight: 500;
+	text-transform: uppercase;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.fform .post-btn button:hover {
+	background: #005c99;
+
+}
+
+
+.col-review{
+	margin-left: 10%;
+	min-width: 25%;
+	max-width: 25%;
+}
+
+
+.row .oReview{
+	margin-top: 20px;
+}

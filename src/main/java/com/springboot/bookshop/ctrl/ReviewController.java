@@ -1,5 +1,6 @@
 package com.springboot.bookshop.ctrl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,11 +15,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.bookshop.Address;
 import com.springboot.bookshop.IdentificationGenerator;
+import com.springboot.bookshop.ItemInfo;
 import com.springboot.bookshop.Review;
+import com.springboot.bookshop.Sales;
 import com.springboot.bookshop.Visitor;
 import com.springboot.bookshop.exception.ResourceNotFoundException;
 import com.springboot.bookshop.repo.AddressRepository;
+import com.springboot.bookshop.repo.ItemInfoRepository;
 import com.springboot.bookshop.repo.ReviewRepository;
+import com.springboot.bookshop.repo.SalesRepository;
 import com.springboot.bookshop.repo.UserRepository;
 
 @RestController
@@ -32,6 +37,12 @@ public class ReviewController {
 
 	@Autowired
 	private ReviewRepository reviewRepository;
+	
+	@Autowired
+	private SalesRepository salesRepository;
+	
+	@Autowired
+	private ItemInfoRepository itemRepo;
 
 	@Autowired
 	private Visitor visitor;
@@ -41,11 +52,58 @@ public class ReviewController {
 	
 	// create user
 	@PostMapping("/create")
-	public Review createAddress(@RequestBody Review review) {
+	public String createAddress(@RequestBody Review review) {
 
+		if(this.visitor.getUser() == null) {
+			return "Failed, invalid user";
+		}
+		
+		List<Sales> eSales = this.salesRepository.findAllByCustomerEmail(this.visitor.getUser().getEmail());
+		if(eSales.size() == 0) {
+			return "Failed, no purchase history found for this user";
+		}
+		
+		Boolean isPurchased = false;
+		for(Sales cSales : eSales) {
+			if(cSales.getItemId().equals(review.getproductId())) {
+				isPurchased = true;
+				break;
+			}
+		}
+		
+		if(!isPurchased) {
+			return "Failed, user haven not purchased this item";
+		}
+		
+		
+		ItemInfo targetItem = this.itemRepo.findByProductId(review.getproductId()).orElse(null);
+		if(targetItem == null) {
+			return "Failed, error getting product detail";
+		}
+		
+
+		
+		
+		review.setEmail(this.visitor.getUser().getEmail());
+		review.setLastName(this.visitor.getUser().getLastName());
 		review.setReviewId(idGenerator.generateAddressId());
+		review.setDate("placeholder");
+		review.setReviewDate(new Date());
 		this.reviewRepository.save(review);
-		return review;
+		
+		List<Review> reviews = this.reviewRepository.findAllByProductId(review.getproductId());
+		if(reviews.size() == 0) {
+			return "Failed saving review";
+		}
+
+		double total = 0;
+		for(Review cReview : reviews) {
+			total += cReview.getRate();
+		}
+		double fRatings = total / reviews.size();
+		targetItem.setRate(fRatings);
+		this.itemRepo.save(targetItem);
+		return "Successfully saved comment and rating";
 	}
 	
 	

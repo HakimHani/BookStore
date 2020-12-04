@@ -95,12 +95,12 @@ public class AccountController {
 		if(this.accountRepository.findByEmail(email).orElse(null) != null) {
 			System.out.println(this.accountRepository.findByEmail(email));
 			//return "Failed, Account already exist";
-			return new ModelAndView("redirect:/login?failed-dupacc");
+			return new ModelAndView("redirect:/login?error=failed-dupacc");
 		}
 		User user = this.userRepository.findByEmail(email).orElse(null);
 		if(user != null) {
 			//return "Failed, user already exists";
-			return new ModelAndView("redirect:/login?failed-dupuser");
+			return new ModelAndView("redirect:/login?error=failed-dupuser");
 		}
 		Account account = new Account(email,password,AccountType.CUSTOMER,"2020/12");
 		//account.setAccountType(AccountType.CUSTOMER);
@@ -127,7 +127,7 @@ public class AccountController {
 
 				User user = this.userRepository.findByEmail(account.getEmail()).orElse(null);
 				visitor.logIn(user);
-
+				visitor.setPermission(found.getAccountType());
 
 				return "Logged in";
 			}else {
@@ -152,7 +152,7 @@ public class AccountController {
 
 				User user = this.userRepository.findByEmail(email).orElse(null);
 				visitor.logIn(user);
-
+				visitor.setPermission(found.getAccountType());
 
 				return new ModelAndView("redirect:/?success");
 			}else {

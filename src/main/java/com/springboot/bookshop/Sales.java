@@ -104,7 +104,15 @@ public class Sales implements Serializable {
 		this.date = date;
 	}
 
+	public String getCustomerEmail() {
+		return customerEmail;
+	}
 
+	public void setCustomerEmail(String customerEmail) {
+		this.customerEmail = customerEmail;
+	}
+
+	
 
 
 

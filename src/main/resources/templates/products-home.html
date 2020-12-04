@@ -55,7 +55,7 @@
     <div class="small-container">
       <h2 class="title">Shop Bestsellers</h2>
       <div class="row">
-        <div class="col-3" th:each="bestItem : ${best}"> 
+        <div class="col-3" th:each="bestItem : ${best}">
           <img id="bestProduct" data-th-attr="src=${bestItem.imgurl},productId=${bestItem.productId}">
         </div>
       </div>
@@ -78,12 +78,13 @@
             <a th:text="${item.category}">Category</a>
           </h4>
           <h5 th:text="${item.brand}">brand</h5>
+
           <div class="rating">
+
+            <th:block th:each="i: ${#numbers.sequence(0, item.rate)}">
             <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star-half-o"></i>
+            </th:block>
+            
           </div>
           <p><a>$</a><a th:text="${item.price}">22.02</a></p>
         </div>

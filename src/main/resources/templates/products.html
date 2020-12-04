@@ -64,11 +64,9 @@
             </h4>
             <h5 th:text="${item.brand}">brand</h5>
             <div class="rating">
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star-half-o"></i>
+              <th:block th:each="i: ${#numbers.sequence(0, item.rate)}">
+                <i class="fa fa-star"></i>
+                </th:block>
             </div>
             <p><a>$</a><a th:text="${item.price}">22.02</a></p>
           </div>

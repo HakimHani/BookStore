@@ -1,0 +1,25 @@
+/* Modal Content */
+.modal-content {
+	background-color: #fefefe;
+	margin: auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 80%;
+	border: 1px solid transparent;
+	border-radius: 8px;
+}
+
+.modal-content .row{
+	margin-top: 20px;
+}
+
+#EditProduct{
+	display: center;
+	background-color: lightgray;
+	border: 2px solid black;
+    border-radius: 10px
+}
+
+.editModalField{
+	font-size: 16px;
+}

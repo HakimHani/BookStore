@@ -5,6 +5,7 @@
 	<title>Admin DashBoard</title>
 	<link th:href="@{/css/login.css}" rel="stylesheet" />
   	<link rel="preconnect" href="https://fonts.gstatic.com">
+  	<link th:href="@{/css/admin_ops.css}" rel="stylesheet" />
   	<link href="https://fonts.googleapis.com/css2?family=Nerko+One&display=swap" rel="stylesheet">
   	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
@@ -41,47 +42,58 @@
 	</div>
     <div align = "center" id="products_table" class="products" style="border:'1'; cellpadding:'5';"></div>
     <br/><br/><br/>
-    <div id="EditProduct" style="display:none">
-    	<fieldset><legend class = "legend">Edit product</legend>
+    
+    
+    <!-- Displaying the edit modal -->
+    
+        <div id="editModal" class="modal">
+
+        <!-- Modal content -->
+        <div id="EditProduct" style="display:none">
+    	<fieldset><h4 class = "text-center my-3">Edit product</h4>
           
-              <table>
+              <table style = "background: lightgray; width: 98%; margin:5px;">
                  <tbody>
-                   <tr style = "background: white;">
-                     <td><label for = "productId">Id:</label></td><td><input id = "productId" name = "productId" style = "font-size:16px;"
+                   <tr >
+                     <td><label for = "productId">Id:</label></td><td><input class="editModalField form-control" id = "productId" name = "productId" 
                                 value = '' type = "text" readonly/></td>
                    </tr>
-                   <tr style="background: white;">
-                     <td><label for = "product">Product:</label></td><td><input id = "product" name = "product" style = "font-size:16px;"
+                   <tr >
+                     <td><label for = "product">Product:</label></td><td><input class="editModalField form-control" id = "product" name = "product" 
 										value = "" type = "text"/></td>
                    </tr>
-                   <tr style="background: white;">
-                     <td><label for = "category">Category:</label></td><td><input id = "category" name = "category" style = "font-size:16px;"
+                   <tr >
+                     <td><label for = "category">Category:</label></td><td><input class="editModalField form-control" id = "category" name = "category" 
                                 value = "" type = "text"/></td>
                    </tr>
-		   		   <tr style = "background: white;">
-                     <td><label for = "price">Price:</label></td><td><input id = "price" name = "price" style = "font-size:16px;"
+		   		   <tr >
+                     <td><label for = "price">Price:</label></td><td><input class="editModalField form-control" id = "price" name = "price" 
                                 value = "" type = "number" step = "0.01" min = "0"/></td>
                    </tr>
                    
-                   <tr style = "background: white;">
-                     <td><label for = "inventory">Inventory:</label></td><td><input id = "inventory" name = "inventory" style = "font-size:16px;"
+                   <tr >
+                     <td><label for = "inventory">Inventory:</label></td><td><input class="editModalField form-control" id = "inventory" name = "inventory" 
                                 value = "" type = "number" step = "1" min = "0"/></td>
                    </tr>
                    
-                   <tr style = "background: white;">
-                     <td><label for = "available">Availabe:</label></td><td><input id = "available" name = "available" style = "font-size:16px;"
+                   <tr>
+                     <td><label for = "available">Availabe:</label></td><td><input class="editModalField form-control" id = "available" name = "available"
                                 value = "" type = "number" min="0" max="1"/></td>
                    </tr>
                    
                  </tbody>
               </table>
-              <p><button type="button" onclick="saveEdits();">Save Edits</button></p>
-              <p><a href="">Back</a></p>
-          
+             <div class="text-center">
+             <button type="button" class="btn btn-success" onclick="saveEdits();">Save Edits</button><button class="btn btn-warning"><a href="">Back</a></button>
+          </div>
         </fieldset>
     </div>
+
+    </div>
     
-    <!------freatured product------->
+    
+    
+    <!------featured product------->
   <div class="footer">
     <div class="container">
       <div class="row">
@@ -124,6 +136,7 @@
 
 
 <script>
+
 
 // generate a report with the books sold each month
 var domain = "http://localhost:8090";
@@ -257,7 +270,7 @@ function populate_products_handler(request){
 			 table +="<td class='text-center'><p>" + product.category + "</p></td>";
 			 table += "<td class='text-center'><p>$" + product.price + "</p></td>";
 			 table += '<td class="text-center"><button class="btn btn-info mr-1" onclick="showProductDetails(\'' + product.productId + '\' );">' + "Show" + "</a>"; 
-			 table += '<button class="btn btn-primary mr-1" onclick="editProduct(\'' + product.productId + '\' );">' + "Edit" + "</a>"; 
+			 table += '<button id="editProduct" class="btn btn-primary mr-1" onclick="editProduct(\'' + product.productId + '\' );">' + "Edit" + "</a>"; 
 			 table += '<button class="btn btn-danger" onclick="deleteProduct(\'' + product.productId + '\' );">' + "Delete" + "</a></td>"; 
 			 table += "</tr>"
 		 }
@@ -279,6 +292,17 @@ function deleteProduct(id){
 
 
 function Edit(request){
+    let r = "254";
+    let g = "254";
+    let b = "254";
+    let opacity = "0.5";
+    
+	document.getElementById("editModal").style.display = "flex";
+    document.getElementById("editModal").style.backgroundColor="rgb(" + r + "," + g + "," + b + "," + opacity + ")";
+	document.getElementById("editModal").style.justifyContent = "center";
+	document.getElementById("editModal").style.alignItems = "center";
+
+    
 	if ((request.readyState == 4) && (request.status == 200)){
 		var edit = document.getElementById("EditProduct");
 		edit.style.display = "block";

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.springboot.bookshop.constant.enums.AccountType;
@@ -24,8 +23,6 @@ import com.springboot.bookshop.entity.Account;
 import com.springboot.bookshop.entity.User;
 import com.springboot.bookshop.exception.ResourceNotFoundException;
 import com.springboot.bookshop.model.Visitor;
-import com.springboot.bookshop.repo.AccountRepository;
-import com.springboot.bookshop.repo.UserRepository;
 import com.springboot.bookshop.service.AccountService;
 import com.springboot.bookshop.service.UserService;
 
@@ -52,7 +49,7 @@ public class AccountController {
 		return this.accountService.findAll();
 	}
 
-	// get user by id
+	// get user by email
 	@GetMapping("/{email}")
 	@ResponseBody
 	public Account getUserByEmail(@PathVariable (value = "email") String cutomerEmail) {

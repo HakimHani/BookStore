@@ -1,8 +1,7 @@
 package com.springboot.bookshop.controller;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.springboot.bookshop.constant.enums.CheckoutState;
 import com.springboot.bookshop.entity.Address;
@@ -18,10 +16,6 @@ import com.springboot.bookshop.entity.Billing;
 import com.springboot.bookshop.entity.Checkout;
 import com.springboot.bookshop.model.ShopItem;
 import com.springboot.bookshop.model.Visitor;
-import com.springboot.bookshop.repo.AddressRepository;
-import com.springboot.bookshop.repo.BillingRepository;
-import com.springboot.bookshop.repo.CheckoutRepository;
-import com.springboot.bookshop.repo.ItemInfoRepository;
 import com.springboot.bookshop.service.AddressService;
 import com.springboot.bookshop.service.BillingService;
 import com.springboot.bookshop.service.CheckoutService;
@@ -47,8 +41,6 @@ public class CheckoutPageController {
 	@Autowired
 	private IdentificationGenerator idGenerator;
 
-	@Autowired
-	private ItemInfoRepository itemInfoRepository;
 
 
 	@Autowired
@@ -248,15 +240,7 @@ public class CheckoutPageController {
 	}
 
 
-	private List<String> parseStringToList(String column) {
-		List<String> output = new ArrayList<>();
-		String listString = column.substring(1, column.length() - 1);
-		StringTokenizer stringTokenizer = new StringTokenizer(listString,",");
-		while (stringTokenizer.hasMoreTokens()){
-			output.add(stringTokenizer.nextToken());
-		}
-		return output;
-	}
+
 
 
 	private String validateCheckout(String origin) {
@@ -275,12 +259,12 @@ public class CheckoutPageController {
 		if(inCartItems.size() == 0) {
 			return "/cart";
 		}
-		double total = 0;
+		//double total = 0;
 		ArrayList<String> ids = new ArrayList<String>();
 		for (ShopItem item : inCartItems) {
 			double price = item.getItemPrice();
 			String itemId = item.getItemSku() + item.getSizeSku();
-			total += price;
+			//total += price;
 			ids.add(itemId);
 			System.out.println("Checking price for " + itemId + " | price " + Double.toString(price));
 		}
@@ -290,7 +274,7 @@ public class CheckoutPageController {
 		if(this.visitor.getCart().getCheckoutId() != null) {
 			System.out.println("Detected previous checkout");
 			Checkout existingCheckout = this.checkoutService.findByCheckoutId(visitor.getCart().getCheckoutId()).orElse(null);
-			System.out.println(parseStringToList(existingCheckout.getItems()).toString() + " | " + ids.toString());
+			//System.out.println(parseStringToList(existingCheckout.getItems()).toString() + " | " + ids.toString());
 			Boolean isq = existingCheckout.getItems().toString().equals(ids.toString());
 			//parseStringToList(existingCheckout.getItems()).equals(ids)
 			if(existingCheckout != null && isq){	

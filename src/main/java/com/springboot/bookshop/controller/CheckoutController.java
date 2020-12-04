@@ -7,12 +7,11 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
-import java.sql.Timestamp;
+
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.ui.Model;
@@ -22,23 +21,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
+
 
 import com.springboot.bookshop.constant.enums.CheckoutState;
-import com.springboot.bookshop.entity.Address;
-import com.springboot.bookshop.entity.Billing;
 import com.springboot.bookshop.entity.Checkout;
 import com.springboot.bookshop.entity.ItemInfo;
 import com.springboot.bookshop.entity.Sales;
 import com.springboot.bookshop.exception.ResourceNotFoundException;
 import com.springboot.bookshop.model.ShopItem;
 import com.springboot.bookshop.model.Visitor;
-import com.springboot.bookshop.repo.AddressRepository;
-import com.springboot.bookshop.repo.CheckoutRepository;
-import com.springboot.bookshop.repo.ItemInfoRepository;
-import com.springboot.bookshop.repo.SalesRepository;
 import com.springboot.bookshop.service.CheckoutService;
 import com.springboot.bookshop.service.ItemInfoService;
 import com.springboot.bookshop.service.SalesService;
@@ -202,16 +194,6 @@ public class CheckoutController {
 		existingCheckout.setCheckoutState(CheckoutState.PROCESSING_BILLING);
 		this.checkoutService.save(existingCheckout);
 		return existingCheckout;
-		//existingCheckout.setPaymentGatewayId(checkout.getPaymentGatewayId());
-
-		/*
-		ModelAndView modelAndView = new ModelAndView("redirect:" + "/api/checkout/payment_response");
-		TreeMap<String, String> parameters = new TreeMap<>();
-		parameters.put("purchase_Id", existingCheckout.getCheckoutId());
-		parameters.put("transaction_amount", existingCheckout.getTotal()+ "");
-		parameters.put("customer_Id", existingCheckout.getEmail());
-		modelAndView.addAllObjects(parameters);
-		return modelAndView;*/
 		
 
 	}

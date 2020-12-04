@@ -1,30 +1,22 @@
 package com.springboot.bookshop.controller;
 
-import java.util.List;
-import java.util.UUID;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.springboot.bookshop.entity.Account;
+
 import com.springboot.bookshop.entity.ItemInfo;
-import com.springboot.bookshop.entity.User;
 import com.springboot.bookshop.exception.ResourceNotFoundException;
 import com.springboot.bookshop.model.Cart;
 import com.springboot.bookshop.model.ShopItem;
 import com.springboot.bookshop.model.Visitor;
-import com.springboot.bookshop.repo.AccountRepository;
-import com.springboot.bookshop.repo.ItemInfoRepository;
-import com.springboot.bookshop.repo.UserRepository;
 import com.springboot.bookshop.service.ItemInfoService;
 
 

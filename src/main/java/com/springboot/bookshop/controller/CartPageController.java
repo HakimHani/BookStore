@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.springboot.bookshop.model.Visitor;
 
@@ -27,12 +26,7 @@ public class CartPageController {
 
 
 	@GetMapping
-	//@ResponseBody
 	public String getCart(Model model) {
-		/*if(visitor == null) {
-			System.out.println("Cart page: new visitor");
-			visitor = new Visitor();
-		}else */
 		if(visitor.getUser() == null) {
 			System.out.println("Cart page: no user");
 		}

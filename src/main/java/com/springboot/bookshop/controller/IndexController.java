@@ -1,25 +1,20 @@
 package com.springboot.bookshop.controller;
 
-import java.text.SimpleDateFormat;
-import java.util.List;
 
-import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.springboot.bookshop.model.ShopItem;
-import com.springboot.bookshop.model.Visitor;
+
 
 @Controller
 @Scope("session")
 public class IndexController {
 
-	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
-	@Autowired
-	private Visitor visitor;
+	//private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
+
 
 	@RequestMapping(value = "/index")
 	public String index(Model model) {
@@ -28,7 +23,7 @@ public class IndexController {
 			System.out.println("Create new user in index");
 			visitor = new Visitor();
 		}*/
-
+		/*
 		JSONObject response = new JSONObject();
 
 		if(visitor.getUser() == null) {
@@ -60,5 +55,7 @@ public class IndexController {
 		
 		model.addAttribute("data", response.toString());
 		return "index";
+		*/
+		return "redirect:/";
 	}
 }

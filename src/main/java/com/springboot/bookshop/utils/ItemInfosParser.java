@@ -2,6 +2,8 @@ package com.springboot.bookshop.utils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 
 import javax.persistence.Column;
 
@@ -169,4 +171,13 @@ public class ItemInfosParser implements Serializable {
 		this.sku = sku;
 	}
 	
+	private List<String> parseStringToList(String column) {
+		List<String> output = new ArrayList<>();
+		String listString = column.substring(1, column.length() - 1);
+		StringTokenizer stringTokenizer = new StringTokenizer(listString,",");
+		while (stringTokenizer.hasMoreTokens()){
+			output.add(stringTokenizer.nextToken());
+		}
+		return output;
+	}
 }

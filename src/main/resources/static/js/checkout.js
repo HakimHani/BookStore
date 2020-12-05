@@ -111,12 +111,20 @@ async function uploadShipping(clientEmail, checkoutId, addressId) {
     console.log(data);
     xhr.send(JSON.stringify(data));
     xhr.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log(this.responseText);
-            var checkoutResult = JSON.parse(this.responseText);
-            if (checkoutResult.checkoutState == "SHIPPING_INFO") {
-                console.log("Proceeding to billing");
-                window.location.href = location.protocol + "//" + domain + "/checkout/billing";
+        if (this.readyState == 4) {
+            var response = this.responseText;
+            console.log(response);
+            if (this.status == 200) {
+                response = JSON.parse(this.responseText);
+                console.log(response);
+                if (response.status == "Success") {
+                    console.log("Proceeding to billing");
+                    window.location.href = location.protocol + "//" + domain + "/checkout/billing";
+                } else {
+                    console.log(response.status + " " + response.message);
+                }
+            }else{
+                console.log("FAILED");
             }
         }
     };

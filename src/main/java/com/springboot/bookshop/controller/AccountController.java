@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +26,7 @@ import com.springboot.bookshop.exception.ResourceNotFoundException;
 import com.springboot.bookshop.model.Visitor;
 import com.springboot.bookshop.service.AccountService;
 import com.springboot.bookshop.service.UserService;
+import com.springboot.bookshop.utils.ResponseBuilder;
 
 
 
@@ -41,6 +43,9 @@ public class AccountController {
 
 	@Autowired
 	private Visitor visitor;
+	
+	@Autowired
+	private ResponseBuilder responseBuilder;
 
 	// get all users
 	@GetMapping
@@ -48,6 +53,9 @@ public class AccountController {
 	public List<Account> getAllUsers() {
 		return this.accountService.findAll();
 	}
+	
+	
+	
 
 	// get user by email
 	@GetMapping("/{email}")
@@ -62,19 +70,21 @@ public class AccountController {
 		return this.accountService.findByEmail(cutomerEmail)
 				.orElseThrow(() -> new ResourceNotFoundException("Account not found with email :" + cutomerEmail));
 	}
+	
+	
 
 	// create user
 	@PostMapping("/create")
 	@ResponseBody
-	public String createUser(@RequestBody Account account) {
+	public ResponseEntity<Object> createUser(@RequestBody Account account) {
 
 		if(this.accountService.findByEmail(account.getEmail()).orElse(null) != null) {
 			System.out.println(this.accountService.findByEmail(account.getEmail()));
-			return "Failed, Account already exist";
+			return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Failed","ACCOUNT ALREADY EXIST", account), HttpStatus.OK);
 		}
 		User user = this.userService.findByEmail(account.getEmail()).orElse(null);
 		if(user != null) {
-			return "Failed, user already exists";
+			return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Failed","USER ALREADY EXIST", account), HttpStatus.OK);
 		}
 		account.setAccountType(AccountType.CUSTOMER);
 		account.setRegisterDate("2020/12");
@@ -82,7 +92,7 @@ public class AccountController {
 		user = new User(account.getEmail(),"User","N/A","N/A");
 		this.userService.save(user);
 		visitor.logIn(user);
-		return "Success, New Account created";
+		return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Success","Account created", account), HttpStatus.OK);
 	}
 	
 	// create user
@@ -111,11 +121,13 @@ public class AccountController {
 		//return "Success, New Account created";
 	}
 	
+	
+	
 
 	// login user
 	@PostMapping("/login")
 	@ResponseBody
-	public String loginUser(@RequestBody Account account) {
+	public ResponseEntity<Object> loginUser(@RequestBody Account account) {
 		System.out.println("Logging in " + account.getEmail());
 		System.out.println(account.getPassword());
 		Account found = this.accountService.findByEmail(account.getEmail()).orElse(null);
@@ -127,13 +139,13 @@ public class AccountController {
 				visitor.logIn(user);
 				visitor.setPermission(found.getAccountType());
 
-				return "Logged in";
+				return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("SUCCESS","LOGGED IN", account), HttpStatus.OK);
 			}else {
-				return "Invalid password";
+				return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Failed","INVALID PASSWORD", account), HttpStatus.OK);
 			}
 
 		}
-		return "Account not found";
+		return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Failed","ACCOUNT NOT FOUND", account), HttpStatus.OK);
 	}
 
 
@@ -185,42 +197,48 @@ public class AccountController {
 	// update user
 	@PutMapping("/update")
 	@ResponseBody
-	public String updateAccount(@RequestBody Account user) {
+	public ResponseEntity<Object> updateAccount(@RequestBody Account user) {
 		Account existingUser = this.accountService.findByEmail(this.visitor.getUser().getEmail())
 				.orElse(null);
 		
 		if(existingUser == null) {
-			return "Failed";
+			return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Failed","ACCOUNT NOT FOUND", null), HttpStatus.OK);
 		}
 		
 		if(!user.getOldPassword().equals(existingUser.getPassword())) {
-			return "Failed, auth failed";
+			return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Failed","INVALID PASSWORD", null), HttpStatus.OK);
 		}
 		existingUser.setPassword(user.getPassword());
 		this.accountService.save(existingUser);
 		//existingUser.setRegisterDate(user.getRegisterDate());
 		//return this.accountRepository.save(existingUser);
-		return "Success";
+		return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Success","ACCOUNT UPDATED", null), HttpStatus.OK);
 	}
 
 	// update user
 	@PutMapping("/{id}")
 	@ResponseBody
-	public Account updateUser(@RequestBody Account user, @PathVariable ("id") long userId) {
-		Account existingUser = this.accountService.findById(userId)
-				.orElseThrow(() -> new ResourceNotFoundException("User not found with id :" + userId));
+	public ResponseEntity<Object> updateUser(@RequestBody Account user, @PathVariable ("id") long userId) {
+		Account existingUser = this.accountService.findById(userId).orElse(null);
+		if(existingUser == null) {
+			return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Failed","ACCOUNT NOT FOUND", null), HttpStatus.OK);
+		}
+				//.orElseThrow(() -> new ResourceNotFoundException("User not found with id :" + userId));
 		existingUser.setPassword(user.getPassword());
 		existingUser.setRegisterDate(user.getRegisterDate());
-		return this.accountService.save(existingUser);
+		return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Success","Account updated", null), HttpStatus.OK);
 	}
 
 	// delete user by id
 	@DeleteMapping("/{id}")
 	@ResponseBody
-	public ResponseEntity<Account> deleteUser(@PathVariable ("id") long userId){
-		Account existingUser = this.accountService.findById(userId)
-				.orElseThrow(() -> new ResourceNotFoundException("User not found with id :" + userId));
+	public ResponseEntity<Object> deleteUser(@PathVariable ("id") long userId){
+		Account existingUser = this.accountService.findById(userId).orElse(null);
+		if(existingUser == null) {
+			return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Failed","ACCOUNT NOT FOUND", null), HttpStatus.OK);
+		}
 		this.accountService.delete(existingUser);
-		return ResponseEntity.ok().build();
+		//return ResponseEntity.ok().build();
+		return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Success","Account deleted", null), HttpStatus.OK);
 	}
 }

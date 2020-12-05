@@ -87,19 +87,19 @@ public class Visitor {
 		return this.cart.addItem(item, itemInfo);
 	}
 	
-	public String rmFromCart(ShopItem item) {
+	public boolean rmFromCart(ShopItem item) {
 		if(this.cart.rmItem(item)) {
-			return "Successfully removed item to cart";
+			return true;
 		}
-		return "Failed removing item to cart";
+		return false;
 	}
 	
 	
-	public String removeFromCart(String itemSessionId) {
+	public boolean removeFromCart(String itemSessionId) {
 		if(this.cart.removeItem(itemSessionId)) {
-			return "Successfully removed item to cart";
+			return true;
 		}
-		return "Failed removing item to cart";
+		return false;
 	}
 
 	public AccountType getPermission() {

@@ -3,18 +3,17 @@ package com.springboot.bookshop.controller;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.StringTokenizer;
-import java.util.TreeMap;
 
 
-import javax.servlet.http.HttpServletRequest;
+
 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -62,11 +61,15 @@ public class CheckoutController {
 	@Autowired
 	private ResponseBuilder responseBuilder;
 
+	
+	
 	//Fetch all checkouts of the user by email
 	@GetMapping("/{email}")
 	public List<Checkout> getCheckoutsByEmail(@PathVariable (value = "email") String email) {
 		return  this.checkoutService.findAllByEmail(email);
 	}
+	
+	
 
 
 	//Fetch checkout by checkout id
@@ -79,6 +82,8 @@ public class CheckoutController {
 		}
 		return  this.checkoutService.findByCheckoutId(checkoutId);
 	}
+	
+	
 
 
 	//create checkout
@@ -126,92 +131,108 @@ public class CheckoutController {
 		this.visitor.getCart().setCheckoutId(checkoutId);
 		return "New checkout created";
 	}
+	
+	
+	
 
 
 	// update shipping
 	@PutMapping("/shipping/{checkoutId}")
-	public Checkout updateShipping(@RequestBody Checkout checkout, @PathVariable ("checkoutId") String checkoutId) {
+	public ResponseEntity<Object> updateShipping(@RequestBody Checkout checkout, @PathVariable ("checkoutId") String checkoutId) {
 
 		Checkout existingCheckout = this.checkoutService.findByCheckoutId(checkoutId).orElse(null);
 		if(existingCheckout == null) {
 			System.out.println("Checkout not found with checkoutId :" + checkoutId);
-			throw new ResourceNotFoundException("Checkout not found with checkoutId :" + checkoutId);
+			return new ResponseEntity<Object>(responseBuilder.CheckoutResponse("Failed", "CHECKOUT EXPIRED", null), HttpStatus.OK);
+			//throw new ResourceNotFoundException("Checkout not found with checkoutId :" + checkoutId);
 		}
+		
 		existingCheckout.setCheckoutState(CheckoutState.SHIPPING_INFO);
 		//existingCheckout.setEmail(checkout.getEmail());
 		existingCheckout.setEmail(this.visitor.getUser().getEmail());
 		existingCheckout.setAddressId(checkout.getAddressId());
-
-		return this.checkoutService.save(existingCheckout);
+		this.checkoutService.save(existingCheckout);
+		
+		return new ResponseEntity<Object>(responseBuilder.CheckoutResponse("Success", "Successfully update checkout shipping", existingCheckout), HttpStatus.OK);
 	}
+	
+	
 
 
 	// update billing
 	@PutMapping("/billing/{checkoutId}")
-	public Checkout updateBilling(@RequestBody Checkout checkout, @PathVariable ("checkoutId") String checkoutId) {
+	public ResponseEntity<Object> updateBilling(@RequestBody Checkout checkout, @PathVariable ("checkoutId") String checkoutId) {
 
 		Checkout existingCheckout = this.checkoutService.findByCheckoutId(checkoutId).orElse(null);
 		if(existingCheckout == null) {
 			System.out.println("Checkout not found with checkoutId :" + checkoutId);
-			throw new ResourceNotFoundException("Checkout not found with checkoutId :" + checkoutId);
+			return new ResponseEntity<Object>(responseBuilder.CheckoutResponse("Failed", "CHECKOUT EXPIRED", null), HttpStatus.OK);
+			//throw new ResourceNotFoundException("Checkout not found with checkoutId :" + checkoutId);
 		}
 		existingCheckout.setCheckoutState(CheckoutState.BILLING_INFO);
 		existingCheckout.setBillingId(checkout.getBillingId());
-
-		return this.checkoutService.save(existingCheckout);
+		this.checkoutService.save(existingCheckout);
+		return new ResponseEntity<Object>(responseBuilder.CheckoutResponse("Success", "Successfully update checkout billing", existingCheckout), HttpStatus.OK);
 	}
 
+	
+	
+	
 
 	// processing billing
 	@PutMapping("/processing/{checkoutId}")
-	public Checkout updateFinal(@RequestBody Checkout checkout,@PathVariable ("checkoutId") String checkoutId) {
+	public ResponseEntity<Object> updateFinal(@RequestBody Checkout checkout,@PathVariable ("checkoutId") String checkoutId) {
 		System.out.println("PROCESSING CHECKOUT RESULT.........................................");
 		Checkout existingCheckout = this.checkoutService.findByCheckoutId(checkoutId).orElse(null);
 		if(existingCheckout == null) {
 			System.out.println("Checkout not found with checkoutId :" + checkoutId);
-			throw new ResourceNotFoundException("Checkout not found with checkoutId :" + checkoutId);
+			return new ResponseEntity<Object>(responseBuilder.CheckoutResponse("Failed", "CHECKOUT EXPIRED", null), HttpStatus.OK);
+			//throw new ResourceNotFoundException("Checkout not found with checkoutId :" + checkoutId);
 		}
 		
-		System.out.println("ADDING SALES COUNT.........................................");
+		System.out.println("VALIDATING CART ITEMS FOR " + checkoutId);
 		
+		List<ItemInfo> dbItems = new ArrayList<ItemInfo>();
 		for(ShopItem inCartItem : this.visitor.getCart().getItems()) {
 			String itemId = inCartItem.getItemSku() + inCartItem.getSizeSku();
-			System.out.println("Adding sales count for " + itemId);
-			
-			ItemInfo dbItem = this.itemInfoService.findByProductId(itemId)
-					.orElseThrow(() -> new ResourceNotFoundException("Item not found with sku :" + itemId));
-			dbItem.setSalesCount((dbItem.getSalesCount() + 1));
-			//ALSO need inventory deduction code
-			this.itemInfoService.save(dbItem);
-			System.out.println("ADDED COUNT.........................................");
-			
-			Sales nSales = new Sales(idGenerator.generateCheckoutId(),itemId,checkoutId,existingCheckout.getEmail());
-			nSales.setDate(new Date());
-			salesService.save(nSales);
-			System.out.println("ADDED SALES.........................................");
-			
-			
+			ItemInfo dbItem = this.itemInfoService.findByProductId(itemId).orElse(null);
+			if(dbItem == null) {
+				return new ResponseEntity<Object>(responseBuilder.CheckoutResponse("Failed", "CARTITEM NOT FOUND " + itemId, null), HttpStatus.OK);
+			}
+			if(dbItem.getInventory() <= 0.0) {
+				return new ResponseEntity<Object>(responseBuilder.CheckoutResponse("Failed", "CARTITEM OUT OF STOCK DURING CHECKOUT " + itemId, null), HttpStatus.OK);
+			}
+			/*
+			if(dbItem.isAvaliable() == false) {
+				return new ResponseEntity<Object>(responseBuilder.CheckoutResponse("Failed", "CARTITEM DISABLED " + itemId, null), HttpStatus.OK);
+			}*/
+			//NEED EXTRA CHECK IF THERE ARE MULTIPLE SAME ITEM IN CART
+			dbItems.add(dbItem);
 		}
 		
-		System.out.println("RETURN PROCESSING RESULT.........................................");
+		for(ItemInfo confirmedItem : dbItems) {
+			String pid = confirmedItem.getProductId();
+			
+			confirmedItem.setSalesCount((confirmedItem.getSalesCount() + 1));
+			confirmedItem.setInventory((confirmedItem.getInventory() - 1));
+			this.itemInfoService.save(confirmedItem);
+			System.out.println("UPDATE COUNT AND INVENTORY FOR " + pid);
+					
+			Sales nSales = new Sales(idGenerator.generateCheckoutId(),pid,checkoutId,existingCheckout.getEmail());
+			nSales.setDate(new Date());
+			salesService.save(nSales);
+			System.out.println("ADDED SALES TABLE FOR " + pid);	
+		}
+		
 		
 		existingCheckout.setCheckoutState(CheckoutState.PROCESSING_BILLING);
 		this.checkoutService.save(existingCheckout);
-		return existingCheckout;
-		
-
+		return new ResponseEntity<Object>(responseBuilder.CheckoutResponse("Success", "Successfully processed checkout", existingCheckout), HttpStatus.OK);
 	}
-
-	// send the response back to the client to be displayed
-	@PostMapping(value = "/payment_response")
-	public String getResponseRedirect(HttpServletRequest request, Model model) {
-		Map<String, String[]> mapData = request.getParameterMap();
-		TreeMap<String, String> parameters = new TreeMap<String, String>();
-		mapData.forEach((key, val) -> parameters.put(key, val[0]));
-		System.out.println("RESULT : "+parameters.toString());
-		model.addAttribute("parameters",parameters);
-		return "report";
-	}	
+	
+	
+	
+	
 
 
 	private List<String> parseStringToList(String column) {

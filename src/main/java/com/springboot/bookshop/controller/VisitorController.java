@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.springboot.bookshop.constant.enums.AccountType;
 import com.springboot.bookshop.entity.ItemInfo;
 import com.springboot.bookshop.entity.Review;
 import com.springboot.bookshop.model.Visitor;
@@ -152,6 +153,10 @@ public class VisitorController {
 	@GetMapping(path = "/admin")
 	public String adminDashboard(Model model)
 	{
+		
+		if(this.visitor.getUser() == null || this.visitor.getPermission() != AccountType.ADMIN) {
+			return "redirect:/login";
+		}
 		
 		return "admin_ops";
 		

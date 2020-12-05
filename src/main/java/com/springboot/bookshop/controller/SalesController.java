@@ -36,18 +36,23 @@ public class SalesController {
 
 
 	
-
+	//Get All sales
 	@GetMapping("/")
 	public List<Sales> getAllSales() {
 		return  this.saleService.findAll();
 	}
 	
 
+	
+	//Get All sales result of specific item by itemId
 	@GetMapping("/product/{productId}")
 	public List<Sales> getReviewByEmail(@PathVariable (value = "productId") String productId) {
 		return  this.saleService.findAllByItemId(productId);
 	}
 
+	
+	
+	//Filter sales by montj
 	@GetMapping("/detail")
 	public List<Sales> getReviewByProductId(@RequestParam String productId,@RequestParam int month) {
 		List<Sales> productSales = this.saleService.findAllByItemId(productId);

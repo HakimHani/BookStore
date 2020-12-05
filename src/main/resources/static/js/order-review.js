@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-async function submitOrder(checkoutId){
+async function submitOrder(checkoutId) {
     console.log("submitting...");
 
     var xhr = new XMLHttpRequest();
@@ -39,14 +39,21 @@ async function submitOrder(checkoutId){
     console.log(data);
     xhr.send(JSON.stringify(data));
     xhr.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log(this.responseText);
-            var checkoutResult = JSON.parse(this.responseText);
-            if(checkoutResult.checkoutState == "PROCESSING_BILLING"){
-                console.log("Proceeding to order result page");
-                window.location.href = location.protocol + "//" + domain + "/checkout/success";
+        if (this.readyState == 4) {
+            var response = this.responseText;
+            console.log(response);
+            if (this.status == 200) {
+                response = JSON.parse(this.responseText);
+                console.log(response);
+                if (response.status == "Success") {
+                    console.log("Proceeding to order result page");
+                    window.location.href = location.protocol + "//" + domain + "/checkout/success";
+                } else {
+                    console.log(response.status + " " + response.message);
+                }
+
             }else{
-                console.log("Order failed or payment declined");
+                console.log("FAILED");
             }
         }
     };

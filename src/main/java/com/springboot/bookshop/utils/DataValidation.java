@@ -26,8 +26,17 @@ public class DataValidation {
 		boolean flag = true;
 		String creditCard = billing.getCardNumber();
 		String ccv = billing.getCcv();
-		int exp_year = Integer.parseInt(billing.getExpDate());
-		int exp_month = Integer.parseInt(billing.getExpMonth());
+		String year = billing.getExpDate();
+		String month = billing.getExpMonth();
+		
+		flag = Pattern.compile("^[0-9]{4}$").matcher(year).matches() && Pattern.compile("^[0-9]{2}$").matcher(month).matches();
+		if(!flag) {
+			return false;
+		}
+		
+		int exp_year = Integer.parseInt(year);
+		int exp_month = Integer.parseInt(month);
+		
 		String regex = "^(?:(?<visa>4[0-9]{12}(?:[0-9]{3})?)|" +
 		        "(?<mastercard>5[1-5][0-9]{14})|" +
 		        "(?<discover>6(?:011|5[0-9]{2})[0-9]{12})|" +
@@ -38,8 +47,8 @@ public class DataValidation {
 		Pattern pattern = Pattern.compile(regex);
 	    Matcher matcher = pattern.matcher(creditCard);
 	    flag = flag && matcher.matches();
-	    
-	    flag = flag && (ccv.length() == 3 && ccv.matches("3[0-9]")) ? true : false;
+    
+	    flag = flag && Pattern.compile("^[0-9]{3}$").matcher(ccv).matches();
 	    flag = flag && isValidDate(exp_month, exp_year);
 	    return flag;   
 	}

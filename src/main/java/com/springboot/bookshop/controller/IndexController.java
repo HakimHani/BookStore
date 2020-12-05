@@ -13,49 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Scope("session")
 public class IndexController {
 
-	//private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
-
-
 	@RequestMapping(value = "/index")
 	public String index(Model model) {
-		/*
-		if(visitor == null) {
-			System.out.println("Create new user in index");
-			visitor = new Visitor();
-		}*/
-		/*
-		JSONObject response = new JSONObject();
-
-		if(visitor.getUser() == null) {
-			response.put("isLoggedIn", "false");
-			model.addAttribute("loginStatus", false);
-		}else {
-			response.put("isLoggedIn", "true");
-			model.addAttribute("loginStatus", true);
-			model.addAttribute("userName", visitor.getUser().getEmail());
-		}
-
-
-		response.put("aa", sdf.format(visitor.getFirstTS()));
-		response.put("aa", sdf.format(visitor.getLatestTS()));
-		response.put("cart", ""+visitor.getCart().getItems().size());
-		model.addAttribute("cartSize", visitor.getCart().getItems().size());
-
-		if(visitor.getCart().getItems().size() > 0) {
-			List<ShopItem> items = visitor.getCart().getItems();
-			for(int i=0; i < items.size(); i++) {
-				JSONObject cartItem = new JSONObject();
-				ShopItem item = items.get(i);
-				cartItem.put("item", item.getItemName());
-				cartItem.put("itemSessionId", item.getItemSessionId());
-			}
-			response.put("items", items);
-		}
-		//entity.put("aa", "bb");
-		
-		model.addAttribute("data", response.toString());
-		return "index";
-		*/
 		return "redirect:/";
 	}
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,7 @@ import com.springboot.bookshop.exception.ResourceNotFoundException;
 import com.springboot.bookshop.model.Visitor;
 import com.springboot.bookshop.service.AddressService;
 import com.springboot.bookshop.service.UserService;
+import com.springboot.bookshop.utils.ResponseBuilder;
 
 
 
@@ -31,12 +33,15 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private AddressService addressService;
-	
+
 	@Autowired
 	private Visitor visitor;
+
+	@Autowired
+	private ResponseBuilder responseBuilder;
 
 	// get all users
 	@GetMapping
@@ -53,119 +58,135 @@ public class UserController {
 
 	// create user
 	@PostMapping("/")
-	public String createUser(@RequestBody User customer) {
-		
+	public ResponseEntity<Object> createUser(@RequestBody User customer) {
+
 		if(this.userService.findByEmail(customer.getEmail()).orElse(null) != null) {
-			System.out.println(this.userService.findByEmail(customer.getEmail()));
-			return "Customer already exist";
+			//System.out.println(this.userService.findByEmail(customer.getEmail()));
+			return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Failed","CUSTOMER ALREADY EXISTS", null), HttpStatus.OK);
 		}
 		this.userService.save(customer);
-		return "New customer created";
+		return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Success","User created", customer), HttpStatus.OK);
 	}
-	
+
 	@PostMapping("/updatebilling")
-	public String updateDefaultBillingAddress(@RequestParam String addressId) {
-		
-		
+	public ResponseEntity<Object> updateDefaultBillingAddress(@RequestParam String addressId) {
+
+
 		if(this.visitor.getUser() == null) {
-			return "No user logged in";
+			return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Failed","INVALID LOGIN STATE", null), HttpStatus.OK);
 		}
-		
-		User existingUser = this.userService.findByEmail(this.visitor.getUser().getEmail())
-				.orElseThrow(() -> new ResourceNotFoundException("User not found with email :" + this.visitor.getUser().getEmail()));
-		
-		
+
+		User existingUser = this.userService.findByEmail(this.visitor.getUser().getEmail()).orElse(null);
+		if(existingUser == null) {
+			return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Failed","USER NOT FOUND", null), HttpStatus.OK);
+		}
+		//.orElseThrow(() -> new ResourceNotFoundException("User not found with email :" + this.visitor.getUser().getEmail()));
+
+
 		if(addressId.equals("reset")) {
 			existingUser.setDefaultBillingAddr(null);
 			this.userService.save(existingUser);
-			return "Successfully reset billing address";
+			return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Success","Successfully reset user", null), HttpStatus.OK);
 		}
-		
-		
+
+
 		Address existingAddress = this.addressService.findByAddressId(addressId).orElse(null);
 		if(existingAddress == null) {
 			System.out.println("Address not found with addressId :\" + addressId");
-			throw new ResourceNotFoundException("Address not found with addressId :" + addressId);
+			//throw new ResourceNotFoundException("Address not found with addressId :" + addressId);
+			return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Failed","ADDRESS NOT FOUND", null), HttpStatus.OK);
 		}
-		
+
 		if(!existingAddress.getEmail().equals(this.visitor.getUser().getEmail())) {
-			return "Address email does not match user";
+			return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Failed","ADDRESS EMAIL NOT MATCHED", null), HttpStatus.OK);
 		}
-		
+
 		existingUser.setDefaultBillingAddr(addressId);
 		this.userService.save(existingUser);
-		
-		return "Successfully update billing address";
+
+		return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Success","User default billing updated", null), HttpStatus.OK);
 	}
-	
+
 	@PostMapping("/updateshipping")
-	public String updateDefaultShippingAddress(@RequestParam String addressId) {
-		
-		
+	public ResponseEntity<Object> updateDefaultShippingAddress(@RequestParam String addressId) {
+
+
 		if(this.visitor.getUser() == null) {
-			return "No user logged in";
+			return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Failed","INVALID LOGIN STATE", null), HttpStatus.OK);
 		}
-		
-		User existingUser = this.userService.findByEmail(this.visitor.getUser().getEmail())
-				.orElseThrow(() -> new ResourceNotFoundException("User not found with email :" + this.visitor.getUser().getEmail()));
-		
-		
+
+		User existingUser = this.userService.findByEmail(this.visitor.getUser().getEmail()).orElse(null);
+		if(existingUser == null) {
+			return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Failed","USER NOT FOUND", null), HttpStatus.OK);
+		}
+		//.orElseThrow(() -> new ResourceNotFoundException("User not found with email :" + this.visitor.getUser().getEmail()));
+
+
 		if(addressId.equals("reset")) {
-			existingUser.setDefaultBillingAddr(null);
+			existingUser.setDefaultShippingAddr(null);
 			this.userService.save(existingUser);
-			return "Successfully reset billing address";
+			return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Success","Successfully reset user shipping", null), HttpStatus.OK);
 		}
-		
-		
+
+
 		Address existingAddress = this.addressService.findByAddressId(addressId).orElse(null);
 		if(existingAddress == null) {
 			System.out.println("Address not found with addressId :\" + addressId");
-			throw new ResourceNotFoundException("Address not found with addressId :" + addressId);
+			//throw new ResourceNotFoundException("Address not found with addressId :" + addressId);
+			return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Failed","ADDRESS NOT FOUND", null), HttpStatus.OK);
 		}
-		
+
 		if(!existingAddress.getEmail().equals(this.visitor.getUser().getEmail())) {
-			return "Address email does not match user";
+			return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Failed","ADDRESS EMAIL NOT MATCHED", null), HttpStatus.OK);
 		}
-		
+
 		existingUser.setDefaultShippingAddr(addressId);
 		this.userService.save(existingUser);
-		
-		return "Successfully update shipping address";
+
+		return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Success","User default shipping updated", null), HttpStatus.OK);
 	}
-	
+
+
 	// update user
 	@PutMapping("/update")
-	public String updateUser(@RequestBody User user) {
+	public ResponseEntity<Object> updateUser(@RequestBody User user) {
 		User existingUser = this.userService.findByEmail(this.visitor.getUser().getEmail()).orElse(null);
 		//	.orElseThrow(() -> new ResourceNotFoundException("User not found with id :" + userId));
 		if(existingUser == null) {
-			return "Failed";
+			return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Failed","USER NOT FOUND", null), HttpStatus.OK);
 		}
-			System.out.println(user.getFirstName());
-		 existingUser.setFirstName(user.getFirstName());
-		 existingUser.setLastName(user.getLastName());
-		 existingUser.setPhone(user.getPhone());
-		 this.userService.save(existingUser);
-		 this.visitor.setUser(existingUser);
-		 return "Success";
+		System.out.println(user.getFirstName());
+		existingUser.setFirstName(user.getFirstName());
+		existingUser.setLastName(user.getLastName());
+		existingUser.setPhone(user.getPhone());
+		this.userService.save(existingUser);
+		this.visitor.setUser(existingUser);
+		return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Success","Successfully updated user", null), HttpStatus.OK);
 	}
-	
+
 	// update user
 	@PutMapping("/{id}")
-	public User updateUser(@RequestBody User user, @PathVariable ("id") long userId) {
-		User existingUser = this.userService.findById(userId)
-			.orElseThrow(() -> new ResourceNotFoundException("User not found with id :" + userId));
-		 existingUser.setFirstName(user.getFirstName());
-		 existingUser.setLastName(user.getLastName());
-		 return this.userService.save(existingUser);
+	public ResponseEntity<Object> updateUser(@RequestBody User user, @PathVariable ("id") long userId) {
+		User existingUser = this.userService.findById(userId).orElse(null);
+		if(existingUser == null) {
+			return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Failed","USER NOT FOUND", null), HttpStatus.OK);
+		}
+		existingUser.setFirstName(user.getFirstName());
+		existingUser.setLastName(user.getLastName());
+		this.userService.save(existingUser);
+		return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Success","Succesfully updated user by id", null), HttpStatus.OK);
 	}
-	
+
 	// delete user by id
 	@DeleteMapping("/{id}")
-	public ResponseEntity<User> deleteUser(@PathVariable ("id") long userId){
-		User existingUser = this.userService.findById(userId)
-					.orElseThrow(() -> new ResourceNotFoundException("User not found with id :" + userId));
-		 this.userService.delete(existingUser);
-		 return ResponseEntity.ok().build();
+	public ResponseEntity<Object> deleteUser(@PathVariable ("id") long userId){
+		User existingUser = this.userService.findById(userId).orElse(null);
+		if(existingUser == null){
+			return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Success","USER NOT FOUND", null), HttpStatus.OK);
+		}
+				//.orElseThrow(() -> new ResourceNotFoundException("User not found with id :" + userId));
+		this.userService.delete(existingUser);
+		return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Success","User deleted", null), HttpStatus.OK);
+		//return ResponseEntity.ok().build();
 	}
 }

@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.bookshop.entity.ItemInfo;
-import com.springboot.bookshop.exception.ResourceNotFoundException;
 import com.springboot.bookshop.service.ItemInfoService;
 import com.springboot.bookshop.utils.IdentificationGenerator;
 import com.springboot.bookshop.utils.ItemInfosParser;
@@ -102,30 +101,34 @@ public class ItemInfoController {
 		System.out.println("Checking with " + itemCategory);
 		return this.itemInfoService.findAllByCategory(itemCategory);
 	}
+	
 
-	// create user
+	// create item
 	@PostMapping("/create")
-	public String createItemInfo(@RequestBody ItemInfo itemInfo) {
+	public ResponseEntity<Object> createItemInfo(@RequestBody ItemInfo itemInfo) {
 
 		/*if(itemInfo.getSku() == null || itemInfo.getSizes() == null || itemInfo.getSizeSku() == null) {
 			return "wrong format";
 		}*/
+		//TODO: NEED VALIDATION
 		itemInfo.setSku(idGenerator.generateAddressId().substring(0,6));
 		itemInfo.setSizeSku("01");
 		itemInfo.setProductId(itemInfo.getSku() + itemInfo.getSizeSku());
 		itemInfo.setRate(0.00);
-
-		if(this.itemInfoService.findByProductId(itemInfo.getProductId()).orElse(null) != null) {
-			return "ItemInfo already exist";
-		}
-		
 		itemInfo.setSize(" HARDCOVER");
 		itemInfo.setItemLabel(itemInfo.getItemName());
 		
+		if(this.itemInfoService.findByProductId(itemInfo.getProductId()).orElse(null) != null) {
+			return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Failed","ITEM DUPLICATED", null), HttpStatus.OK);
+		}
+
 		
 		this.itemInfoService.save(itemInfo);
-		return "New ItemInfo created";
+		return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Success","Item created", itemInfo), HttpStatus.OK);
 	}
+	
+	
+	
 
 	@PostMapping("/masscreate")
 	public String massCreateItemInfo(@RequestBody ItemInfosParser itemInfosParser) {
@@ -141,18 +144,23 @@ public class ItemInfoController {
 
 		return "New ItemInfo sets created";
 	}
+	
+	
+	
 
-	// login user
+	// delete item by post
 	@PostMapping("/delete/{productId}")
-	public String deleteItemInfo(@PathVariable (value = "productId") String productId) {
-		ItemInfo found = this.itemInfoService.findByProductId(productId).orElse(null);
-		if( found != null) {
-			System.out.println("item found");
-			this.itemInfoService.delete(found);
-			return "ItemInfo Removed";
+	public ResponseEntity<Object> deleteItemInfo(@PathVariable (value = "productId") String productId) {
+		ItemInfo item = this.itemInfoService.findByProductId(productId).orElse(null);
+		if(item == null) {
+            return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Failed","ITEM NOT FOUND", null), HttpStatus.OK);
 		}
-		return "ItemInfo not found";
+		this.itemInfoService.delete(item);
+		return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Success","Item deleted", item), HttpStatus.OK);
 	}
+	
+	
+	
 
 	// update item info
 	@PostMapping(path = "/update_inventory", produces=MediaType.APPLICATION_JSON_VALUE)
@@ -161,22 +169,28 @@ public class ItemInfoController {
 				//.orElseThrow(() -> new ResourceNotFoundException("Item not found with sku :" + updateInfo.get(0)));
 			
 		if(item == null) {
-            return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("not_found", null), HttpStatus.OK);
+            return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Failed","ITEM NOT FOUND", null), HttpStatus.OK);
 		}
         
 		item.setInventory(Integer.parseInt(updateInfo.get(1)));
 		this.itemInfoService.save(item);
 
-        return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("success", item), HttpStatus.OK);
+        return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Success","Inventory updated", item), HttpStatus.OK);
 	}
+	
+	
 
-	// delete user by id
+	// delete item by id through DELETEMAPPING
 	@DeleteMapping("/{productId}")
-	public ResponseEntity<ItemInfo> deleteUser(@PathVariable (value = "productId") String productId){ 
-		System.out.println("in the conroller to delete");
-		ItemInfo existingUser = this.itemInfoService.findByProductId(productId)
-				.orElseThrow(() -> new ResourceNotFoundException("Item not found with id :" + productId));
-		this.itemInfoService.delete(existingUser);
-		return ResponseEntity.ok().build();
+	public ResponseEntity<Object> deleteUser(@PathVariable (value = "productId") String productId){ 
+		
+		ItemInfo item = this.itemInfoService.findByProductId(productId).orElse(null);
+		if(item == null) {
+            return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Failed","ITEM NOT FOUND", null), HttpStatus.OK);
+		}
+				//.orElseThrow(() -> new ResourceNotFoundException("Item not found with id :" + productId));
+		this.itemInfoService.delete(item);
+		return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Success","Item deleted", item), HttpStatus.OK);
+		
 	}
 }

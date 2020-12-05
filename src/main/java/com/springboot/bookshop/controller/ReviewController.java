@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +25,7 @@ import com.springboot.bookshop.service.ItemInfoService;
 import com.springboot.bookshop.service.ReviewService;
 import com.springboot.bookshop.service.SalesService;
 import com.springboot.bookshop.utils.IdentificationGenerator;
+import com.springboot.bookshop.utils.ResponseBuilder;
 
 @RestController
 @RequestMapping("/api/review")
@@ -45,17 +48,20 @@ public class ReviewController {
 	@Autowired
 	private IdentificationGenerator idGenerator;
 	
-	// create user
+	@Autowired
+	private ResponseBuilder responseBuilder;
+	
+	// create review and comments
 	@PostMapping("/create")
-	public String createAddress(@RequestBody Review review) {
+	public ResponseEntity<Object> createReview(@RequestBody Review review) {
 
 		if(this.visitor.getUser() == null) {
-			return "Failed, invalid user";
+			return new ResponseEntity<Object>(responseBuilder.reviewResponse("Failed","INVALID USER", review), HttpStatus.OK);
 		}
 		
 		List<Sales> eSales = this.salesService.findAllByCustomerEmail(this.visitor.getUser().getEmail());
 		if(eSales.size() == 0) {
-			return "Failed, no purchase history found for this user";
+			return new ResponseEntity<Object>(responseBuilder.reviewResponse("Failed","NO PURCHASED HISTORY FOUND", review), HttpStatus.OK);
 		}
 		
 		Boolean isPurchased = false;
@@ -67,13 +73,13 @@ public class ReviewController {
 		}
 		
 		if(!isPurchased) {
-			return "Failed, user haven not purchased this item";
+			return new ResponseEntity<Object>(responseBuilder.reviewResponse("Failed","USER HAVE NOT PURCHASED THIS ITEM", review), HttpStatus.OK);
 		}
 		
 		
 		ItemInfo targetItem = this.itemInfoService.findByProductId(review.getproductId()).orElse(null);
 		if(targetItem == null) {
-			return "Failed, error getting product detail";
+			return new ResponseEntity<Object>(responseBuilder.reviewResponse("Failed","ITEM NOT FOUND", review), HttpStatus.OK);
 		}
 		
 
@@ -88,7 +94,7 @@ public class ReviewController {
 		
 		List<Review> reviews = this.reviewService.findAllByProductId(review.getproductId());
 		if(reviews.size() == 0) {
-			return "Failed saving review";
+			return new ResponseEntity<Object>(responseBuilder.reviewResponse("Failed","ERROR SAVING REVIEW", review), HttpStatus.OK);
 		}
 
 		double total = 0;
@@ -98,7 +104,7 @@ public class ReviewController {
 		double fRatings = total / reviews.size();
 		targetItem.setRate(fRatings);
 		this.itemInfoService.save(targetItem);
-		return "Successfully saved comment and rating";
+		return new ResponseEntity<Object>(responseBuilder.reviewResponse("Success","Successfully saved review and comment", review), HttpStatus.OK);
 	}
 	
 	

@@ -38,7 +38,7 @@
 	<br><br><br><br>
 	<div class="text-center">
 	<button class="btn btn-primary" onclick="doAdminsAjax('/api/iteminfo/', 'populate_products_handler');">Show Products</button>
-	<button class="btn btn-info" onclick="">Show Registered Users</button>
+	<button class="btn btn-info" onclick="doAdminsAjax('/api/users', 'showUsers')">Show Registered Users</button>
 	</div>
     <div align = "center" id="products_table" class="products" style="border:'1'; cellpadding:'5';"></div>
     <br/><br/><br/>
@@ -47,47 +47,46 @@
     <!-- Displaying the edit modal -->
     
         <div id="editModal" class="modal">
-
-        <!-- Modal content -->
-        <div id="EditProduct" style="display:none">
-    	<fieldset><h4 class = "text-center my-3">Edit product</h4>
-          
-              <table style = "background: lightgray; width: 98%; margin:5px;">
-                 <tbody>
-                   <tr >
-                     <td><label for = "productId">Id:</label></td><td><input class="editModalField form-control" id = "productId" name = "productId" 
-                                value = '' type = "text" readonly/></td>
-                   </tr>
-                   <tr >
-                     <td><label for = "product">Product:</label></td><td><input class="editModalField form-control" id = "product" name = "product" 
-										value = "" type = "text"/></td>
-                   </tr>
-                   <tr >
-                     <td><label for = "category">Category:</label></td><td><input class="editModalField form-control" id = "category" name = "category" 
-                                value = "" type = "text"/></td>
-                   </tr>
-		   		   <tr >
-                     <td><label for = "price">Price:</label></td><td><input class="editModalField form-control" id = "price" name = "price" 
-                                value = "" type = "number" step = "0.01" min = "0"/></td>
-                   </tr>
-                   
-                   <tr >
-                     <td><label for = "inventory">Inventory:</label></td><td><input class="editModalField form-control" id = "inventory" name = "inventory" 
-                                value = "" type = "number" step = "1" min = "0"/></td>
-                   </tr>
-                   
-                   <tr>
-                     <td><label for = "available">Availabe:</label></td><td><input class="editModalField form-control" id = "available" name = "available"
-                                value = "" type = "number" min="0" max="1"/></td>
-                   </tr>
-                   
-                 </tbody>
-              </table>
-             <div class="text-center">
-             <button type="button" class="btn btn-success" onclick="saveEdits();">Save Edits</button><button class="btn btn-warning"><a href="">Back</a></button>
-          </div>
-        </fieldset>
-    </div>
+	        <!-- Modal content -->
+	        <div id="EditProduct" style="display:none">
+	    	<fieldset><h4 class = "text-center my-3">Edit product</h4>
+	          
+	              <table style = "background: lightgray; width: 98%; margin:5px;">
+	                 <tbody>
+	                   <tr >
+	                     <td><label for = "productId">Id:</label></td><td><input class="editModalField form-control" id = "productId" name = "productId" 
+	                                value = '' type = "text" readonly/></td>
+	                   </tr>
+	                   <tr >
+	                     <td><label for = "product">Product:</label></td><td><input class="editModalField form-control" id = "product" name = "product" 
+											value = "" type = "text"/></td>
+	                   </tr>
+	                   <tr >
+	                     <td><label for = "category">Category:</label></td><td><input class="editModalField form-control" id = "category" name = "category" 
+	                                value = "" type = "text"/></td>
+	                   </tr>
+			   		   <tr >
+	                     <td><label for = "price">Price:</label></td><td><input class="editModalField form-control" id = "price" name = "price" 
+	                                value = "" type = "number" step = "0.01" min = "0"/></td>
+	                   </tr>
+	                   
+	                   <tr >
+	                     <td><label for = "inventory">Inventory:</label></td><td><input class="editModalField form-control" id = "inventory" name = "inventory" 
+	                                value = "" type = "number" step = "1" min = "0"/></td>
+	                   </tr>
+	                   
+	                   <tr>
+	                     <td><label for = "available">Availabe:</label></td><td><input class="editModalField form-control" id = "available" name = "available"
+	                                value = "" type = "number" min="0" max="1"/></td>
+	                   </tr>
+	                   
+	                 </tbody>
+	              </table>
+	             <div class="text-center">
+	             <button type="button" class="btn btn-success" onclick="saveEdits();">Save Edits</button><button onclick="hideModal('editModal');" class="btn btn-warning">Back</button>
+	          </div>
+	        </fieldset>
+	    </div>
 
     </div>
     
@@ -139,8 +138,7 @@
 
 
 // generate a report with the books sold each month
-//var domain = "http://localhost:8090";
-var domain = window.location.hostname + (location.port ? ':' + location.port : '');
+var domain = "http://localhost:8090";
 
 function doAjax(address){
 	 var request = new XMLHttpRequest();
@@ -149,7 +147,7 @@ function doAjax(address){
 	 request.onreadystatechange = function() {
 			handler(request);
 	 };
-	 request.open("GET", location.protocol + "//" + domain + url, true);
+	 request.open("GET", url, true);
 	 request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	 request.send(); 
 } 
@@ -169,7 +167,7 @@ function getBooksStats(){
 	request.onreadystatechange = function(){
 		handlerBooksStats(request);
 	 };
-	 request.open("GET", location.protocol + "//" + domain + + ulr, true);
+	 request.open("GEt", ulr, true);
 	 request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	 request.send(data); 	
 }
@@ -227,9 +225,11 @@ function doAdminsAjax(path, handler){
 			populate_products_handler(request);
 		 } else if(handler == "Edit")
 			 Edit(request);
+		 else if(handler == "showUsers")
+			 showUsers(request);
 		 
 	 };
-	 request.open("GET", location.protocol + "//" + domain + path, true);
+	 request.open("GET", domain + path, true);
 	 request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 	 request.send(); 
 } 
@@ -245,7 +245,7 @@ function doAdminsAjaxPost(path, handler){
 			 deleted(request);
 		 
 	 };
-	 request.open("POST", location.protocol + "//" + domain + path);
+	 request.open("POST", domain + path);
 	 //request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 	 request.send(); 
 } 
@@ -331,7 +331,7 @@ function saveEdits(){
 	var inv = document.getElementById("inventory").value;
 	var price = document.getElementById("price").value;
 	var xhr = new XMLHttpRequest();
-    xhr.open("POST", location.protocol + "//" + domain + "/api/iteminfo/update_inventory/" + productId, true); 
+    xhr.open("POST", domain + "/api/iteminfo/update_inventory/", true);
     xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
     var data = {
         "productId": productId,
@@ -349,6 +349,17 @@ function saveEdits(){
             console.log(this.responseText);
             }
     }
+}
+
+function showUsers(request){
+	if (request.readyState == 4 && request.status == 200) {
+        //console.log(request.responseText);
+		window.location.href = "";
+        }
+}
+
+function hideModal(modal){
+	document.getElementById(modal).style.display = "none";
 }
 
 

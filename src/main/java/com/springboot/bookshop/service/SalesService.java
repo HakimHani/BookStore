@@ -29,8 +29,24 @@ public class SalesService {
 		return this.salesRepository.getAllSalesForPartner();
 	}
 	
-	public List<Object> findAllByItemIdForPartner(Optional<String> productId){
-		return this.salesRepository.getAllByItemIdForPartner(productId);
+	public List<Object> findAllByItemIdForPartner(String sProductId){
+		return this.salesRepository.getAllByItemIdForPartner(sProductId);
+	}
+	
+	public List<Object> getAllByDate(int sYear,int sMonth){
+		return this.salesRepository.getAllByDate(sYear,sMonth);
+	}
+	
+	public List<Object> getAllByItemIdAndDate(String sProductId,int sYear,int sMonth){
+		return this.salesRepository.getAllByItemIdAndDate(sProductId,sYear,sMonth);
+	}
+	
+	public List<Object> getAllByDatePartner(int sYear,int sMonth){
+		return this.salesRepository.getAllByDatePartner(sYear,sMonth);
+	}
+	
+	public List<Object> getAllByItemIdAndDatePartner(String sProductId,int sYear,int sMonth){
+		return this.salesRepository.getAllByItemIdAndDatePartner(sProductId,sYear,sMonth);
 	}
 
 	public Optional<Sales> findById(Long id){

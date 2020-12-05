@@ -25,5 +25,18 @@ public interface SalesRepository  extends JpaRepository<Sales, Long>{
 	List<Object> getAllSalesForPartner();
 	
 	@Query("select s.itemId,s.date from Sales s where itemId = ?1")
-	List<Object> getAllByItemIdForPartner(Optional<String> productId);
+	List<Object> getAllByItemIdForPartner(String sProductId);
+	
+	
+	@Query("select s from Sales s where month(s.date) = ?2 and year(s.date) = ?1")
+	List<Object> getAllByDate(int sYear,int sMonth);
+	
+	@Query("select s from Sales s where itemId = ?1 and month(s.date) = ?3 and year(s.date) = ?2")
+	List<Object> getAllByItemIdAndDate(String sProductId,int sYear,int sMonth);
+	
+	@Query("select s.itemId,s.date from Sales s where month(s.date) = ?2 and year(s.date) = ?1")
+	List<Object> getAllByDatePartner(int sYear,int sMonth);
+	
+	@Query("select s.itemId,s.date from Sales s where itemId = ?1 and month(s.date) = ?3 and year(s.date) = ?2")
+	List<Object> getAllByItemIdAndDatePartner(String sProductId,int sYear,int sMonth);
 }

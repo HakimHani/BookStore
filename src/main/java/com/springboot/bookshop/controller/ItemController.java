@@ -79,6 +79,11 @@ public class ItemController {
 		
 		return ("showUsers");
 	}
+	
+	@GetMapping("/dashboard")
+	public String dashboard() {
+		return "admin_ops";
+	}
 
 
 }

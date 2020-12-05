@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.springboot.bookshop.entity.Sales;
@@ -19,4 +20,10 @@ public interface SalesRepository  extends JpaRepository<Sales, Long>{
 	Optional<Sales> findByCheckoutId(String checkoutId);
 	List<Sales> findAllByCustomerEmail(String customerEmail);
 	List<Sales> findAllByItemId(String itemId);
+	
+	@Query("select s.itemId,s.date from Sales s")
+	List<Object> getAllSalesForPartner();
+	
+	@Query("select s.itemId,s.date from Sales s where itemId = ?1")
+	List<Object> getAllByItemIdForPartner(Optional<String> productId);
 }

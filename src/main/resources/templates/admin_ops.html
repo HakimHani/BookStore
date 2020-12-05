@@ -4,13 +4,14 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Admin DashBoard</title>
-  	<link rel="preconnect" href="https://fonts.gstatic.com">
-  	<link th:href="@{/css/admin_ops.css}" rel="stylesheet" />
-  	<link th:href="@{/css/login.css}" rel="stylesheet" />
-  	<link href="https://fonts.googleapis.com/css2?family=Nerko+One&display=swap" rel="stylesheet">
-  	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-  	<script type="text/javascript" th:src="@{/js/login.js}"></script>
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link th:href="@{/css/admin_ops.css}" rel="stylesheet" />
+	<link th:href="@{/css/login.css}" rel="stylesheet" />
+	<link href="https://fonts.googleapis.com/css2?family=Nerko+One&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+		integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+	<script type="text/javascript" th:src="@{/js/login.js}"></script>
 	<link href="css/admin.css" rel="stylesheet" />
 </head>
 
@@ -39,352 +40,359 @@
 	<hr>
 	<br><br><br><br>
 	<div class="text-center">
-	<button class="btn btn-primary" onclick="doAdminsAjax('/api/iteminfo/', 'populate_products_handler');">Show Products</button>
-	<button class="btn btn-info" onclick="doAdminsAjax('/api/users', 'showUsers')">Show Registered Users</button>
+		<button class="btn btn-primary" onclick="doAdminsAjax('/api/iteminfo/', 'populate_products_handler');">Show
+			Products</button>
+		<button class="btn btn-info" onclick="doAdminsAjax('/api/users', 'showUsers')">Show Registered Users</button>
 	</div>
-    <div align = "center" id="products_table" class="products" style="border:'1'; cellpadding:'5';"></div>
-    <br/><br/><br/>
-    
-    
-    <!-- Displaying the edit modal -->
-    
-        <div id="editModal" class="modal">
-	        <!-- Modal content -->
-	        <div id="EditProduct" style="display:none">
-	    	<fieldset><h4 class = "text-center my-3">Edit product</h4>
-	          
-	              <table style = "background: lightgray; width: 98%; margin:5px;">
-	                 <tbody>
-	                   <tr >
-	                     <td><label for = "productId">Id:</label></td><td><input class="editModalField form-control" id = "productId" name = "productId" 
-	                                value = '' type = "text" readonly/></td>
-	                   </tr>
-	                   <tr >
-	                     <td><label for = "product">Product:</label></td><td><input class="editModalField form-control" id = "product" name = "product" 
-											value = "" type = "text"/></td>
-	                   </tr>
-	                   <tr >
-	                     <td><label for = "category">Category:</label></td><td><input class="editModalField form-control" id = "category" name = "category" 
-	                                value = "" type = "text"/></td>
-	                   </tr>
-			   		   <tr >
-	                     <td><label for = "price">Price:</label></td><td><input class="editModalField form-control" id = "price" name = "price" 
-	                                value = "" type = "number" step = "0.01" min = "0"/></td>
-	                   </tr>
-	                   
-	                   <tr >
-	                     <td><label for = "inventory">Inventory:</label></td><td><input class="editModalField form-control" id = "inventory" name = "inventory" 
-	                                value = "" type = "number" step = "1" min = "0"/></td>
-	                   </tr>
-	                   
-	                   <tr>
-	                     <td><label for = "available">Availabe:</label></td><td><input class="editModalField form-control" id = "available" name = "available"
-	                                value = "" type = "number" min="0" max="1"/></td>
-	                   </tr>
-	                   
-	                 </tbody>
-	              </table>
-	             <div class="text-center">
-	             <button type="button" class="btn btn-success" onclick="saveEdits();">Save Edits</button><button onclick="hideModal('editModal');" class="btn btn-warning">Back</button>
-	          </div>
-	        </fieldset>
-	    </div>
-
-    </div>
-    
-        <!-- Displaying the product modal -->
-    
-       
-	        <div id="showProductModal"></div>
-
-    
-    
-    <!------featured product------->
-  <div class="footer">
-    <div class="container">
-      <div class="row">
-        <div class="footer-col-1">
-          <h3>Search</h3>
-          <p>Need anybooks quickly? search and get the best books at bookstore & Accessories</p><br />
-          <input type="text" placeholder="Search.." name="search">
-          <button type="submit"><i class="fa fa-search"></i></button>
-        </div>
-        <div class="footer-col-2">
-          <img th:src="@{/img/bookstore.png}">
-          <p>Search more books and get exclusive offers.The best books and more.</p>
-        </div>
-        <div class="footer-col-3">
-          <h3>Contact us</h3>
-          <ul>
-            <li>Help</li>
-            <li>Contact us</li>
-            <li>Feedback</li>
-            <li>Privacy notice</li>
-          </ul>
-        </div>
-        <div class="footer-col-4">
-          <h3>Follow us</h3>
-          <ul>
-            <li>Facebook</li>
-            <li>Twitter</li>
-            <li>Instagram</li>
-            <li>Youtube</li>
-          </ul>
-        </div>
-      </div>
-      <hr>
-      <p class="copyright">
-        <i class="fa fa-copyright" aria-hidden="true"></i>
-        Copyright 2020 - EECS4413 Group member: Yuanfen Gu, Yikun Peng, Abdulhkem klif
-      </p>
-    </div>
-  </div>
+	<div align="center" id="products_table" class="products" style="border:'1'; cellpadding:'5';"></div>
+	<br /><br /><br />
 
 
-<script>
+	<!-- Displaying the edit modal -->
+
+	<div id="editModal" class="modal">
+		<!-- Modal content -->
+		<div id="EditProduct" style="display:none">
+			<fieldset>
+				<h4 class="text-center my-3">Edit product</h4>
+
+				<table style="background: lightgray; width: 98%; margin:5px;">
+					<tbody>
+						<tr>
+							<td><label for="productId">Id:</label></td>
+							<td><input class="editModalField form-control" id="productId" name="productId" value=''
+									type="text" readonly /></td>
+						</tr>
+						<tr>
+							<td><label for="product">Product:</label></td>
+							<td><input class="editModalField form-control" id="product" name="product" value=""
+									type="text" /></td>
+						</tr>
+						<tr>
+							<td><label for="category">Category:</label></td>
+							<td><input class="editModalField form-control" id="category" name="category" value=""
+									type="text" /></td>
+						</tr>
+						<tr>
+							<td><label for="price">Price:</label></td>
+							<td><input class="editModalField form-control" id="price" name="price" value=""
+									type="number" step="0.01" min="0" /></td>
+						</tr>
+
+						<tr>
+							<td><label for="inventory">Inventory:</label></td>
+							<td><input class="editModalField form-control" id="inventory" name="inventory" value=""
+									type="number" step="1" min="0" /></td>
+						</tr>
+
+						<tr>
+							<td><label for="available">Availabe:</label></td>
+							<td><input class="editModalField form-control" id="available" name="available" value=""
+									type="number" min="0" max="1" /></td>
+						</tr>
+
+					</tbody>
+				</table>
+				<div class="text-center">
+					<button type="button" class="btn btn-success" onclick="saveEdits();">Save Edits</button><button
+						onclick="hideModal('editModal');" class="btn btn-warning">Back</button>
+				</div>
+			</fieldset>
+		</div>
+
+	</div>
+
+	<!-- Displaying the product modal -->
 
 
-// generate a report with the books sold each month
-//var domain = "http://localhost:8090";
-var domain = window.location.hostname + (location.port ? ':' + location.port : '');
-
-function doAjax(address){
-	 var request = new XMLHttpRequest();
-	 var month = document.getElementById("monthlyReport").value;
-	 var url = "./api/checkout/" + month;
-	 request.onreadystatechange = function() {
-			handler(request);
-	 };
-	 request.open("GET", location.protocol + "//" + domain + url, true);
-	 request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	 request.send(); 
-} 
-
-function handler(request){
-	 if ((request.readyState == 4) && (request.status == 200))
-	 {
-		 var target = document.getElementById("result");
-		 target.innerHTML = request.responseText;
-	 }
-}
-
-//provide real time analytics (Listeners) with most popular products (life time), like “top 10 sold books
-function getBooksStats(){
-	var request = new XMLHttpRequest();
-	url = "./api/"
-	request.onreadystatechange = function(){
-		handlerBooksStats(request);
-	 };
-	 request.open("GEt", location.protocol + "//" + domain + ulr, true);
-	 request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	 request.send(data); 	
-}
-
-function handlerBooksStats(request){
-	 if ((request.readyState == 4) && (request.status == 200))
-	 {
-		 var target = document.getElementById("result");
-		 var result =  JSON.parse(request.responseText);
-		 var table = buildTable(result);
-		 table.border = '1';
-		 target.innerHTML = "";
-		 target.appendChild(table);
-	 }
-}
-
-function buildTable(result){
-	var table = document.createElement("TABLE");
-	table.setAttribute("id", "myTable");
- var row = document.createElement("TR");
- var data = document.createElement("TD");
- data.innerHTML = "Book Title";
- row.appendChild(data);
- 
- data = document.createElement("TD");
- data.innerHTML = "Book Id";
- row.appendChild(data);
- 
- table.appendChild(row);
- 
- var i=0;
- for (i=0; i<result.length; i++){
- 	
-	    row = document.createElement("TR");
-	    
-	    data = document.createElement("TD");
-	    data.innerHTML =result[i].username;
-	    row.appendChild(data);
-	    
-	    data = document.createElement("TD");
-	    data.innerHTML = result[i];
-	    row.appendChild(data);
-	    
-	    table.appendChild(row);
- }
- 
- return table;
-}
-
-// admins ops
-function doAdminsAjax(path, handler){
-	 var request = new XMLHttpRequest();
-	 request.onreadystatechange = function() {
-		 if(handler == "populate_products_handler"){
-			populate_products_handler(request);
-		 } else if(handler == "Edit")
-			 Edit(request);
-		 else if(handler == "showUsers")
-			 showUsers(request);
-		 else if(handler == "productDetails")
-			 productDetails(request);
-	 };
-	 request.open("GET", location.protocol + "//" + domain + path, true);
-	 request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-	 request.send(); 
-} 
-
-function doAdminsAjaxPost(path, handler){
-	 var request = new XMLHttpRequest();
-	 request.onreadystatechange = function() {
-		 if(handler == "populate_products_handler"){
-			populate_products_handler(request);
-		 } else if(handler == "Edit")
-			 Edit(request);
-		 else if(handler == "deleted")
-			 deleted(request);
-		 
-	 };
-	 request.open("POST", location.protocol + "//" + domain + path);
-	 //request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-	 request.send(); 
-} 
-
-function populate_products_handler(request){
-	 if ((request.readyState == 4) && (request.status == 200)) {
-		 var target = document.getElementById("products_table");
-		 var products = JSON.parse(request.responseText)
-		 var table = "";
-		 table += '<table class = "products" border = "1">';
-		 table += "<tr>";
-		 table += "<td style='width: 100px;' class='p-3'><h5 class='text-center'>Id</h5></td>";
-		 table += "<td style='width: 340px;' class='p-3'><h5 class='text-center text-info'>Product</h5></td>";
-		 table += "<td class='p-3'><h5 class='text-center text-primary'>Category</h5></td>";
-		 table += "<td  class='p-3' style='width: 100px;'><h5 class='text-center text-success'>Price</h5></td>";
-		 table += "<td class='p-3 text-center'><h5 class='text-warning'>Operations</h5></td>";
-		 table +="</tr>";
-		 
-		 for (var product of products) {
-			 table += "<tr>";
-			 table +="<td class='text-center'><p>" + product.productId + "</p></td>";
-			 table +="<td class='text-left pl-2'><p>" + product.itemName + "</p></td>";
-			 table +="<td class='text-center'><p>" + product.category + "</p></td>";
-			 table += "<td class='text-center'><p>$" + product.price + "</p></td>";
-			 table += '<td class="text-center"><button class="btn btn-info mr-1" onclick="showProductDetails(\'' + product.productId + '\' );">' + "Show" + "</a>"; 
-			 table += '<button id="editProduct" class="btn btn-primary mr-1" onclick="editProduct(\'' + product.productId + '\' );">' + "Edit" + "</a>"; 
-			 table += '<button class="btn btn-danger" onclick="deleteProduct(\'' + product.productId + '\' );">' + "Delete" + "</a></td>"; 
-			 table += "</tr>"
-		 }
-		 target.innerHTML = table;
-	 }
-}
-
-function showProductDetails(id){
-	console.log(id);
-	doAdminsAjax('/item/'+id, "")
-
-}
-
-function productDetails(request){
-	if ((request.readyState == 4) && (request.status == 200)){
-		var productModal = document.getElementById("showProductModal");
-		var product = JSON.parse(request.responseText);
-		//var titleDiv = '<div class="container"><div class="row"><div class="col-4"><h6>Id: </h6> <h6>Name: </h6> <h6>Label: </h6> <h6>Brand: </h6> <h6>Price: </h6> <h6>Category: </h6> <h6>In Stock: </h6> <h6>SKU #: </h6><h6>Release Date: </h6> <h6>Size SKU: </h6> <h6>Inventory: </h6></div>';
-		//var descriptionDiv = '<div class="col-8"><p>'+ product.productId +'</p><p>'+ product.itemName +'</p><p>'+ product.itemLabel +'</p><p>'+ product.brand +'</p><p>'+ product.price +'</p><p>'+ product.category +'</p><p>'+ product.isInstock; +'</p><p>'+ product.sku +'</p><p>'+ product.releaseDate +'</p><p>'+ product.sizeSku +'</p><p>'+ product.inventory +'</p></div></div><button onclick="hideModal('productModal');" class="btn btn-warning">Back</button></div>';
-		//productModal.innerHtml = product.productId;
-	}
-}
-
-function editProduct(id){
-	doAdminsAjax('/api/iteminfo/' + id + "", "Edit")
-}
-
-function deleteProduct(id){
-	doAdminsAjaxPost('/api/iteminfo/delete/'+id , "deleted")
-}
+	<div id="showProductModal"></div>
 
 
-function Edit(request){
-    let r = "254";
-    let g = "254";
-    let b = "254";
-    let opacity = "0.5";
-    
-	document.getElementById("editModal").style.display = "flex";
-    document.getElementById("editModal").style.backgroundColor="rgb(" + r + "," + g + "," + b + "," + opacity + ")";
-	document.getElementById("editModal").style.justifyContent = "center";
-	document.getElementById("editModal").style.alignItems = "center";
 
-    
-	if ((request.readyState == 4) && (request.status == 200)){
-		document.getElementById("EditProduct").style.display = "block";
-		var product = JSON.parse(request.responseText);
-		document.getElementById("productId").value = product.productId;
-		document.getElementById("product").value = product.itemName;
-		document.getElementById("available").value = product.isAvialable;
-		document.getElementById("inventory").value = product.inventory;
-		document.getElementById("price").value = product.price;
-		var category = document.getElementById("category").value = product.category;
-	}
-}
-
-function deleted(request){
-	if ((request.readyState == 4) && (request.status == 200)) {
-		location.reload();
-	}	
-}
-
-function saveEdits(){
-	var productId = document.getElementById("productId").value;
-	var pname = document.getElementById("product").value;
-	var category = document.getElementById("category").value;
-	var available = document.getElementById("available").value;
-	var inv = document.getElementById("inventory").value;
-	var price = document.getElementById("price").value;
-	var xhr = new XMLHttpRequest();
-    xhr.open("POST", domain + "/api/iteminfo/update_inventory/", true);
-    xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-    var data = {
-        "productId": productId,
-    	"itemName": pname,
-    	"isAvaliable": available,
-    	"category": category,
-    	"inventory": inv,
-    	"price": price
-    };
-    var myJSON = JSON.stringify(data);
-    console.log(data);
-    xhr.send(myJSON);
-    xhr.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log(this.responseText);
-            }
-    }
-}
-
-function showUsers(request){
-	if (request.readyState == 4 && request.status == 200) {
-        //console.log(request.responseText);
-		window.location.href = "";
-        }
-}
-
-function hideModal(modal){
-	document.getElementById(modal).style.display = "none";
-}
+	<!------featured product------->
+	<div class="footer">
+		<div class="container">
+			<div class="row">
+				<div class="footer-col-1">
+					<h3>Search</h3>
+					<p>Need anybooks quickly? search and get the best books at bookstore & Accessories</p><br />
+					<input type="text" placeholder="Search.." name="search">
+					<button type="submit"><i class="fa fa-search"></i></button>
+				</div>
+				<div class="footer-col-2">
+					<img th:src="@{/img/bookstore.png}">
+					<p>Search more books and get exclusive offers.The best books and more.</p>
+				</div>
+				<div class="footer-col-3">
+					<h3>Contact us</h3>
+					<ul>
+						<li>Help</li>
+						<li>Contact us</li>
+						<li>Feedback</li>
+						<li>Privacy notice</li>
+					</ul>
+				</div>
+				<div class="footer-col-4">
+					<h3>Follow us</h3>
+					<ul>
+						<li>Facebook</li>
+						<li>Twitter</li>
+						<li>Instagram</li>
+						<li>Youtube</li>
+					</ul>
+				</div>
+			</div>
+			<hr>
+			<p class="copyright">
+				<i class="fa fa-copyright" aria-hidden="true"></i>
+				Copyright 2020 - EECS4413 Group member: Yuanfen Gu, Yikun Peng, Abdulhkem klif
+			</p>
+		</div>
+	</div>
 
 
-</script>
-		
+	<script>
+		// generate a report with the books sold each month
+		//var domain = "http://localhost:8090";
+		var domain = window.location.hostname + (location.port ? ':' + location.port : '');
+
+		function doAjax(address) {
+			var request = new XMLHttpRequest();
+			var month = document.getElementById("monthlyReport").value;
+			var url = "./api/checkout/" + month;
+			request.onreadystatechange = function () {
+				handler(request);
+			};
+			request.open("GET", location.protocol + "//" + domain + url, true);
+			request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+			request.send();
+		}
+
+		function handler(request) {
+			if ((request.readyState == 4) && (request.status == 200)) {
+				var target = document.getElementById("result");
+				target.innerHTML = request.responseText;
+			}
+		}
+
+		//provide real time analytics (Listeners) with most popular products (life time), like “top 10 sold books
+		function getBooksStats() {
+			var request = new XMLHttpRequest();
+			url = "./api/"
+			request.onreadystatechange = function () {
+				handlerBooksStats(request);
+			};
+			request.open("GEt", location.protocol + "//" + domain + ulr, true);
+			request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+			request.send(data);
+		}
+
+		function handlerBooksStats(request) {
+			if ((request.readyState == 4) && (request.status == 200)) {
+				var target = document.getElementById("result");
+				var result = JSON.parse(request.responseText);
+				var table = buildTable(result);
+				table.border = '1';
+				target.innerHTML = "";
+				target.appendChild(table);
+			}
+		}
+
+		function buildTable(result) {
+			var table = document.createElement("TABLE");
+			table.setAttribute("id", "myTable");
+			var row = document.createElement("TR");
+			var data = document.createElement("TD");
+			data.innerHTML = "Book Title";
+			row.appendChild(data);
+
+			data = document.createElement("TD");
+			data.innerHTML = "Book Id";
+			row.appendChild(data);
+
+			table.appendChild(row);
+
+			var i = 0;
+			for (i = 0; i < result.length; i++) {
+
+				row = document.createElement("TR");
+
+				data = document.createElement("TD");
+				data.innerHTML = result[i].username;
+				row.appendChild(data);
+
+				data = document.createElement("TD");
+				data.innerHTML = result[i];
+				row.appendChild(data);
+
+				table.appendChild(row);
+			}
+
+			return table;
+		}
+
+		// admins ops
+		function doAdminsAjax(path, handler) {
+			var request = new XMLHttpRequest();
+			request.onreadystatechange = function () {
+				if (handler == "populate_products_handler") {
+					populate_products_handler(request);
+				} else if (handler == "Edit")
+					Edit(request);
+				else if (handler == "showUsers")
+					showUsers(request);
+				else if (handler == "productDetails")
+					productDetails(request);
+			};
+			request.open("GET", location.protocol + "//" + domain + path, true);
+			request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+			request.send();
+		}
+
+		function doAdminsAjaxPost(path, handler) {
+			var request = new XMLHttpRequest();
+			request.onreadystatechange = function () {
+				if (handler == "populate_products_handler") {
+					populate_products_handler(request);
+				} else if (handler == "Edit")
+					Edit(request);
+				else if (handler == "deleted")
+					deleted(request);
+
+			};
+			request.open("POST", location.protocol + "//" + domain + path);
+			//request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+			request.send();
+		}
+
+		function populate_products_handler(request) {
+			if ((request.readyState == 4) && (request.status == 200)) {
+				var target = document.getElementById("products_table");
+				var products = JSON.parse(request.responseText)
+				var table = "";
+				table += '<table class = "products" border = "1">';
+				table += "<tr>";
+				table += "<td style='width: 100px;' class='p-3'><h5 class='text-center'>Id</h5></td>";
+				table += "<td style='width: 340px;' class='p-3'><h5 class='text-center text-info'>Product</h5></td>";
+				table += "<td class='p-3'><h5 class='text-center text-primary'>Category</h5></td>";
+				table += "<td  class='p-3' style='width: 100px;'><h5 class='text-center text-success'>Price</h5></td>";
+				table += "<td class='p-3 text-center'><h5 class='text-warning'>Operations</h5></td>";
+				table += "</tr>";
+
+				for (var product of products) {
+					table += "<tr>";
+					table += "<td class='text-center'><p>" + product.productId + "</p></td>";
+					table += "<td class='text-left pl-2'><p>" + product.itemName + "</p></td>";
+					table += "<td class='text-center'><p>" + product.category + "</p></td>";
+					table += "<td class='text-center'><p>$" + product.price + "</p></td>";
+					table += '<td class="text-center"><button class="btn btn-info mr-1" onclick="showProductDetails(\'' +
+						product.productId + '\' );">' + "Show" + "</a>";
+					table += '<button id="editProduct" class="btn btn-primary mr-1" onclick="editProduct(\'' + product
+						.productId + '\' );">' + "Edit" + "</a>";
+					table += '<button class="btn btn-danger" onclick="deleteProduct(\'' + product.productId + '\' );">' +
+						"Delete" + "</a></td>";
+					table += "</tr>"
+				}
+				target.innerHTML = table;
+			}
+		}
+
+		function showProductDetails(id) {
+			console.log(domain + "/product/" + id);
+			window.location.href = location.protocol + "//" + domain + "/product/" + id;
+			//doAdminsAjax('/item/'+id, "")
+
+		}
+
+		function productDetails(request) {
+			if ((request.readyState == 4) && (request.status == 200)) {
+				var productModal = document.getElementById("showProductModal");
+				var product = JSON.parse(request.responseText);
+				//var titleDiv = '<div class="container"><div class="row"><div class="col-4"><h6>Id: </h6> <h6>Name: </h6> <h6>Label: </h6> <h6>Brand: </h6> <h6>Price: </h6> <h6>Category: </h6> <h6>In Stock: </h6> <h6>SKU #: </h6><h6>Release Date: </h6> <h6>Size SKU: </h6> <h6>Inventory: </h6></div>';
+				//var descriptionDiv = '<div class="col-8"><p>'+ product.productId +'</p><p>'+ product.itemName +'</p><p>'+ product.itemLabel +'</p><p>'+ product.brand +'</p><p>'+ product.price +'</p><p>'+ product.category +'</p><p>'+ product.isInstock; +'</p><p>'+ product.sku +'</p><p>'+ product.releaseDate +'</p><p>'+ product.sizeSku +'</p><p>'+ product.inventory +'</p></div></div><button onclick="hideModal('productModal');" class="btn btn-warning">Back</button></div>';
+				//productModal.innerHtml = product.productId;
+			}
+		}
+
+		function editProduct(id) {
+			doAdminsAjax('/api/iteminfo/' + id + "", "Edit")
+		}
+
+		function deleteProduct(id) {
+			doAdminsAjaxPost('/api/iteminfo/delete/' + id, "deleted")
+		}
+
+
+		function Edit(request) {
+			let r = "254";
+			let g = "254";
+			let b = "254";
+			let opacity = "0.5";
+
+			document.getElementById("editModal").style.display = "flex";
+			document.getElementById("editModal").style.backgroundColor = "rgb(" + r + "," + g + "," + b + "," + opacity + ")";
+			document.getElementById("editModal").style.justifyContent = "center";
+			document.getElementById("editModal").style.alignItems = "center";
+
+
+			if ((request.readyState == 4) && (request.status == 200)) {
+				document.getElementById("EditProduct").style.display = "block";
+				var product = JSON.parse(request.responseText);
+				document.getElementById("productId").value = product.productId;
+				document.getElementById("product").value = product.itemName;
+				document.getElementById("available").value = product.isAvialable;
+				document.getElementById("inventory").value = product.inventory;
+				document.getElementById("price").value = product.price;
+				var category = document.getElementById("category").value = product.category;
+			}
+		}
+
+		function deleted(request) {
+			if ((request.readyState == 4) && (request.status == 200)) {
+				location.reload();
+			}
+		}
+
+		function saveEdits() {
+			var productId = document.getElementById("productId").value;
+			var pname = document.getElementById("product").value;
+			var category = document.getElementById("category").value;
+			var available = document.getElementById("available").value;
+			var inv = document.getElementById("inventory").value;
+			var price = document.getElementById("price").value;
+			var xhr = new XMLHttpRequest();
+			xhr.open("POST", domain + "/api/iteminfo/update_inventory/", true);
+			xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+			var data = {
+				"productId": productId,
+				"itemName": pname,
+				"isAvaliable": available,
+				"category": category,
+				"inventory": inv,
+				"price": price
+			};
+			var myJSON = JSON.stringify(data);
+			console.log(data);
+			xhr.send(myJSON);
+			xhr.onreadystatechange = function () {
+				if (this.readyState == 4 && this.status == 200) {
+					console.log(this.responseText);
+				}
+			}
+		}
+
+		function showUsers(request) {
+			if (request.readyState == 4 && request.status == 200) {
+				//console.log(request.responseText);
+				window.location.href = "";
+			}
+		}
+
+		function hideModal(modal) {
+			document.getElementById(modal).style.display = "none";
+		}
+	</script>
+
 </body>
 
 </html>

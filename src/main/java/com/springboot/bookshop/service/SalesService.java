@@ -24,6 +24,14 @@ public class SalesService {
 	public List<Sales> findAll(){
 		return this.salesRepository.findAll();
 	}
+	
+	public List<Object> findAllForPartner(){
+		return this.salesRepository.getAllSalesForPartner();
+	}
+	
+	public List<Object> findAllByItemIdForPartner(Optional<String> productId){
+		return this.salesRepository.getAllByItemIdForPartner(productId);
+	}
 
 	public Optional<Sales> findById(Long id){
 		return this.salesRepository.findById(id);

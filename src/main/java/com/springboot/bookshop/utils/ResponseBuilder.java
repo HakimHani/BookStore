@@ -78,4 +78,12 @@ public class ResponseBuilder {
 		return json;
 	}
 	
+	public Map<String, Object> salesReponse(String status, int message, Object data) {
+		Map<String, Object> json = new HashMap<String, Object>();
+		json.put("status", status);
+		json.put("total_sales", message);
+		json.put("item", data);
+		return json;
+	}
+	
 }

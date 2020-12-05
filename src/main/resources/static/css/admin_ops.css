@@ -13,8 +13,8 @@
 	margin-top: 20px;
 }
 
-#EditProduct{
-	display: center;
+#EditProduct, #showProductModal{
+	text-align: center;
 	background-color: lightgray;
 	border: 2px solid black;
     border-radius: 10px

@@ -3,9 +3,9 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Admin DashBoard</title>
-	<link th:href="@{/css/login.css}" rel="stylesheet" />
   	<link rel="preconnect" href="https://fonts.gstatic.com">
   	<link th:href="@{/css/admin_ops.css}" rel="stylesheet" />
+  	<link th:href="@{/css/login.css}" rel="stylesheet" />
   	<link href="https://fonts.googleapis.com/css2?family=Nerko+One&display=swap" rel="stylesheet">
   	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
@@ -90,6 +90,11 @@
 
     </div>
     
+        <!-- Displaying the product modal -->
+    
+       
+	        <div id="showProductModal"></div>
+
     
     
     <!------featured product------->
@@ -227,7 +232,8 @@ function doAdminsAjax(path, handler){
 			 Edit(request);
 		 else if(handler == "showUsers")
 			 showUsers(request);
-		 
+		 else if(handler == "productDetails")
+			 productDetails(request);
 	 };
 	 request.open("GET", domain + path, true);
 	 request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
@@ -281,6 +287,18 @@ function populate_products_handler(request){
 
 function showProductDetails(id){
 	console.log(id);
+	doAdminsAjax('/item/'+id, "")
+
+}
+
+function productDetails(request){
+	if ((request.readyState == 4) && (request.status == 200)){
+		var productModal = document.getElementById("showProductModal");
+		var product = JSON.parse(request.responseText);
+		//var titleDiv = '<div class="container"><div class="row"><div class="col-4"><h6>Id: </h6> <h6>Name: </h6> <h6>Label: </h6> <h6>Brand: </h6> <h6>Price: </h6> <h6>Category: </h6> <h6>In Stock: </h6> <h6>SKU #: </h6><h6>Release Date: </h6> <h6>Size SKU: </h6> <h6>Inventory: </h6></div>';
+		//var descriptionDiv = '<div class="col-8"><p>'+ product.productId +'</p><p>'+ product.itemName +'</p><p>'+ product.itemLabel +'</p><p>'+ product.brand +'</p><p>'+ product.price +'</p><p>'+ product.category +'</p><p>'+ product.isInstock; +'</p><p>'+ product.sku +'</p><p>'+ product.releaseDate +'</p><p>'+ product.sizeSku +'</p><p>'+ product.inventory +'</p></div></div><button onclick="hideModal('productModal');" class="btn btn-warning">Back</button></div>';
+		//productModal.innerHtml = product.productId;
+	}
 }
 
 function editProduct(id){
@@ -305,8 +323,7 @@ function Edit(request){
 
     
 	if ((request.readyState == 4) && (request.status == 200)){
-		var edit = document.getElementById("EditProduct");
-		edit.style.display = "block";
+		document.getElementById("EditProduct").style.display = "block";
 		var product = JSON.parse(request.responseText);
 		document.getElementById("productId").value = product.productId;
 		document.getElementById("product").value = product.itemName;
@@ -364,7 +381,6 @@ function hideModal(modal){
 
 
 </script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 </body>
 </html>
 

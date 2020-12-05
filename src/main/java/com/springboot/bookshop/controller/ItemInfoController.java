@@ -164,15 +164,23 @@ public class ItemInfoController {
 
 	// update item info
 	@PostMapping(path = "/update_inventory", produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> updateItemInfo(@RequestBody List<String> updateInfo) {
-		ItemInfo item = this.itemInfoService.findByProductId(updateInfo.get(0)).orElse(null);
+	public ResponseEntity<Object> updateItemInfo(@RequestBody ItemInfo itemInfo) {
+		ItemInfo item = this.itemInfoService.findByProductId(itemInfo.getProductId()).orElse(null);
 				//.orElseThrow(() -> new ResourceNotFoundException("Item not found with sku :" + updateInfo.get(0)));
 			
 		if(item == null) {
             return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Failed","ITEM NOT FOUND", null), HttpStatus.OK);
 		}
-        
-		item.setInventory(Integer.parseInt(updateInfo.get(1)));
+		
+		
+		if(itemInfo.getInventory() < 0) {
+			return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Failed","WRONG INVENTORY FORMAT", null), HttpStatus.OK);
+		}
+		item.setInventory(itemInfo.getInventory());
+		item.setItemName(itemInfo.getItemName());
+		item.setItemLabel(itemInfo.getItemName());
+		item.setPrice(itemInfo.getPrice());
+		item.setAvaliable(itemInfo.isAvaliable());
 		this.itemInfoService.save(item);
 
         return new ResponseEntity<Object>(responseBuilder.itemInfoResponse("Success","Inventory updated", item), HttpStatus.OK);

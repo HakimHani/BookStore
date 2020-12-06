@@ -24,12 +24,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import com.springboot.bookshop.constant.enums.CheckoutState;
+import com.springboot.bookshop.entity.Address;
 import com.springboot.bookshop.entity.Checkout;
 import com.springboot.bookshop.entity.ItemInfo;
 import com.springboot.bookshop.entity.Sales;
 import com.springboot.bookshop.exception.ResourceNotFoundException;
 import com.springboot.bookshop.model.ShopItem;
 import com.springboot.bookshop.model.Visitor;
+import com.springboot.bookshop.service.AddressService;
 import com.springboot.bookshop.service.CheckoutService;
 import com.springboot.bookshop.service.ItemInfoService;
 import com.springboot.bookshop.service.SalesService;
@@ -61,6 +63,8 @@ public class CheckoutController {
 	@Autowired
 	private ResponseBuilder responseBuilder;
 
+	@Autowired
+	private AddressService addressService;
 	
 	
 	//Fetch all checkouts of the user by email
@@ -147,9 +151,15 @@ public class CheckoutController {
 			//throw new ResourceNotFoundException("Checkout not found with checkoutId :" + checkoutId);
 		}
 		
+		if(this.visitor.getUser() != null) {
+			existingCheckout.setEmail(this.visitor.getUser().getEmail());
+		}else {
+			Address orderAddress = this.addressService.findByAddressId(checkout.getAddressId()).orElse(null);
+			existingCheckout.setEmail(orderAddress.getEmail());
+		}
+		
 		existingCheckout.setCheckoutState(CheckoutState.SHIPPING_INFO);
 		//existingCheckout.setEmail(checkout.getEmail());
-		existingCheckout.setEmail(this.visitor.getUser().getEmail());
 		existingCheckout.setAddressId(checkout.getAddressId());
 		this.checkoutService.save(existingCheckout);
 		

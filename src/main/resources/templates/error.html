@@ -1,11 +1,82 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8" />
-<title>404 Sorry</title>
-<link href="css/index.css" rel="stylesheet" />
+	<meta charset="UTF-8" />
+	<title>All products</title>
+	<link th:href="@{/css/products.css}" rel="stylesheet" />
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Nerko+One&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script type="text/javascript" th:src="@{/js/products.js}"></script>
 </head>
+
 <body>
-	<h1>The page you are looking for does not exist....from e-bookshop</h1>
+
+	<div id="topper" class="container">
+		<div class="navbar">
+			<div class="logo">
+				<img th:src="@{/img/bookstore.png}" width="125px">
+			</div>
+			<nav>
+				<ul>
+					<li><a href="/">Home</a></li>
+					<li><a href="/products">Books</a></li>
+				</ul>
+			</nav>
+			<a href="/cart"><img th:src="@{/img/cart.png}" width="25px" height="25px"></a>
+		</div>
+	</div>
+
+
+	<div id="productsRoots" class="small-container">
+
+		<h1>Oops!</h1>
+		<h3>The page you are looking for does not exists</h3>
+
+	</div>
+
+	<!------footer------->
+	<div class="footer">
+		<div class="container">
+			<div class="row">
+				<div class="footer-col-1">
+					<h3>Search</h3>
+					<p>Need anybooks quickly? search and get the best books at bookstore & Accessories</p><br />
+					<input type="text" placeholder="Search.." name="search">
+					<button type="submit"><i class="fa fa-search"></i></button>
+				</div>
+				<div class="footer-col-2">
+					<img th:src="@{/img/bookstore.png}">
+					<p>Search more books and get exclusive offers.The best books and more.</p>
+				</div>
+				<div class="footer-col-3">
+					<h3>Contact us</h3>
+					<ul>
+						<li>Help</li>
+						<li>Contact us</li>
+						<li>Feedback</li>
+						<li>Privacy notice</li>
+					</ul>
+				</div>
+				<div class="footer-col-4">
+					<h3>Follow us</h3>
+					<ul>
+						<li>Facebook</li>
+						<li>Twitter</li>
+						<li>Instagram</li>
+						<li>Youtube</li>
+					</ul>
+				</div>
+			</div>
+			<hr>
+			<p class="copyright">
+				<i class="fa fa-copyright" aria-hidden="true"></i>
+				Copyright 2020 - EECS4413 Group member: Yuanfen Gu, Yikun Peng, Hakim
+			</p>
+		</div>
+	</div>
 </body>
+
 </html>

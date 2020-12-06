@@ -46,7 +46,7 @@ async function createBilling(checkoutId) {
     }
     console.log(data);
     xhr.send(JSON.stringify(data));
-    xhr.onreadystatechange = function () {
+    xhr.onreadystatechange = async function () {
         if (this.readyState == 4) {
             var response = this.responseText;
             console.log(response);
@@ -59,6 +59,11 @@ async function createBilling(checkoutId) {
                 } else {
                     console.log(response.status + " " + response.message);
                     notifyCheckoutInputError(response.message);
+                    if(response.message == "CHECKOUT BANNED"){
+                        console.log("reset checkout");
+                        await sleep(1000);
+                        window.location.href = "/checkout";
+                    }
                 }
 
             } else {
@@ -116,6 +121,6 @@ async function notifyCheckoutInputError(msg) {
     document.querySelector("#notificationLogo").className = "fa fa-exclamation";
     document.querySelector("#notificationLogo").style.color = "red";
     document.querySelector("#notificationText").innerHTML = msg;
-    await sleep(1000);
+    await sleep(2000);
     document.querySelector("#notify").style.display = "none";
 }

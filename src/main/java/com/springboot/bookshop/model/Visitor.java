@@ -19,13 +19,15 @@ public class Visitor {
 	User user;
 	Cart cart;
 	AccountType permission;
+	int errorRate;
 	
 	public Visitor() {
 		this.firstTS = new Timestamp(System.currentTimeMillis());
 		this.latestTS = this.firstTS;
 		this.user = null;
 		this.cart = new Cart();
-		permission = AccountType.VISITOR;
+		this.permission = AccountType.VISITOR;
+		this.errorRate = 0;
 	}
 	
 	public Visitor(Timestamp firstTS) {
@@ -33,7 +35,8 @@ public class Visitor {
 		this.latestTS = this.firstTS;
 		this.user = null;
 		this.cart = new Cart();
-		permission = AccountType.VISITOR;
+		this.permission = AccountType.VISITOR;
+		this.errorRate = 0;
 	}
 
 	public Cart getCart() {
@@ -75,11 +78,13 @@ public class Visitor {
 	
 	public void logIn(User user) {
 		this.user = user;
+		//this.errorRate = 0;
 	}
 	
 	public void logOut(User user) {
 		this.user = null;
 		permission = AccountType.VISITOR;
+		this.errorRate = 0;
 	}
 	
 	public String addToCart(ShopItem item,ItemInfo itemInfo) {
@@ -108,6 +113,25 @@ public class Visitor {
 
 	public void setPermission(AccountType permission) {
 		this.permission = permission;
+	}
+	
+
+	public int getErrorRate() {
+		return errorRate;
+	}
+
+	public void setErrorRate(int errorRate) {
+		this.errorRate = errorRate;
+	}
+	
+	public boolean errorEvent() {
+		this.errorRate += 1;
+		if(this.errorRate >= 3) {
+			this.cart.setCheckoutId(null);
+			this.errorRate = 0;
+			return true;
+		}
+		return false;
 	}
 	
 	

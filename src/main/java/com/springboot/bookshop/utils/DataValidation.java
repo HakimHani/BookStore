@@ -54,12 +54,22 @@ public class DataValidation {
 	}
 	
 	public boolean validateAddress(Address address) {
+			
 		boolean flag = true;
+		String fname = address.getFirstName();
+		String lname = address.getLastName();
+		String em = address.getEmail();
 		String city = address.getCity();
 		String state = address.getState();
 		String postalCode = address.getPostal();
 		String country = address.getCountry();
-				
+		String addressOne = address.getAddressOne();
+		flag = flag && !(addressOne == null || fname.chars().allMatch(Character::isWhitespace));
+		flag = flag && !(lname == null || lname.chars().allMatch(Character::isWhitespace));
+		flag = flag && !(em == null || em.chars().allMatch(Character::isWhitespace));
+		flag = flag && !(addressOne == null || addressOne.chars().allMatch(Character::isWhitespace));
+		if(!flag)
+			return flag;
 		flag = flag && city.matches( "([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z]+)" ); 
 		flag = flag &&  state.matches("Québec|Ontario|British Columbia|Manitoba|Saskatchewan|Newfoundland|Nova Scotia|Alberta|Prince Edward Island|New Brunswick");
 		flag = flag && Pattern.compile("^(?!.*[DFIOQU])[A-VXY][0-9][A-Z] ?[0-9][A-Z][0-9]$").matcher(postalCode).matches();

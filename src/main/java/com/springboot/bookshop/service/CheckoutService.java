@@ -48,6 +48,7 @@ public class CheckoutService {
 	public void delete(Checkout checkout){
 		this.checkoutRepository.delete(checkout);
 	}
+	
 
 
 }

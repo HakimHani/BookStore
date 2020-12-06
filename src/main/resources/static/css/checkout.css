@@ -174,3 +174,22 @@ span.price {
 	margin-top: 10px;
 	font-size: 20px;
 }
+
+
+#savedAddr {
+    width: 90%;
+    border: 1px solid black;
+    border-radius: 8px;
+    font-size: large;
+    background: rgb(252, 249, 249);
+    margin-bottom: 5px;
+}
+
+#pickAddrBtn{
+    float: right;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background: #8372e9;
+    color: white;
+    font-size: large;
+}

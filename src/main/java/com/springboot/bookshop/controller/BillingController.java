@@ -67,7 +67,10 @@ public class BillingController {
 		}
 
 		if(!dataValidation.validateBilling(billing)) {
-			return new ResponseEntity<Object>(responseBuilder.BillingResponse("Failed", "BILLING INFORMATION FORMATING ERROR", billing), HttpStatus.OK);
+			if(this.visitor.errorEvent()) {
+				return new ResponseEntity<Object>(responseBuilder.BillingResponse("Failed", "CHECKOUT BANNED", billing), HttpStatus.OK);
+			}
+			return new ResponseEntity<Object>(responseBuilder.BillingResponse("Failed", "PAYMENT VALIDATION FAILED", billing), HttpStatus.OK);
 		}
 		
 		String email = existingCheckout.getEmail();

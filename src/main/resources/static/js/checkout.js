@@ -87,9 +87,11 @@ async function uploadAddress(isGuest, clientEmail, checkoutId) {
                     uploadShipping(email, checkoutId, cAddr.addressId);
                 } else {
                     console.log(response.status + " " + response.message);
+                    notifyCheckoutInputError(response.message);
                 }
             } else {
                 console.log("FAILED");
+                notifyCheckoutInputError("Error creating address");
             }
 
         }
@@ -122,9 +124,11 @@ async function uploadShipping(clientEmail, checkoutId, addressId) {
                     window.location.href = location.protocol + "//" + domain + "/checkout/billing";
                 } else {
                     console.log(response.status + " " + response.message);
+                    notifyCheckoutInputError(response.message);
                 }
-            }else{
+            } else {
                 console.log("FAILED");
+                notifyCheckoutInputError("Error updating checkout");
             }
         }
     };
@@ -220,3 +224,13 @@ function displaySavedAddress() {
 			"&";
         data += "addStudentReq=true";
         */
+
+async function notifyCheckoutInputError(msg) {
+    $("#notify").fadeIn();
+    //document.querySelector("#notify").style.display = "block";
+    document.querySelector("#notificationLogo").className = "fa fa-exclamation";
+    document.querySelector("#notificationLogo").style.color = "red";
+    document.querySelector("#notificationText").innerHTML = msg;
+    await sleep(1000);
+    document.querySelector("#notify").style.display = "none";
+}

@@ -58,10 +58,12 @@ async function createBilling(checkoutId) {
                     uploadBilling(checkoutId, responseBilling.billingId);
                 } else {
                     console.log(response.status + " " + response.message);
+                    notifyCheckoutInputError(response.message);
                 }
 
             } else {
                 console.log("FAILED");
+                notifyCheckoutInputError("Error creating address");
             }
         }
     };
@@ -96,10 +98,24 @@ async function uploadBilling(checkoutId, billingId) {
                     window.location.href = location.protocol + "//" + domain + "/checkout/review";
                 } else {
                     console.log(response.status + " " + response.message);
+                    notifyCheckoutInputError(response.message);
                 }
             }else{
                 console.log("FAILED");
+                notifyCheckoutInputError("Error updating checkout");
             }
         }
     };
+}
+
+
+
+async function notifyCheckoutInputError(msg) {
+    $("#notify").fadeIn();
+    //document.querySelector("#notify").style.display = "block";
+    document.querySelector("#notificationLogo").className = "fa fa-exclamation";
+    document.querySelector("#notificationLogo").style.color = "red";
+    document.querySelector("#notificationText").innerHTML = msg;
+    await sleep(1000);
+    document.querySelector("#notify").style.display = "none";
 }

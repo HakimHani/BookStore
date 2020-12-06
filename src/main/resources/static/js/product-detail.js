@@ -13,7 +13,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     $(document).on('click', '#atc', function () {
-
+        $(this).text("Adding...");
+        $(this).prop('disabled', true);
         var productId = $(this).attr('pid')
         console.log(productId);
         atc(productId);
@@ -103,12 +104,15 @@ async function atc(detail) {
                 console.log(response);
                 if (response.status == "Success") {
                     console.log("ITEM ADDED");
+                    notifyCartSuccess();
                 } else {
                     console.log(response.status + " " + response.message);
+                    notifyCartFailed();
                 }
 
             } else {
                 console.log("FAILED");
+                notifyCartFailed();
             }
         }
     };
@@ -158,4 +162,31 @@ async function submitComment(detail) {
 async function displayReviewErrorMessage(msg) {
     console.log("review submission failed");
     document.getElementById("reviewStatus").innerHTML = msg;
+}
+
+
+async function notifyCartSuccess() {
+
+    $("#notify").fadeIn();
+    //document.querySelector("#notify").style.display = "block";
+    document.querySelector("#notificationLogo").className = "fa fa-check";
+    document.querySelector("#notificationLogo").style.color = "green";
+    document.querySelector("#notificationText").innerHTML = "Product added to cart";
+    await sleep(1000);
+    document.querySelector("#notify").style.display = "none";
+    $("#atc").text("Add To Cart");
+    $("#atc").prop('disabled', false);
+}
+
+async function notifyCartFailed() {
+
+    $("#notify").fadeIn();
+    //document.querySelector("#notify").style.display = "block";
+    document.querySelector("#notificationLogo").className = "fa fa-exclamation";
+    document.querySelector("#notificationLogo").style.color = "red";
+    document.querySelector("#notificationText").innerHTML = "Error adding to cart";
+    await sleep(1000);
+    document.querySelector("#notify").style.display = "none";
+    $("#atc").text("Add To Cart");
+    $("#atc").prop('disabled', false);
 }

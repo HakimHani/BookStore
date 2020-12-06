@@ -20,7 +20,7 @@ import com.springboot.bookshop.service.ReviewService;
 @Controller
 @Scope("session")
 
-public class VisitorController {
+public class HomeController {
 
 	//private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
 	

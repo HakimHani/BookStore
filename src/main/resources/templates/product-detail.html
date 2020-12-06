@@ -37,6 +37,11 @@
         </div>
 
 
+        <div class="NotificationDiv" id="notify">
+            <i class="fa fa-check" id="notificationLogo"></i>
+            <div id="notificationText"><a>Product added to cart</a></div>
+        </div>
+
         <!--------------single-product--------------->
         <div class="small-container single-product">
             <div class="row">
@@ -55,7 +60,13 @@
                     <h4>$<a th:text="${item.price}">22.46</a></h4>
 
                     <input type="number" value="1">
-                    <a class="btn" id="atc" th:pid="${item.productId}">Add To Cart</a>
+                    <div th:if="${item.inventory &lt; 1}">
+                        <a class="btn" id="atcf" th:pid="${item.productId}">Out of stock</a>
+                    </div>
+                    <div th:unless="${item.inventory &lt; 1}">
+                        <a class="btn" id="atc" th:pid="${item.productId}">Add To Cart</a>
+                    </div>
+                    
 
                     <h3>PRODUCT DETAILS <i class="fa fa-indent"></i></h3>
                     <br>

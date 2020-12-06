@@ -40,9 +40,9 @@
 	<hr>
 	<br><br><br><br>
 	<div class="text-center">
-		<button class="btn btn-primary" onclick="doAdminsAjax('/api/iteminfo/', 'populate_products_handler');">Show
-			Products</button>
+		<button class="btn btn-primary" onclick="doAdminsAjax('/api/iteminfo/', 'populate_products_handler');">Show Products</button>
 		<button class="btn btn-info" onclick="showUsers()">Show Registered Users</button>
+		<button class="btn btn-info" th:onclick="'window.location.href = \'' + @{/admin_ops/product_sales} + '\''">Show Product Sales</button>
 	</div>
 
 
@@ -149,8 +149,8 @@
 
 
 // generate a report with the books sold each month
-var domain = "localhost:8090";
-//var domain = window.location.hostname + (location.port ? ':' + location.port : '');
+//var domain = "localhost:8090";
+var domain = window.location.hostname + (location.port ? ':' + location.port : '');
 
 function doAjax(address){
 	 var request = new XMLHttpRequest();
@@ -383,6 +383,10 @@ function showUsers(){
 
 function hideModal(modal){
 	document.getElementById(modal).style.display = "none";
+}
+
+function showSales(){
+	window.location.href = "/admin_ops/sales"
 }
 
 

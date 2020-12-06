@@ -25,7 +25,7 @@ public class ItemInfoService {
 	public List<ItemInfo> findAll(){
 		return this.itemInfoRepository.findAll();
 	}
-
+	
 	public Optional<ItemInfo> findById(Long id){
 		return this.itemInfoRepository.findById(id);
 	}

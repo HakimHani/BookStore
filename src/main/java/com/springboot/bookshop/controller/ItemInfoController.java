@@ -43,7 +43,7 @@ public class ItemInfoController {
 
 
 
-	// get all users
+	// get all products
 	@GetMapping
 	public List<ItemInfo> getAllItemInfos() {
 		return this.itemInfoService.findAll();
@@ -82,20 +82,20 @@ public class ItemInfoController {
 		return this.itemInfoService.findByProductId(id);
 	}
 
-	// get user by id
+	// get all products
 	@GetMapping("/all")
 	public List<ItemInfo> getItemInfoBySku() {
 		return this.itemInfoService.findAll();
 	}
 	
-	// get user by id
+	// get products by author name
 	@GetMapping("/brand/{itemBrand}")
 	public List<ItemInfo> getItemInfoByBrand(@PathVariable (value = "itemBrand") String itemBrand) {
 		System.out.println("Checking with " + itemBrand);
 		return this.itemInfoService.findAllByBrand(itemBrand);		
 	}
 
-	// get user by id
+	// get products by category
 	@GetMapping("/category/{itemCategory}")
 	public List<ItemInfo> getItemInfoByCategory(@PathVariable (value = "itemCategory") String itemCategory) {
 		System.out.println("Checking with " + itemCategory);

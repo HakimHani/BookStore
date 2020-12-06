@@ -40,49 +40,46 @@ public class HomeController {
 	public String homePage(Model model)
 	{
 		
-		
 		List<ItemInfo> allItems = this.itemInfoService.findAll();
 		List<ItemInfo> items = this.itemInfoService.getItemByGroups(allItems,1);
 		System.out.println(items.get(0).getImgurl());
 		model.addAttribute("items",items);
 		model.addAttribute("visitor",this.visitor);
-		
-		
-		
 		List<ItemInfo> best = this.itemInfoService.findByOrderBySalesCountDesc();
 		best = best.subList(0,best.size() >= 4 ? 4 : best.size());
 		model.addAttribute("best",best);
-		
 		return "products-home";
-
+	}
+	
+	@GetMapping(path = "/login")
+	public String redirectToLogin(Model model)
+	{
+		if(this.visitor.getUser() != null) {
+			return "redirect:/index";
+		}	
+		model.addAttribute("visitor",this.visitor);
+		return "login";
 		
 	}
 	
-	@GetMapping(path = "/products")
-	public String products(Model model)
-	{
-		List<ItemInfo> allItems = itemInfoService.findAll();
-		//List<ItemInfo> items = itemInfoRepository.findAll();
-		List<ItemInfo> items = this.itemInfoService.getItemByGroups(allItems,1);
-		model.addAttribute("items",items);
+	
+	
+	@GetMapping(path = "/cart")
+	public String cart(Model model)
+	{		
+		model.addAttribute("cartData",this.visitor.getCart());
 		model.addAttribute("visitor",this.visitor);
-		model.addAttribute("pageCount",allItems.size()/20);
-		return "products";
-
+		return "cart";
 	}
 	
-	@GetMapping(path = "/products/{groupIndex}")
-	public String productsByPage(@PathVariable (value = "groupIndex") int groupIndex,Model model)
+	
+	@GetMapping(path = "/admin")
+	public String adminDashboard(Model model)
 	{
-			
-		//List<ItemInfo> items = itemInfoRepository.findAll();
-		List<ItemInfo> allItems = itemInfoService.findAll();
-		List<ItemInfo> items = this.itemInfoService.getItemByGroups(allItems,groupIndex);
-		model.addAttribute("items",items);
-		model.addAttribute("visitor",this.visitor);
-		model.addAttribute("pageCount",allItems.size()/20);
-		return "products";
-
+		if(this.visitor.getUser() == null || this.visitor.getPermission() != AccountType.ADMIN) {
+			return "redirect:/login";
+		}
+		return "admin_ops";
 	}
 	
 	@GetMapping(path = "/product/{productId}")
@@ -111,6 +108,63 @@ public class HomeController {
 	}
 	
 	
+	
+	@GetMapping(path = "/products")
+	public String products(Model model)
+	{
+		List<ItemInfo> allItems = itemInfoService.findAll();
+		//List<ItemInfo> items = itemInfoRepository.findAll();
+		List<ItemInfo> items = this.itemInfoService.getItemByGroups(allItems,1);
+		model.addAttribute("items",items);
+		model.addAttribute("visitor",this.visitor);
+		model.addAttribute("pageCount",allItems.size()/20);
+		return "products";
+	}
+	
+
+	
+	@GetMapping(path = "/products/category/{category}")
+	public String productsByCategory(@PathVariable (value = "category") String category,Model model)
+	{	
+		List<ItemInfo> allItems = this.itemInfoService.findAllByCategory(category);
+		List<ItemInfo> items = this.itemInfoService.getItemByGroups(allItems,1);
+		model.addAttribute("items",items);
+		model.addAttribute("visitor",this.visitor);
+		model.addAttribute("pageCount",allItems.size()/20);
+		return "products";
+	}
+	
+	@GetMapping(path = "/products/author/{author}")
+	public String productsByAuthorName(@PathVariable (value = "author") String author,Model model)
+	{	
+		List<ItemInfo> allItems = this.itemInfoService.findAllByBrand(author);
+		List<ItemInfo> items = this.itemInfoService.getItemByGroups(allItems,1);
+		model.addAttribute("items",items);
+		model.addAttribute("visitor",this.visitor);
+		model.addAttribute("pageCount",allItems.size()/20);
+		return "products";
+	}
+	
+	
+	
+	@GetMapping(path = "/products/{groupIndex}")
+	public String productsByPage(@PathVariable (value = "groupIndex") int groupIndex,Model model)
+	{
+			
+		List<ItemInfo> allItems = itemInfoService.findAll();
+		List<ItemInfo> items = this.itemInfoService.getItemByGroups(allItems,groupIndex);
+		model.addAttribute("items",items);
+		model.addAttribute("visitor",this.visitor);
+		model.addAttribute("pageCount",allItems.size()/20);
+		return "products";
+
+	}
+	
+
+	
+	
+	
+	
 	@GetMapping(path = "/best-sellers")
 	public String productsBestSellers(Model model)
 	{
@@ -121,46 +175,12 @@ public class HomeController {
 		//List<ItemInfo> items = best.subList(best.size()-21 >= 0?best.size()-21:0, best.size()-1);
 		model.addAttribute("items",items);
 		model.addAttribute("visitor",this.visitor);
+		model.addAttribute("pageCount",best.size()/20);
 		return "products";
 
 	}
 	
-	
-	@GetMapping(path = "/login")
-	public String redirectToLogin(Model model)
-	{
-		
-		if(this.visitor.getUser() != null) {
-			return "redirect:/index";
-		}
-			
-		model.addAttribute("visitor",this.visitor);
-		return "login";
-		
-	}
-	
-	@GetMapping(path = "/cart")
-	public String cart(Model model)
-	{
-				
-		model.addAttribute("cartData",this.visitor.getCart());
-		model.addAttribute("visitor",this.visitor);
-		return "cart";
-		
-	}
-	
-	
-	@GetMapping(path = "/admin")
-	public String adminDashboard(Model model)
-	{
-		
-		if(this.visitor.getUser() == null || this.visitor.getPermission() != AccountType.ADMIN) {
-			return "redirect:/login";
-		}
-		
-		return "admin_ops";
-		
-	}
+
 
 
 }
